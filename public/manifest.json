@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "ZenMind - Web Blocker & Productivity Extension",
+  "description": "ZenMind is a productivity-focused browser extension that helps you stay focused by blocking distracting websites, running Pomodoro sessions, enforcing strict focus modes, tracking your focus time, and visualizing progress with insightful analytics.",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ZenMind"
+  },
+  "permissions": [
+    "storage",
+    "tabs"
+  ]
+}
