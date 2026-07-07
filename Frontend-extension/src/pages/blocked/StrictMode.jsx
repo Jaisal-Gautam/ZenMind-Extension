@@ -1,0 +1,49 @@
+import StrictBlocked from "@/assets/StrictBlocked.png";
+import { CircleAlert } from "lucide-react";
+function Strict() {
+  const OpenDashboard = () => {
+    try {
+      const url = chrome.runtime.getURL("index.html");
+      console.log(url);
+      chrome.tabs.create({
+        url,
+      });
+    } catch (error) {
+      console.error("Failed to open dashboard:", error);
+      window.open("/", "_blank");
+    }
+  };
+  return (
+    <div
+      className="relative  h-screen max-h-screen overflow-hidden 
+    bg-red-950"
+    >
+      <div
+        className="h-full mask-b-from-90% rounded-xl flex items-center justify-center bg-cover bg-top"
+        style={{ backgroundImage: `url(${StrictBlocked})` }}
+      >
+        <div className="w-sm p-4  rounded-xl flex items-center flex-col absolute top-25 gap-4 ">
+          <CircleAlert className="size-30 text-[#C2410C]" />
+          <h1 className="text-4xl text-[#C2410C] font-bold text-shadow-2xs ">
+            This Site is Blocked
+          </h1>
+          <p className="text-center w-fit text-yellow-700 text-md tracking-tighter font-mono font-light">
+            You're in Strict Mode.
+            <br />
+            Every distraction has been removed
+            <br />
+            Stay on the path you've chosen.
+          </p>
+          <button
+            className="px-4 py-2 bg-[#EA580C] cursor-pointer text-white rounded-md shadow-2xl"
+            onClick={OpenDashboard}
+          >
+            Go To DashBoard
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Strict;
