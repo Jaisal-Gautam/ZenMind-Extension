@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "ZenMind",
+  "version": "1.0.0",
+
+  "permissions": [
+    "storage",
+    "tabs",
+    "idle",
+    "alarms",
+    "notifications",
+    "offscreen"
+  ],
+  "icons": {
+    "16": "icons/icon16.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
