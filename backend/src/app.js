@@ -9,6 +9,7 @@ import { limiter } from "./middlewares/rateLimit.middleware.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 //Routes
 import router from "./routes/index.routes.js";
+import authRouter from "./routes/auth.routes.js";
 
 //App
 const app = express();
@@ -19,8 +20,9 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
 app.use(limiter);
-app.use(errorHandler)
+app.use(errorHandler);
 
-app.use("/",router);
+app.use("/", router);
+app.use("/auth",authRouter)
 
 export default app;
