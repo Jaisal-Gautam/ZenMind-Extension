@@ -14,7 +14,7 @@ export const authMiddleware = asyncHandler(async (req, res, next) => {
     throw new ApiError(401, "Unauthorized Access");
   }
   const { id } = verifyAccessToken(token);
-  const user = await User.findById(id).select("-password");
+  const user = await User.findById(id).select("-refreshToken");
   if (!user) throw new ApiError(401, "Unauthorized Access");
   req.user = user;
   next();
