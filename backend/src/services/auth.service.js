@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import { ApiError } from "../utils/apiError.js";
+import { createDefaultPreferences } from "./preference.service.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -18,6 +19,7 @@ export const createUser = async ({ username, email, password }) => {
     email,
     password: hashedPassword,
   });
+  await createDefaultPreferences(user._id)
   return user;
 };
 
