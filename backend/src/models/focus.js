@@ -37,6 +37,10 @@ const focusSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+focusSchema.index({
+  user: 1,
+  startTime: -1,
+});
 
 const Focus = mongoose.model("Focus", focusSchema);
 

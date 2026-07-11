@@ -13,6 +13,7 @@ import authRouter from "./routes/auth.routes.js";
 import prefRouter from "./routes/preference.routes.js";
 import blockingRouter from "./routes/blocking.routes.js";
 import focusRouter from "./routes/focus.routes.js";
+import websiteRouter from "./routes/websiteSession.routes.js";
 //App
 const app = express();
 
@@ -31,6 +32,7 @@ app.use("/auth",authRouter)
 app.use("/preferences",prefRouter)
 app.use("/blocking",blockingRouter)
 app.use("/focus",focusRouter)
+app.use("/website",websiteRouter)
 
 
 export default app;
