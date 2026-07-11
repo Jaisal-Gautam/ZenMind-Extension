@@ -11,7 +11,7 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 import router from "./routes/index.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import prefRouter from "./routes/preference.routes.js";
-
+import blockingRouter from "./routes/blocking.routes.js";
 //App
 const app = express();
 
@@ -26,5 +26,7 @@ app.use(errorHandler);
 app.use("/", router);
 app.use("/auth",authRouter)
 app.use("/preferences",prefRouter)
+app.use("/blocking",blockingRouter)
+
 
 export default app;
