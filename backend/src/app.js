@@ -12,9 +12,11 @@ import router from "./routes/index.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import prefRouter from "./routes/preference.routes.js";
 import blockingRouter from "./routes/blocking.routes.js";
+import focusRouter from "./routes/focus.routes.js";
 //App
 const app = express();
 
+//Middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
@@ -23,10 +25,12 @@ app.use(morgan("dev"));
 app.use(limiter);
 app.use(errorHandler);
 
+//Routes
 app.use("/", router);
 app.use("/auth",authRouter)
 app.use("/preferences",prefRouter)
 app.use("/blocking",blockingRouter)
+app.use("/focus",focusRouter)
 
 
 export default app;
