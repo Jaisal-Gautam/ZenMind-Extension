@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+const customPresetSchema = z.object({
+  id: z.string().nonempty(),
+  duration: z.number().min(1).max(1440),
+});
+
 export const preferenceSchema = z.object({
   defaultFocusDuration: z.number().min(1).max(1440).optional(),
   dailyFocusGoal: z.number().min(1).max(1440).optional(),
@@ -7,9 +12,4 @@ export const preferenceSchema = z.object({
   defaultMusicVolume: z.number().min(0).max(100).optional(),
   musicLoop: z.boolean().optional(),
   customPresets: z.array(customPresetSchema).optional(),
-});
-
-const customPresetSchema = z.object({
-  id: z.string().nonempty(),
-  duration: z.number().min(1).max(1440),
 });
