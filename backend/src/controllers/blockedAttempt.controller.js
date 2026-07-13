@@ -20,8 +20,7 @@ export const createBlockedAttemptController = asyncHandler(async (req, res) => {
 });
 
 export const getBlockedHistoryController = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 20;
+  const { page, limit } = req.query;
   const blockedAttemptHistory = await getBlockedHistory(
     req.user._id,
     page,

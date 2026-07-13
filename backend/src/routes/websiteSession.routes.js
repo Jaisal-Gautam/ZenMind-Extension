@@ -4,9 +4,10 @@ import {
   getWebsiteHistoryController,
 } from "../controllers/websiteSession.controller.js";
 import { authMiddleware } from "../middlewares/auth.middleware.js";
-import { validate } from "../middlewares/validate.middleware.js";
+import { validate ,validateQuery} from "../middlewares/validate.middleware.js";
 import { createWebSessionSchema } from "../validators/website.validator.js";
 import { writeLimiter,readLimiter } from "../middlewares/rateLimit.middleware.js";
+import { paginationSchema } from "../validators/common.validator.js";
 
 const websiteRouter = express.Router();
 
@@ -17,6 +18,6 @@ websiteRouter.post(
   validate(createWebSessionSchema),
   createWebsiteSessionController,
 );
-websiteRouter.get("/history",readLimiter, authMiddleware, getWebsiteHistoryController);
+websiteRouter.get("/history",readLimiter, authMiddleware,validateQuery(paginationSchema), getWebsiteHistoryController);
 
 export default websiteRouter;

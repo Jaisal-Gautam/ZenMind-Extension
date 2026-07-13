@@ -26,8 +26,7 @@ export const endFocusSessionController = asyncHandler(async (req, res) => {
 });
 
 export const getFocusHistoryController = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page)||1;
-  const limit = parseInt(req.query.limit)||20;
+  const { page, limit } = req.query;
   const focusHistory = await getFocusHistory(req.user._id, page,limit);
   res.status(200).json({
     success: true,

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { ApiError } from "./apiError.js";
 import { env } from "../config/env.js";
-import { env } from "../config/env.js";
+
 export const generateAccessToken = (userId) => {
   const token = jwt.sign({ id: userId }, env.ACCESS_TOKEN_SECRET, {
     expiresIn: env.ACCESS_TOKEN_EXPIRY,
