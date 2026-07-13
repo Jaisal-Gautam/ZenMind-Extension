@@ -2,9 +2,7 @@ import BlockedAttempt from "../models/blockedAttemps.js";
 import { ApiError } from "../utils/apiError.js";
 
 export const createBlockedAttempt = async (userId, domain, mode, blockedAt) => {
-  if (mode !== "normal" && mode !== "deep" && mode !== "strict") {
-    throw new ApiError(400, "Invalid Mode");
-  }
+  
   const blockedAttempt = await BlockedAttempt.create({
     user: userId,
     domain,

@@ -7,9 +7,6 @@ export const createWebsiteSession = async (
   endTime,
   duration,
 ) => {
-  if (duration<= 0) {
-    throw new ApiError(400, "Invalid Duration");
-  }
   const session = await WebsiteSession.create({
     user:userId,
     domain,

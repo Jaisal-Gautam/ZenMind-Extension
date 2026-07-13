@@ -21,13 +21,6 @@ export const startFocusSession = async (userId, plannedDuration) => {
 };
 
 export const endFocusSession = async (userId, endReason) => {
-  if (
-    endReason !== "completed" &&
-    endReason !== "stopped" &&
-    endReason !== "crashed"
-  ) {
-    throw new ApiError(400, "Invalid end Reason .");
-  }
   const FocusSession = await Focus.findOne({
     user: userId,
     completed: false,
@@ -39,7 +32,7 @@ export const endFocusSession = async (userId, endReason) => {
   }
   FocusSession.endTime = new Date();
   FocusSession.actualDuration =
-    ((FocusSession.endTime - FocusSession.startTime) / 1000) * 60;
+    ((FocusSession.endTime - FocusSession.startTime) / 1000 * 60);
 
   FocusSession.completed = endReason === "completed";
 

@@ -38,10 +38,7 @@ export const addSite = async (userId, mode, domain) => {
   if (!blocking) {
     throw new ApiError(404, "Blocking not found.");
   }
-  const allowedModes = ["normal", "deep", "strict"];
-  if (!allowedModes.includes(mode)) {
-    throw new ApiError(400, "Invalid blocking mode.");
-  }
+  
   const alreadyExists = blocking[mode].some((site) => site.domain === domain);
   
   if (alreadyExists) {
@@ -60,10 +57,6 @@ export const removeSite = async (userId, mode, domain) => {
   if (!blocking) {
     throw new ApiError(404, "Blocking not found.");
   }
-  const allowedModes = ["normal", "deep", "strict"];
-  if (!allowedModes.includes(mode)) {
-    throw new ApiError(400, "Invalid blocking mode.");
-  }
   const alreadyExists = blocking[mode].some((site) => site.domain === domain);
   if (!alreadyExists) {
     throw new ApiError(404, "Site Not Found.");
@@ -78,16 +71,6 @@ export const addBlockedCategory = async (userId, category) => {
   if (!blocking) {
     throw new ApiError(404, "Blocking not found.");
   }
-  const allowedCategory = [
-    "social",
-    "entertainment",
-    "gaming",
-    "shopping",
-    "messaging",
-  ];
-  if (!allowedCategory.includes(category)) {
-    throw new ApiError(400, "Invalid Category.");
-  }
   const alreadyExists = blocking.blockedCategories.some((site) => site === category);
   if (alreadyExists) {
     throw new ApiError(409, "Category already Added.");
@@ -101,16 +84,6 @@ export const removeBlockedCategory = async (userId, category) => {
   const blocking = await Blocking.findOne({ user: userId });
   if (!blocking) {
     throw new ApiError(404, "Blocking not found.");
-  }
-  const allowedCategory = [
-    "social",
-    "entertainment",
-    "gaming",
-    "shopping",
-    "messaging",
-  ];
-  if (!allowedCategory.includes(category)) {
-    throw new ApiError(400, "Invalid Category.");
   }
   const alreadyExists = blocking.blockedCategories.some((site) => site === category);
   if (!alreadyExists) {
