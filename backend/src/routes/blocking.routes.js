@@ -9,20 +9,22 @@ import {
   addTempSiteSchema,
   removeTempSiteSchema,
 } from "../validators/blocking.validator.js";
+import { writeLimiter,readLimiter } from "../middlewares/rateLimit.middleware.js";
+
 
 const blockingRouter = express.Router();
 
-blockingRouter.get("/",authMiddleware,getBlockingController);
+blockingRouter.get("/",readLimiter,authMiddleware,getBlockingController);
 
-blockingRouter.patch("/",authMiddleware,validate(updateBlockingController),updateBlockingController);
+blockingRouter.patch("/",writeLimiter,authMiddleware,validate(updateBlockingController),updateBlockingController);
 
-blockingRouter.post("/site",authMiddleware,validate(siteSchema),addSiteController);
-blockingRouter.delete("/site",authMiddleware,validate(siteSchema),removeSiteController);
+blockingRouter.post("/site",writeLimiter,authMiddleware,validate(siteSchema),addSiteController);
+blockingRouter.delete("/site",writeLimiter,authMiddleware,validate(siteSchema),removeSiteController);
 
-blockingRouter.post("/category",authMiddleware,validate(categorySchema),addBlockedCategoryController);
-blockingRouter.delete("/category",authMiddleware,validate(categorySchema),removeBlockedCategoryController);
+blockingRouter.post("/category",writeLimiter,authMiddleware,validate(categorySchema),addBlockedCategoryController);
+blockingRouter.delete("/category",writeLimiter,authMiddleware,validate(categorySchema),removeBlockedCategoryController);
 
-blockingRouter.post("/unlock",authMiddleware,validate(addTempSiteSchema),addTemporaryUnlockController);
-blockingRouter.delete("/unlock",authMiddleware,validate(removeTempSiteSchema),removeTemporaryUnlockController);
+blockingRouter.post("/unlock",writeLimiter,authMiddleware,validate(addTempSiteSchema),addTemporaryUnlockController);
+blockingRouter.delete("/unlock",writeLimiter,authMiddleware,validate(removeTempSiteSchema),removeTemporaryUnlockController);
 
 export default blockingRouter;

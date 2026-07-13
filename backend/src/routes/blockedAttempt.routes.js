@@ -6,17 +6,19 @@ import {
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { createBlockedAttemptSchema } from "../validators/blockedAttempt.validator.js";
+import { writeLimiter,readLimiter } from "../middlewares/rateLimit.middleware.js";
 
 const blockedAttemptRouter = express.Router();
 
 blockedAttemptRouter.post(
   "/attempt",
+  writeLimiter,
   authMiddleware,
   validate(createBlockedAttemptSchema),
   createBlockedAttemptController,
 );
 blockedAttemptRouter.get(
-  "/history",
+  "/history",writeLimiter,
   authMiddleware,
   getBlockedHistoryController,
 );

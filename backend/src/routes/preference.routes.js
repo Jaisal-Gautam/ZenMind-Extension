@@ -6,10 +6,11 @@ import {
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import { validate } from "../middlewares/validate.middleware.js";
 import { preferenceSchema } from "../validators/preference.validator.js";
+import { writeLimiter,readLimiter } from "../middlewares/rateLimit.middleware.js";
 const prefRouter = express.Router();
 
-prefRouter.get("/",authMiddleware,getPreferencesController);
-prefRouter.patch("/",authMiddleware,validate(preferenceSchema),updatePreferencesController);
+prefRouter.get("/",readLimiter,authMiddleware,getPreferencesController);
+prefRouter.patch("/",writeLimiter,authMiddleware,validate(preferenceSchema),updatePreferencesController);
 
 
 export default prefRouter;
