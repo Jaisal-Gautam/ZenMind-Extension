@@ -1,19 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { setData, getData } from "@/utils/chromeStorage";
+import { getData, setData } from "@/utils/chromeStorage";
 import { DefaultState } from "@/utils/constants";
 
+import authReducer from "./slices/auth/authSlice";
 import focusReducer from "./slices/focusSlice";
 import blockingReducer from "./slices/blockingSlice";
 import analyticsReducer from "./slices/analyticsSlice";
 import settingsReducer from "./slices/settingsSlice";
 import musicReducer from "./slices/musicSlice";
+
 export const createAppStore = async () => {
   const persistedState = await getData();
 
   const preloadedState = {
-    ...DefaultState,
-    ...persistedState,
+    auth: DefaultState.auth,
 
     focus: {
       ...DefaultState.focus,
@@ -34,16 +35,18 @@ export const createAppStore = async () => {
       ...DefaultState.settings,
       ...persistedState?.settings,
     },
+
     music: {
       ...DefaultState.music,
       ...persistedState?.music,
       currentTrack:
         persistedState?.music?.currentTrack ?? DefaultState.music.currentTrack,
     },
-
   };
+
   const store = configureStore({
     reducer: {
+      auth: authReducer,
       focus: focusReducer,
       blocking: blockingReducer,
       analytics: analyticsReducer,
@@ -54,9 +57,11 @@ export const createAppStore = async () => {
   });
 
   store.subscribe(() => {
+    const state = store.getState();
 
+    const { auth, ...persistedState } = state;
 
-    setData(store.getState());
+    setData(persistedState);
   });
 
   return store;
