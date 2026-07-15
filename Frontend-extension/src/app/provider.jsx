@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { createAppStore } from "./store";
-function Storeprovider({ children }) {
+import { loadCurrentUser } from "./slices/auth/authThunk";
+
+function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
 
   useEffect(() => {
     const initStore = async () => {
       const appStore = await createAppStore();
-      setStore(appStore);
+
+      try {
+        await appStore.dispatch(loadCurrentUser()).unwrap();
+      } catch (err) {
+        console.log("Session restore skipped:", err);
+      } finally {
+        setStore(appStore);
+      }
     };
 
     initStore();
@@ -20,12 +29,8 @@ function Storeprovider({ children }) {
       </div>
     );
   }
-  return (
-    <Provider store={store}>
 
-      {children}
-    </Provider>
-  );
+  return <Provider store={store}>{children}</Provider>;
 }
 
-export default Storeprovider;
+export default StoreProvider;

@@ -1,11 +1,25 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { User, Menu, X } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { logoutUser } from "@/app/slices/auth/authThunk";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser()).unwrap();
+      navigate("/auth/login");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const links = [
     { id: 1, name: "Focus", href: "/" },
     { id: 2, name: "Analytics", href: "/analytics" },
@@ -39,14 +53,22 @@ function Navbar() {
 
         {/* Right Action Icons & Mobile Toggle */}
         <div className="flex items-center space-x-4 md:space-x-6 text-green-primary shrink-0">
-          <NavLink
-            to="/auth"
-            aria-label="Profile"
-            className="hover:opacity-70 transition-opacity"
-          >
-            <User size={24} strokeWidth={2} />
-          </NavLink>
-          {/* Mobile Menu Button (Hidden on md and above) */}
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="text-sm font-medium text-green-primary transition hover:text-green-secondary"
+            >
+              Logout
+            </button>
+          ) : (
+            <NavLink
+              to="/auth/login"
+              aria-label="Login"
+              
+            >
+              <User className="hover:text-green-secondary" size={25} />
+            </NavLink>
+          )}
           <button
             aria-label="Toggle Menu"
             className="md:hidden hover:opacity-70 transition-opacity"

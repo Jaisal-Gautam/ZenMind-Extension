@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "@/api/auth.api";
-import { setAuth,getAuth } from "@/utils/chromeStorage";
-
+import { setAuth, getAuth, removeAuth } from "@/utils/chromeStorage";
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
@@ -16,9 +15,7 @@ export const loginUser = createAsyncThunk(
 
       return response.user;
     } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || "Login failed"
-      );
+      return rejectWithValue(err.response?.data?.message || "Login failed");
     }
   },
 );
@@ -31,7 +28,32 @@ export const registerUser = createAsyncThunk(
       return response.user;
     } catch (err) {
       return rejectWithValue(
-        err.response?.data?.message || "Registration failed"
+        err.response?.data?.message || "Registration failed",
+      );
+    }
+  },
+);
+
+export const loadCurrentUser = createAsyncThunk(
+  "auth/me",
+  async (_, { rejectWithValue }) => {
+    if (!(await getAuth())) {
+      return rejectWithValue("Not authenticated");
+    }
+    const response = await authApi.me();
+    return response.user;
+  },
+);
+
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      await authApi.logout();
+      await removeAuth();
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "Logout failed",
       );
     }
   },

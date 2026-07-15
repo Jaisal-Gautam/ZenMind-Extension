@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { getAuth } from "@/utils/chromeStorage";
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
 if (!baseURL) {
@@ -13,5 +13,15 @@ const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+apiClient.interceptors.request.use(
+  async (config) => {
+    const auth = await getAuth();
+    if (auth?.accessToken) {
+      config.headers.Authorization = `Bearer ${auth.accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 export default apiClient;
