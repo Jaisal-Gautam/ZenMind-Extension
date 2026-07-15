@@ -1,39 +1,74 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 const initialState = {
-  defaultDuration: 30,
+  defaultFocusDuration: 30,
+  dailyFocusGoal: 180,
+
+  defaultMusic: "rain",
+  defaultMusicVolume: 50,
+  musicLoop: false,
+
   customPresets: [],
-  goal:180,
 };
 
 const settingsSlice = createSlice({
   name: "settings",
   initialState,
+
   reducers: {
-    setDefaultDuration: (state, action) => {
-      state.defaultDuration = action.payload;
+    setDefaultFocusDuration: (state, action) => {
+      state.defaultFocusDuration = action.payload;
     },
+
+    setDailyFocusGoal: (state, action) => {
+      state.dailyFocusGoal = action.payload;
+    },
+
+    setDefaultMusic: (state, action) => {
+      state.defaultMusic = action.payload;
+    },
+
+    setDefaultMusicVolume: (state, action) => {
+      state.defaultMusicVolume = action.payload;
+    },
+
+    setMusicLoop: (state, action) => {
+      state.musicLoop = action.payload;
+    },
+
     addCustomPreset: (state, action) => {
       const preset = action.payload;
-      const exists = state.customPresets.some((p) => p.value === preset.value);
+
+      const exists = state.customPresets.some(
+        (p) => p.duration === preset.duration
+      );
+
       if (!exists) {
         state.customPresets.push(preset);
       }
     },
-    setGoal:(state,action)=>{
-      state.goal=action.payload;
-    },
+
     removeCustomPreset: (state, action) => {
       const presetId = action.payload;
+
       state.customPresets = state.customPresets.filter(
-        (preset) => preset.id !== presetId,
+        (preset) => preset.id !== presetId
       );
     },
-    resetSetting: () => initialState,
 
+    resetSettings: () => initialState,
   },
 });
 
-export const { setDefaultDuration, addCustomPreset, removeCustomPreset,setGoal } =
-  settingsSlice.actions;
+export const {
+  setDefaultFocusDuration,
+  setDailyFocusGoal,
+  setDefaultMusic,
+  setDefaultMusicVolume,
+  setMusicLoop,
+  addCustomPreset,
+  removeCustomPreset,
+  resetSettings,
+} = settingsSlice.actions;
 
-export default settingsSlice.reducer;
+export default settingsSlice.reducer;d

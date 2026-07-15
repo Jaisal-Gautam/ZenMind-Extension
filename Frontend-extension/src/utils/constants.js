@@ -43,9 +43,9 @@ export const DefaultState = {
   },
 
   settings: {
-    defaultDuration: 30,
+    defaultFocusDuration: 30,
     customPresets: [],
-    goal: 180,
+    dailyFocusGoal: 180,
   },
 
   music: {
