@@ -1,4 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  loadPreferences,
+  updatePreferences,
+} from "./settingsThunk";
 
 const initialState = {
   defaultFocusDuration: 30,
@@ -9,6 +13,9 @@ const initialState = {
   musicLoop: false,
 
   customPresets: [],
+
+  loading: false,
+  error: null,
 };
 
 const settingsSlice = createSlice({
@@ -40,7 +47,7 @@ const settingsSlice = createSlice({
       const preset = action.payload;
 
       const exists = state.customPresets.some(
-        (p) => p.duration === preset.duration
+        (p) => p.duration === preset.duration,
       );
 
       if (!exists) {
@@ -52,11 +59,48 @@ const settingsSlice = createSlice({
       const presetId = action.payload;
 
       state.customPresets = state.customPresets.filter(
-        (preset) => preset.id !== presetId
+        (preset) => preset.id !== presetId,
       );
     },
 
     resetSettings: () => initialState,
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadPreferences.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(loadPreferences.fulfilled, (state, action) => {
+        Object.assign(state, action.payload);
+
+        state.loading = false;
+        state.error = null;
+      })
+
+      .addCase(loadPreferences.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Update Preferences
+      .addCase(updatePreferences.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(updatePreferences.fulfilled, (state, action) => {
+        Object.assign(state, action.payload);
+        state.loading = false;
+        state.error = null;
+      })
+
+      .addCase(updatePreferences.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 
@@ -71,4 +115,4 @@ export const {
   resetSettings,
 } = settingsSlice.actions;
 
-export default settingsSlice.reducer;d
+export default settingsSlice.reducer;

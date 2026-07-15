@@ -6,7 +6,7 @@ export const DefaultState = {
     loading: false,
     error: null,
     isAuthenticated: false,
-    initialized:false,
+    initialized: false,
   },
 
   focus: {
@@ -44,8 +44,13 @@ export const DefaultState = {
 
   settings: {
     defaultFocusDuration: 30,
-    customPresets: [],
     dailyFocusGoal: 180,
+    defaultMusic: "rain",
+    defaultMusicVolume: 50,
+    musicLoop: false,
+    customPresets: [],
+    loading: false,
+    error: null,
   },
 
   music: {

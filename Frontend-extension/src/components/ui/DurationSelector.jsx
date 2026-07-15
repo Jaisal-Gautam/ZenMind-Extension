@@ -5,7 +5,7 @@ import { Timer, Clock, Hourglass, History, Plus, X } from "lucide-react";
 import {
   addCustomPreset,
   removeCustomPreset,
-} from "@/app/slices/settingsSlice";
+} from "@/app/slices/setting/settingsSlice";
 // Default presets matching the image
 const initialPresets = [
   { id: 1, value: 25, icon: Timer },

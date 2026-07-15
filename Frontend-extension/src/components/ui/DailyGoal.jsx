@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { getFocus } from "@/utils/analyticsHelpers";
 import { analyticsTime } from "@/utils/formatTime";
-import { setDailyFocusGoal } from "@/app/slices/settingsSlice";
+import { setDailyFocusGoal } from "@/app/slices/setting/settingsSlice";
 
 function DailyGoal() {
   const dispatch = useDispatch();

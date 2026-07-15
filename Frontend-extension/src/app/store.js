@@ -7,7 +7,7 @@ import authReducer from "./slices/auth/authSlice";
 import focusReducer from "./slices/focusSlice";
 import blockingReducer from "./slices/blockingSlice";
 import analyticsReducer from "./slices/analyticsSlice";
-import settingsReducer from "./slices/settingsSlice";
+import settingsReducer from "./slices/setting/settingsSlice";
 import musicReducer from "./slices/musicSlice";
 
 export const createAppStore = async () => {
