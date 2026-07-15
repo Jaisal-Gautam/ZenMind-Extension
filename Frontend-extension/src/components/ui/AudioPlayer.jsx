@@ -238,8 +238,8 @@ const PlayerControls = ({
               value={volume}
               onChange={(e) => onVolumeChange(Number(e.target.value))}
               style={{
-                writingMode: "bt-lr", // Standard vertical alignment
-                WebkitAppearance: "slider-vertical", // Safari/Chrome fallback
+                writingMode: "vertical-lr", 
+                direction:"rtl" 
               }}
               className="h-24 w-1.5 bg-gray-200 rounded-full cursor-pointer accent-green-primary"
             />

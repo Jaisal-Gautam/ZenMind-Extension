@@ -1,10 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser, loadCurrentUser,logoutUser } from "./authThunk";
+import {
+  loginUser,
+  registerUser,
+  loadCurrentUser,
+  logoutUser,
+} from "./authThunk";
 const initialState = {
   user: null,
   loading: false,
   error: null,
   isAuthenticated: false,
+  initialized: false,
 };
 
 const authSlice = createSlice({
@@ -23,12 +29,14 @@ const authSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
+        state.initialized = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
         state.error = action.payload;
+        state.initialized = true;
       })
 
       // Register
@@ -50,17 +58,19 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(loadCurrentUser.fulfilled, (state,action) => {
+      .addCase(loadCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
+        state.initialized = true;
       })
       .addCase(loadCurrentUser.rejected, (state, action) => {
-       state.loading = false;
+        state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
         state.error = action.payload;
+        state.initialized = true;
       })
 
       //logout User
@@ -69,15 +79,16 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        state.user=null;
-        state.isAuthenticated=false;
+        state.user = null;
+        state.isAuthenticated = false;
         state.loading = false;
         state.error = null;
+        state.initialized = true;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      })
+      });
   },
 });
 

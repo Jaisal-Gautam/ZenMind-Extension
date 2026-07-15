@@ -6,6 +6,7 @@ export const DefaultState = {
     loading: false,
     error: null,
     isAuthenticated: false,
+    initialized:false,
   },
 
   focus: {
