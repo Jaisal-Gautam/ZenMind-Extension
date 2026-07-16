@@ -26,11 +26,6 @@ const settingsSlice = createSlice({
     setDefaultFocusDuration: (state, action) => {
       state.defaultFocusDuration = action.payload;
     },
-
-    setDailyFocusGoal: (state, action) => {
-      state.dailyFocusGoal = action.payload;
-    },
-
     setDefaultMusic: (state, action) => {
       state.defaultMusic = action.payload;
     },
@@ -106,7 +101,6 @@ const settingsSlice = createSlice({
 
 export const {
   setDefaultFocusDuration,
-  setDailyFocusGoal,
   setDefaultMusic,
   setDefaultMusicVolume,
   setMusicLoop,

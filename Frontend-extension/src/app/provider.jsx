@@ -2,16 +2,33 @@ import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { createAppStore } from "./store";
 import { loadCurrentUser } from "./slices/auth/authThunk";
-
+import { loadPreferences } from "./slices/setting/settingsThunk";
+import { setDuration } from "./slices/focusSlice";
+import { initializeMusic } from "./slices/musicSlice";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
-
   useEffect(() => {
     const initStore = async () => {
       const appStore = await createAppStore();
 
       try {
-        await appStore.dispatch(loadCurrentUser()).unwrap();
+        const currUser = await appStore.dispatch(loadCurrentUser()).unwrap();
+        if (currUser) {
+          await appStore.dispatch(loadPreferences()).unwrap();
+          const { focus, settings } = appStore.getState();
+
+          if (!focus.isActive && !focus.isPaused) {
+            appStore.dispatch(setDuration(settings.defaultFocusDuration));
+          }
+
+          appStore.dispatch(
+            initializeMusic({
+              trackId: settings.defaultMusic,
+              volume: settings.defaultMusicVolume,
+              isLooping: settings.musicLoop,
+            }),
+          );
+        }
       } catch (err) {
         console.log("Session restore skipped:", err);
       } finally {

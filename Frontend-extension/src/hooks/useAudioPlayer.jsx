@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
+import { updatePreferences } from "@/app/slices/setting/settingsThunk";
 import { musicData } from "@/utils/musicTrack";
 import {
   playMusic,
@@ -10,15 +11,72 @@ import {
   toggleLoop,
   syncAudioState,
 } from "@/app/slices/musicSlice";
+
 function useAudioPlayer() {
   const dispatch = useDispatch();
+  const volumeTimeout = useRef(null);
 
-  const { isPlaying, currentTrack, currentTime, duration, volume, isLooping } =
-    useSelector((state) => state.music);
+  const {
+    isPlaying,
+    currentTrack,
+    currentTime,
+    duration,
+    volume,
+    isLooping,
+  } = useSelector((state) => state.music);
 
   const currentIndex = musicData.findIndex(
     (track) => track.id === currentTrack?.id,
   );
+
+  // -------------------------
+  // Preference helpers
+  // -------------------------
+
+  const savePreference = async (data, errorMessage) => {
+    try {
+      await dispatch(updatePreferences(data)).unwrap();
+    } catch (err) {
+      console.error(errorMessage, err);
+    }
+  };
+
+  const saveTrackPreference = (track) => {
+    savePreference(
+      {
+        defaultMusic: track.id,
+      },
+      "Failed to save default music:",
+    );
+  };
+
+  const saveVolumePreference = (value) => {
+    if (volumeTimeout.current) {
+      clearTimeout(volumeTimeout.current);
+    }
+
+    volumeTimeout.current = setTimeout(() => {
+      savePreference(
+        {
+          defaultMusicVolume: value,
+        },
+        "Failed to save volume:",
+      );
+    }, 400);
+  };
+
+  const saveLoopPreference = (loop) => {
+    savePreference(
+      {
+        musicLoop: loop,
+      },
+      "Failed to save loop preference:",
+    );
+  };
+
+  // -------------------------
+  // Player controls
+  // -------------------------
 
   const handlePlayPause = () => {
     if (isPlaying) {
@@ -37,30 +95,6 @@ function useAudioPlayer() {
     }
   };
 
-  const handleNext = () => {
-    const nextTrack =
-      musicData[currentIndex === musicData.length - 1 ? 0 : currentIndex + 1];
-
-    dispatch(setTrack(nextTrack));
-
-    chrome.runtime.sendMessage({
-      type: "SET_TRACK",
-      src: nextTrack.src,
-    });
-  };
-
-  const handlePrev = () => {
-    const prevTrack =
-      musicData[currentIndex === 0 ? musicData.length - 1 : currentIndex - 1];
-
-    dispatch(setTrack(prevTrack));
-
-    chrome.runtime.sendMessage({
-      type: "SET_TRACK",
-      src: prevTrack.src,
-    });
-  };
-
   const handleTrackChange = (track) => {
     dispatch(setTrack(track));
 
@@ -68,6 +102,22 @@ function useAudioPlayer() {
       type: "SET_TRACK",
       src: track.src,
     });
+
+    saveTrackPreference(track);
+  };
+
+  const handleNext = () => {
+    const nextTrack =
+      musicData[currentIndex === musicData.length - 1 ? 0 : currentIndex + 1];
+
+    handleTrackChange(nextTrack);
+  };
+
+  const handlePrev = () => {
+    const prevTrack =
+      musicData[currentIndex === 0 ? musicData.length - 1 : currentIndex - 1];
+
+    handleTrackChange(prevTrack);
   };
 
   const handleVolumeChange = (value) => {
@@ -77,15 +127,21 @@ function useAudioPlayer() {
       type: "SET_VOLUME",
       volume: value,
     });
+
+    saveVolumePreference(value);
   };
 
   const handleToggleLoop = () => {
+    const nextLoopState = !isLooping;
+
     dispatch(toggleLoop());
 
     chrome.runtime.sendMessage({
       type: "SET_LOOP",
-      loop: !isLooping,
+      loop: nextLoopState,
     });
+
+    saveLoopPreference(nextLoopState);
   };
 
   const handleSeek = (newTime) => {
@@ -94,13 +150,20 @@ function useAudioPlayer() {
       currentTime: newTime,
     });
   };
+
+  // -------------------------
+  // Sync from service worker
+  // -------------------------
+
   useEffect(() => {
     const listener = (message) => {
-      if (message.type !== "AUDIO_STATE") return;
+      if (message.type === "AUDIO_STATE") {
+        dispatch(syncAudioState(message));
+      }
+
       if (message.type === "FOCUS_SESSION_COMPLETED") {
         window.location.reload();
       }
-      dispatch(syncAudioState(message));
     };
 
     chrome.runtime.onMessage.addListener(listener);
@@ -109,6 +172,19 @@ function useAudioPlayer() {
       chrome.runtime.onMessage.removeListener(listener);
     };
   }, [dispatch]);
+
+  // -------------------------
+  // Cleanup
+  // -------------------------
+
+  useEffect(() => {
+    return () => {
+      if (volumeTimeout.current) {
+        clearTimeout(volumeTimeout.current);
+      }
+    };
+  }, []);
+
   return {
     currentTime,
     duration,

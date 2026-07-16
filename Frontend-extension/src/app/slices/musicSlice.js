@@ -51,7 +51,16 @@ const musicSlice = createSlice({
         state.currentTrack = matchedTrack;
       }
     },
+    initializeMusic: (state, action) => {
+      const { trackId, volume, isLooping } = action.payload;
 
+      const track =
+        musicData.find((music) => music.id === trackId) || musicData[0];
+
+      state.currentTrack = track;
+      state.volume = volume;
+      state.isLooping = isLooping;
+    },
   },
 });
 
@@ -62,7 +71,7 @@ export const {
   setVolume,
   toggleLoop,
   syncAudioState,
-
+  initializeMusic
 } = musicSlice.actions;
 
 export default musicSlice.reducer;

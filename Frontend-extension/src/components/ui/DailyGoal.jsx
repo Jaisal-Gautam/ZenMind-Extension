@@ -3,15 +3,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
 import { getFocus } from "@/utils/analyticsHelpers";
 import { analyticsTime } from "@/utils/formatTime";
-import { setDailyFocusGoal } from "@/app/slices/setting/settingsSlice";
-
+import { Sparkles } from "lucide-react";
+import { updatePreferences } from "@/app/slices/setting/settingsThunk";
 function DailyGoal() {
   const dispatch = useDispatch();
 
   const analytics = useSelector((state) => state.analytics);
-  const dailyFocusGoal = useSelector(
-    (state) => state.settings.dailyFocusGoal,
-  );
+  const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
 
   const focus = getFocus(analytics, "today");
 
@@ -19,9 +17,7 @@ function DailyGoal() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const progressPercentage =
-    dailyFocusGoal > 0
-      ? Math.min((focus / dailyFocusGoal) * 100, 100)
-      : 0;
+    dailyFocusGoal > 0 ? Math.min((focus / dailyFocusGoal) * 100, 100) : 0;
 
   const radius = 120;
   const stroke = 10;
@@ -36,14 +32,18 @@ function DailyGoal() {
     setIsModalOpen(true);
   };
 
-  const handleSaveGoal = () => {
-    dispatch(
-      setDailyFocusGoal(
-        Math.max(1, Number(goalInput) || 1)
-      ),
-    );
+  const handleSaveGoal = async () => {
+    try {
+      await dispatch(
+        updatePreferences({
+          dailyFocusGoal: Math.max(1, Number(goalInput)) || 1,
+        }),
+      ).unwrap();
 
-    setIsModalOpen(false);
+      setIsModalOpen(false);
+    } catch (err) {
+      console.log(err)
+    }
   };
 
   return (
@@ -144,9 +144,7 @@ function DailyGoal() {
                     required
                     value={goalInput}
                     onChange={(e) =>
-                      setGoalInput(
-                        Math.max(1, Number(e.target.value) || 1),
-                      )
+                      setGoalInput(Math.max(1, Number(e.target.value) || 1))
                     }
                     className="w-full rounded-lg border border-gray-300 px-4 py-2.5 transition-all focus:border-transparent focus:outline-none focus:ring-2 focus:ring-green-secondary"
                     placeholder="e.g. 180"
@@ -177,5 +175,44 @@ function DailyGoal() {
     </div>
   );
 }
+export const PopupDailyGoal = () => {
+  const analytics = useSelector((state) => state.analytics);
+
+  const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
+
+  const focus = getFocus(analytics, "today");
+
+  const progressPercentage =
+    dailyFocusGoal > 0 ? Math.min((focus / dailyFocusGoal) * 100, 100) : 0;
+
+  return (
+    <div className="mt-4 w-full rounded-lg border border-gray-100 bg-neutral-tertiary p-5 font-sans shadow-sm backdrop-blur-sm">
+      <h3 className="mb-4 flex justify-between text-xs font-semibold uppercase tracking-[0.15em] text-gray-500">
+        <span>Daily Goal</span>
+        <Sparkles className="text-green-primary" />
+      </h3>
+
+      <div>
+        <span className="tracking-tight text-green-primary">
+          <span className="text-xl font-semibold">{analyticsTime(focus)}</span>{" "}
+          Deep
+        </span>
+
+        <div className="my-2 h-2 w-full rounded-full border bg-gray-100">
+          <motion.div
+            className="h-full bg-green-secondary"
+            initial={{ width: "0%" }}
+            animate={{ width: `${progressPercentage}%` }}
+            transition={{ duration: 1, ease: "linear" }}
+          />
+        </div>
+
+        <span className="text-[16px] tracking-tight text-neutral-600">
+          {Math.round(progressPercentage)}% of Daily Goal Reached
+        </span>
+      </div>
+    </div>
+  );
+};
 
 export default DailyGoal;

@@ -274,23 +274,21 @@ const TrackChange = ({currentTrack,handleTrackChange}) => {
 
 export default function AudioPlayer() {
   const {
-    audioRef,
-    currentTime,
-    duration,
-    isPlaying,
-    currentTrack,
-    volume,
-    isLooping,
+  currentTime,
+  duration,
+  isPlaying,
+  currentTrack,
+  volume,
+  isLooping,
 
-    handlePlayPause,
-    handleNext,
-    handlePrev,
-    handleSeek,
-    handleEnded,
-    handleTrackChange,
-    handleVolumeChange,
-    handleToggleLoop,
-  } = useAudioPlayer();
+  handlePlayPause,
+  handleNext,
+  handlePrev,
+  handleSeek,
+  handleTrackChange,
+  handleVolumeChange,
+  handleToggleLoop,
+} = useAudioPlayer();
   return (
     <div className="flex items-center h-full justify-center">
       <div className="h-full rounded-md p-8 w-full">
@@ -326,17 +324,13 @@ export default function AudioPlayer() {
 
 export function PopupAudioPlayer() {
   const {
-    audioRef,
-    isPlaying,
-    currentTrack,
-    volume,
+  isPlaying,
+  currentTrack,
+  volume,
 
-    handlePlayPause,
-    handleEnded,
-    handleVolumeChange,
-  } = useAudioPlayer();
-  
-
+  handlePlayPause,
+  handleVolumeChange,
+} = useAudioPlayer();
   // --- Render ---
   return (
     <div className="w-full  p-5 bg-neutral-tertiary rounded-lg border border-gray-100 backdrop-blur-sm shadow-sm font-sans mt-4">
