@@ -20,6 +20,8 @@ export const getBlockingController = asyncHandler(async (req, res) => {
   });
 });
 export const updateBlockingController = asyncHandler(async (req, res) => {
+  console.log("Request body:", req.body);
+
   const blocking = await updateBlocking(req.user._id, req.body);
 
   res.status(200).json({

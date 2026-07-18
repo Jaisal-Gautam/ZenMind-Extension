@@ -14,10 +14,13 @@ export const getBlocking = async (userId) => {
 };
 
 export const updateBlocking = async (userId, updates) => {
+    console.log("Incoming updates:", updates);
   const allowedFields = ["guardEnabled", "activeMode", "blockedCategories"];
   const filteredUpdates = Object.fromEntries(
     Object.entries(updates).filter(([key]) => allowedFields.includes(key)),
   );
+    console.log("Filtered updates:", filteredUpdates);
+
   const blocking = await Blocking.findOneAndUpdate(
     { user: userId },
     filteredUpdates,
@@ -38,11 +41,13 @@ export const addSite = async (userId, mode, domain) => {
   if (!blocking) {
     throw new ApiError(404, "Blocking not found.");
   }
+  console.log("Mode received:", mode);
+console.log("Available keys:", Object.keys(blocking.toObject()));
   
   const alreadyExists = blocking[mode].some((site) => site.domain === domain);
   
   if (alreadyExists) {
-    throw new ApiError(409, "already temporarily unlocked");
+    throw new ApiError(409, "Site already added");
   }
   blocking[mode].push({
     domain,

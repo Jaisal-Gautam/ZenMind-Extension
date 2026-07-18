@@ -16,8 +16,13 @@ const blockingRouter = express.Router();
 
 blockingRouter.get("/",readLimiter,authMiddleware,getBlockingController);
 
-blockingRouter.patch("/",writeLimiter,authMiddleware,validate(updateBlockingController),updateBlockingController);
-
+blockingRouter.patch(
+  "/",
+  writeLimiter,
+  authMiddleware,
+  validate(updateBlockingSchema),
+  updateBlockingController
+);
 blockingRouter.post("/site",writeLimiter,authMiddleware,validate(siteSchema),addSiteController);
 blockingRouter.delete("/site",writeLimiter,authMiddleware,validate(siteSchema),removeSiteController);
 
