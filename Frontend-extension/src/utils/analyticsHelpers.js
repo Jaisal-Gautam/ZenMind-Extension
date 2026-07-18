@@ -48,10 +48,10 @@ export const getBlockedAttempts = (analytics, period) => {
 
 export const getWebsiteUsage = (analytics, period) => {
   if (period === "today") {
-    const today = getTodayKey();
-    return analytics.dailyWebsiteUsage?.[today] || {};
+    return analytics.websiteUsage || [];
   }
 
+  // Keep existing weekly aggregation until backend supports it
   if (period === "week") {
     const week = getWeekKey();
     const total = {};
@@ -65,12 +65,14 @@ export const getWebsiteUsage = (analytics, period) => {
       }
     }
 
-    return total;
+    return Object.entries(total).map(([domain, duration]) => ({
+      domain,
+      duration,
+    }));
   }
 
-  return {};
+  return [];
 };
-
 export const getBlockedWebsiteUsage = (analytics, period) => {
   if (period === "today") {
     const today = getTodayKey();
@@ -225,29 +227,23 @@ export const getLongestStreak = (analytics) => {
   return longestStreak;
 };
 
-export const getPeakFocusHour = (analytics, period) => {
-  const hourlyFocus = getHourlyFocus(analytics, period);
-  return hourlyFocus.reduce((peak, current) =>
-    current.minutes > peak.minutes ? current : peak,
-  );
+export const getPeakFocusHour = (analytics) => {
+  if (analytics.peakFocusHour === null || analytics.peakFocusHour === undefined) {
+    return {
+      hour: 0,
+      minutes: 0,
+    };
+  }
+
+  return {
+    hour: analytics.peakFocusHour,
+    minutes: 0,
+  };
+};
+export const getLongestSession = (analytics) => {
+  return analytics.longestSession || 0;
 };
 
-export const getLongestSession = (analytics, period) => {
-  const sessions = getFocusSessions(analytics, period);
-  if (sessions.length === 0) {
-    return 0;
-  }
-  return Math.max(...sessions.map((session) => session.duration));
-};
-
-export const getAverageSessionLength = (analytics, period) => {
-  const sessions = getFocusSessions(analytics, period);
-  let avg = 0;
-  if (sessions.length === 0) {
-    return 0;
-  }
-  for (let i = 0; i < sessions.length; i++) {
-    avg += sessions[i].duration;
-  }
-  return avg/sessions.length;
+export const getAverageSessionLength = (analytics) => {
+  return analytics.averageSession || 0;
 };

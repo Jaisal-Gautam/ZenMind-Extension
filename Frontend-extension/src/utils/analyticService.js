@@ -19,14 +19,25 @@ import { getSanctuaryData } from "./sanctuary";
 // Summary
 // -------------------------
 
-const buildSummary = (analytics, period) => ({
-  focusedTime: getFocus(analytics, period),
-  sessions: getFocusSessions(analytics, period),
-  currentStreak: getCurrentStreak(analytics),
-  longestStreak: getLongestStreak(analytics),
-  blockedAttempts: getBlockedAttempts(analytics, period),
-});
+const buildSummary = (analytics, period) => {
+  if (period === "today") {
+    return {
+      focusedTime: analytics.todayFocusedTime,
+      sessions: analytics.focusSessionCount,
+      currentStreak: getCurrentStreak(analytics),
+      longestStreak: getLongestStreak(analytics),
+      blockedAttempts: analytics.todayBlockedAttempts,
+    };
+  }
 
+  return {
+    focusedTime: getFocus(analytics, period),
+    sessions: getFocusSessions(analytics, period).length,
+    currentStreak: getCurrentStreak(analytics),
+    longestStreak: getLongestStreak(analytics),
+    blockedAttempts: getBlockedAttempts(analytics, period),
+  };
+};
 
 const buildWebsite = (analytics, period) => {
   const timeline = getWebsiteTimeline(analytics, period);
@@ -41,17 +52,16 @@ const buildWebsite = (analytics, period) => {
 
 const buildFocus = (analytics, period) => ({
   hourly: getHourlyFocus(analytics, period),
-  peakHour: getPeakFocusHour(analytics, period),
-  longestSession: getLongestSession(analytics, period),
-  averageSession: getAverageSessionLength(analytics, period),
+  peakHour: getPeakFocusHour(analytics),
+  longestSession: getLongestSession(analytics),
+  averageSession: getAverageSessionLength(analytics),
 });
-
 const buildSanctuary = (analytics) => {
-  return {...getSanctuaryData(analytics),
-  totalFocusTime: analytics.totalFocusTime}
+  return {
+    ...getSanctuaryData(analytics),
+    totalFocusTime: analytics.totalFocusTime,
+  };
 };
-
-
 
 export const buildAnalyticsData = (analytics, period) => ({
   summary: buildSummary(analytics, period),

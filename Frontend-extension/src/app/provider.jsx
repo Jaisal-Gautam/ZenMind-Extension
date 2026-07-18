@@ -6,6 +6,11 @@ import { loadPreferences } from "./slices/setting/settingsThunk";
 import { setDuration } from "./slices/focus/focusSlice";
 import { initializeMusic } from "./slices/musicSlice";
 import { loadBlockingConfig } from "./slices/blocking/blockingThunk";
+import {
+  loadOverview,
+  loadFocusAnalytics,
+  loadWebsiteAnalytics,
+} from "./slices/analytic/analyticThunk";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
   useEffect(() => {
@@ -18,7 +23,9 @@ function StoreProvider({ children }) {
         if (currUser) {
           await appStore.dispatch(loadPreferences()).unwrap();
           await appStore.dispatch(loadBlockingConfig()).unwrap();
-
+          await appStore.dispatch(loadOverview()).unwrap();
+          await appStore.dispatch(loadWebsiteAnalytics()).unwrap();
+          await appStore.dispatch(loadFocusAnalytics()).unwrap();
           const { focus, settings } = appStore.getState();
 
           if (!focus.isActive && !focus.isPaused) {

@@ -19,8 +19,8 @@ export const DefaultState = {
     currentSessionId: null,
     sessionDuration: null,
     loading: false,
-error: null,
-history: [],
+    error: null,
+    history: [],
   },
 
   blocking: {
@@ -31,19 +31,33 @@ history: [],
     strictWhitelist: [],
     blockedCategories: [],
     loading: false,
-  error: null,
+    error: null,
   },
 
   analytics: {
     focusSessions: [],
     websiteUsage: {},
     dailyFocus: {},
-    totalFocusTime: 0,
+
     blockedAttempts: {},
     dailyBlockedAttempts: {},
     dailyWebsiteUsage: {},
     dailyBlockedWebsiteUsage: {},
     websiteSessions: [],
+
+    // Backend analytics
+    totalFocusTime: 0,
+
+    todayFocusedTime: 0,
+    focusSessionCount: 0,
+    todayBlockedAttempts: 0,
+
+    longestSession: 0,
+    averageSession: 0,
+    peakFocusHour: null,
+
+    loading: false,
+    error: null,
   },
 
   settings: {

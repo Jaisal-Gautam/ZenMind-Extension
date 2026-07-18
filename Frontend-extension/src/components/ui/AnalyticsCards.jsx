@@ -13,7 +13,7 @@ function AnalyticsCards({ dashboardData }) {
       <WeekAnalyticsCard
         icon={<BadgeCheck className="text-green-secondary size-8" />}
         heading="Focus Sessions"
-        value={dashboardData.sessions.length}
+        value={dashboardData.sessions}
       />
       <WeekAnalyticsCard
         icon={
