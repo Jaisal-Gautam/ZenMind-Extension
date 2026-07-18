@@ -3,8 +3,9 @@ import { Provider } from "react-redux";
 import { createAppStore } from "./store";
 import { loadCurrentUser } from "./slices/auth/authThunk";
 import { loadPreferences } from "./slices/setting/settingsThunk";
-import { setDuration } from "./slices/focusSlice";
+import { setDuration } from "./slices/focus/focusSlice";
 import { initializeMusic } from "./slices/musicSlice";
+import { loadBlockingConfig } from "./slices/blocking/blockingThunk";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
   useEffect(() => {
@@ -13,8 +14,11 @@ function StoreProvider({ children }) {
 
       try {
         const currUser = await appStore.dispatch(loadCurrentUser()).unwrap();
+
         if (currUser) {
           await appStore.dispatch(loadPreferences()).unwrap();
+          await appStore.dispatch(loadBlockingConfig()).unwrap();
+
           const { focus, settings } = appStore.getState();
 
           if (!focus.isActive && !focus.isPaused) {

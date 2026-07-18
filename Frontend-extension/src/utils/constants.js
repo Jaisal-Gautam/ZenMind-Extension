@@ -18,6 +18,9 @@ export const DefaultState = {
     remainingTime: null,
     currentSessionId: null,
     sessionDuration: null,
+    loading: false,
+error: null,
+history: [],
   },
 
   blocking: {
@@ -27,7 +30,8 @@ export const DefaultState = {
     deepFocusSites: [],
     strictWhitelist: [],
     blockedCategories: [],
-    temporaryUnlocks: [],
+    loading: false,
+  error: null,
   },
 
   analytics: {

@@ -1,17 +1,32 @@
 import { ToggleSwitch } from "@/components/ui/GuardToggle";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode,toggleGuard } from "@/app/slices/blockingSlice";
-import { Lock,Unlock } from "lucide-react";
-import { useState } from "react";
-import { AnimatePresence,motion } from "motion/react";
+import { Lock, Unlock } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "motion/react";
+import { updateBlockingSettings } from "@/app/slices/blocking/blockingThunk";
 function PopupGuardEnable() {
   const dispatch = useDispatch();
-  const handleLockdownToggle = () => dispatch(toggleGuard());
+  const isLockdown = useSelector((state) => state.blocking.guardEnabled);
+  const handleLockdownToggle = async () =>
+    await dispatch(
+      updateBlockingSettings({
+        guardEnabled: !isLockdown,
+      }),
+    ).unwrap();
 
   const activeMode = useSelector((state) => state.blocking.activeMode);
-  const modeOptions = ["Normal", "Deep Focus", "Strict"];
-  const handleModeChange = (newMode) => dispatch(setMode(newMode));
-  const isLockdown = useSelector((state) => state.blocking.guardEnabled);
+  const modeOptions = [
+  { value: "normal", label: "Normal" },
+  { value: "deep", label: "Deep Focus" },
+  { value: "strict", label: "Strict" },
+];
+  const handleModeChange = async(newMode) => await dispatch(
+  updateBlockingSettings({
+    activeMode: newMode,
+  })
+).unwrap();;
+  
 
   return (
     <div className="w-full bg-white/60 backdrop-blur-sm border border-gray-100 p-4 mt-4 rounded-lg shadow-sm">
@@ -24,11 +39,13 @@ function PopupGuardEnable() {
           )}
           <div>
             <h3 className="text-sm font-semibold text-slate-900">Guard</h3>
-            <p className="text-xs text-slate-500">{isLockdown ? "Blocking is active" : "Enable blocking "}</p>
+            <p className="text-xs text-slate-500">
+              {isLockdown ? "Blocking is active" : "Enable blocking "}
+            </p>
           </div>
         </div>
         <div>
-          <ToggleSwitch  checked={isLockdown} onChange={handleLockdownToggle} />
+          <ToggleSwitch checked={isLockdown} onChange={handleLockdownToggle} />
         </div>
       </div>
 
@@ -47,11 +64,39 @@ function PopupGuardEnable() {
 const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isHover, setIsHover] = useState(false);
+  const triggerRef = useRef(null);
+  const [coords, setCoords] = useState(null);
 
-  const handleSelect = (option) => {
-    onChange(option);
+  const handleSelect = (value) => {
+    onChange(value);
     setIsOpen(false);
   };
+
+  const selectedOption = options.find((option) => option.value === selected);
+
+  useEffect(() => {
+    function updateCoords() {
+      if (triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        setCoords({
+          top: rect.bottom + window.scrollY,
+          left: rect.left + window.scrollX,
+          width: rect.width,
+        });
+      }
+    }
+
+    if (isOpen) {
+      updateCoords();
+      window.addEventListener("resize", updateCoords);
+      window.addEventListener("scroll", updateCoords, true);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateCoords);
+      window.removeEventListener("scroll", updateCoords, true);
+    };
+  }, [isOpen]);
 
   return (
     <div
@@ -59,78 +104,69 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
-      {/* Menu Trigger Button */}
-      <button
-        onClick={() => !disabled && setIsOpen(!isOpen)}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        aria-disabled={disabled}
-        className={`flex items-center justify-between w-full bg-white p-2.5 pl-10 pr-3 rounded-lg shadow-sm border text-sm font-medium text-slate-900 focus:outline-none ${
-          disabled ? "opacity-60" : ""
-        }`}
-        disabled={disabled}
-      >
-        <span>{selected}</span>
-        {/* Chevron Icon */}
-        <svg
-          className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-          />
-        </svg>
-      </button>
-
-      {/* Dropdown Options */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.15, ease: "easeOut" }}
-            className="absolute left-0 right-0 mt-2 bg-white/95 backdrop-blur-md rounded-xl shadow-sm shadow-black/5 border border-gray-100 overflow-hidden z-50 p-1.5 dynamic-layer"
-          >
-            {options.map((option) => (
-              <button
-                key={option}
-                role="option"
-                aria-selected={selected === option}
-                onClick={() => !disabled && handleSelect(option)}
-                disabled={disabled}
-                className={`w-full text-left py-2 px-3 text-sm rounded-md transition-colors flex items-center justify-between ${
-                  selected === option
-                    ? "bg-slate-100 text-slate-900"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
-                } ${disabled ? "pointer-events-none opacity-60" : ""}`}
-              >
-                <span>{option}</span>
-                {selected === option && (
-                  <svg className="w-4 h-4 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {disabled && isHover && (
-        <div className="absolute left-1/2 top-full mt-2 -translate-x-1/2 z-50">
+        <div className="z-9999 absolute left-1/2 top-full mt-2 -translate-x-1/2 -translate-y-3">
           <div className="bg-neutral-primary text-neutral-600 text-xs px-2 py-1 rounded-md shadow-sm">
             Enable blocking to choose a mode
           </div>
         </div>
       )}
+      <button
+        ref={triggerRef}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={`flex items-center justify-between w-full bg-white p-2.5 pl-10 pr-3 rounded-lg shadow-sm border text-sm font-medium text-slate-900 ${
+          disabled ? "opacity-60" : ""
+        }`}
+      >
+        <span>{selectedOption?.label ?? selected}</span>
+
+        <svg
+          className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && coords &&
+        createPortal(
+          <AnimatePresence>
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.15 }}
+              style={{ position: "absolute", top: coords.top, left: coords.left, width: coords.width, zIndex: 99999 }}
+              className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-1.5"
+            >
+              {options.map((option) => (
+                <button
+                  key={option.value}
+                  onClick={() => !disabled && handleSelect(option.value)}
+                  className={`w-full text-left py-2 px-3 text-sm rounded-md transition-colors flex items-center justify-between ${
+                    selected === option.value
+                      ? "bg-slate-100 text-slate-900"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+                >
+                  <span>{option.label}</span>
+
+                  {selected === option.value && (
+                    <svg className="w-4 h-4 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </button>
+              ))}
+            </motion.div>
+          </AnimatePresence>,
+          document.body,
+        )}
+
+      
     </div>
   );
 };

@@ -4,9 +4,10 @@ import { getData, setData } from "@/utils/chromeStorage";
 import { DefaultState } from "@/utils/constants";
 
 import authReducer from "./slices/auth/authSlice";
-import focusReducer from "./slices/focusSlice";
-import blockingReducer from "./slices/blockingSlice";
-import analyticsReducer from "./slices/analyticsSlice";
+import focusReducer from "./slices/focus/focusSlice";
+import blockingReducer from "./slices/blocking/blockingSlice";
+import analyticsReducer from "./slices/analytic/analyticsSlice";
+
 import settingsReducer from "./slices/setting/settingsSlice";
 import musicReducer from "./slices/musicSlice";
 

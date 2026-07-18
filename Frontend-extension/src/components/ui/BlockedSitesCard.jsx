@@ -2,17 +2,25 @@ import React from "react";
 import Card from "../Card";
 import { Sprout } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addBlockedSite,removeBlockedSite } from "@/app/slices/blockingSlice";
+import { createBlockedSite,removeBlockedSite } from "@/app/slices/blocking/blockingThunk";
 function BlockedSitesCard() {
-  const blockedSites = useSelector(
-    (state) => state.blocking.blockedSites,
-  );
+  const blockedSites = useSelector((state) => state.blocking.blockedSites);
   const dispatch = useDispatch();
-  const handleAddWebsite = (websiteName) => {
-    dispatch(addBlockedSite({ website: websiteName }));
+  const handleAddWebsite = async (websiteName) => {
+    await dispatch(
+      createBlockedSite({
+        mode: "normal",
+        domain: websiteName,
+      }),
+    ).unwrap();
   };
-  const handleremoveWebsite = (websiteName) => {
-    dispatch(removeBlockedSite({ website: websiteName }));
+  const handleremoveWebsite = async (websiteName) => {
+    await dispatch(
+      removeBlockedSite({
+        mode: "normal",
+        domain: websiteName,
+      }),
+    ).unwrap();
   };
   return (
     <div className="w-full bg-neutral-tertiary  shadow-sm  p-4 md:p-6 lg:p-8 border border-gray-200 rounded-md border-t-6 border-t-green-secondary">

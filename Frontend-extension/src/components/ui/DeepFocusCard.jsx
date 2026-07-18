@@ -2,17 +2,25 @@ import React from "react";
 import Card from "../Card";
 import { Timer } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { addDeepFocusSite,removeDeepFocusSite } from "@/app/slices/blockingSlice";
+import { createBlockedSite,removeBlockedSite } from "@/app/slices/blocking/blockingThunk";
 function DeepFocusCard() {
-  const blockedSites = useSelector(
-    (state) => state.blocking.deepFocusSites,
-  );
+  const blockedSites = useSelector((state) => state.blocking.deepFocusSites);
   const dispatch = useDispatch();
-  const handleAddWebsite = (websiteName) => {
-    dispatch(addDeepFocusSite({ website: websiteName }));
+  const handleAddWebsite = async (websiteName) => {
+    await dispatch(
+      createBlockedSite({
+        mode: "focus",
+        domain: websiteName,
+      }),
+    ).unwrap();
   };
-  const handleremoveWebsite = (websiteName) => {
-    dispatch(removeDeepFocusSite({ website: websiteName }));
+  const handleremoveWebsite = async (websiteName) => {
+    await dispatch(
+      removeBlockedSite({
+        mode: "focus",
+        domain: websiteName,
+      }),
+    ).unwrap();
   };
   return (
     <div className="w-full bg-neutral-tertiary  shadow-sm  p-4 md:p-6 lg:p-8 border border-gray-200 rounded-md border-t-6 border-t-green-primary">
@@ -25,7 +33,7 @@ function DeepFocusCard() {
         deleter={handleremoveWebsite}
       />
     </div>
-  )
+  );
 }
 
-export default DeepFocusCard
+export default DeepFocusCard;

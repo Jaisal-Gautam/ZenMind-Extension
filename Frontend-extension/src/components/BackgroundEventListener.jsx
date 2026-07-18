@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { addFocusSession } from "@/app/slices/analyticsSlice";
-import { stopFocus } from "@/app/slices/focusSlice";
+import { addFocusSession } from "@/app/slices/analytic/analyticsSlice";
+import { stopFocus } from "@/app/slices/focus/focusSlice";
 function BackgroundEventListener() {
   const dispatch = useDispatch();
   useEffect(() => {

@@ -118,6 +118,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       }
     }
   }
+
 });
 
 chrome.idle.setDetectionInterval(60);
@@ -359,6 +360,5 @@ async function timerFunction() {
     }
   }
 }
-
 
 setInterval(timerFunction, 1000);

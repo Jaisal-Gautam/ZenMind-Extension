@@ -1,8 +1,7 @@
-import { useState ,useMemo} from "react";
-import { setDuration } from "@/app/slices/focusSlice";
+import { useState, useMemo } from "react";
+import { setDuration } from "@/app/slices/focus/focusSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Timer, Clock, Hourglass, History, Plus, X } from "lucide-react";
-
 import { updatePreferences } from "@/app/slices/setting/settingsThunk";
 const initialPresets = [
   { id: 1, duration: 25, icon: Timer },
@@ -95,7 +94,10 @@ function DurationSelector() {
           return (
             <div key={preset.id} className="flex-1 relative group">
               <button
-                onClick={() => dispatch(setDuration(preset.duration))}
+                onClick={async() => {
+                  dispatch(setDuration(preset.duration));
+                  await dispatch(updatePreferences({defaultFocusDuration:preset.duration}))
+                }}
                 className="w-full flex  flex-col items-center justify-center py-6 px-4 border border-gray-200 rounded-xl hover:border-green-secondary hover:bg-neutral-primary/50 transition-all text-gray-700"
               >
                 <Icon

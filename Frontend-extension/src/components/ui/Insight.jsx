@@ -30,7 +30,7 @@ function Insight() {
     }
   }
   return (
-    <div className="w-full  relative overflow-hidden bg-green-primary  p-4 rounded-4xl border  backdrop-blur-sm shadow-sm font-sans mt-4">
+    <div className="w-full relative overflow-visible bg-green-primary p-4 rounded-4xl border backdrop-blur-sm shadow-sm font-sans mt-4 z-0">
       {" "}
       {/* Subtle Background Graphic */}
       <div className="absolute -right-4 -bottom-2 opacity-10 pointer-events-none text-white">

@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 import { blocking_category } from "@/utils/blockingCategories";
-import { toggleCategory } from "@/app/slices/blockingSlice";
+import { addBlockedCategory,removeBlockedCategory } from "@/app/slices/blocking/blockingThunk";
 
 function ContentCategory() {
   const dispatch = useDispatch();
@@ -14,6 +14,22 @@ function ContentCategory() {
   );
 
   const [expanded, setExpanded] = useState(null);
+
+  const toggleCategory = async (id) => {
+    if (blockedCategories.includes(id)) {
+      await dispatch(
+        removeBlockedCategory({
+          category: id,
+        }),
+      ).unwrap();
+    } else {
+      await dispatch(
+        addBlockedCategory({
+          category: id,
+        }),
+      ).unwrap();
+    }
+  };
 
   return (
     <div className="rounded-2xl border border-neutral-200 bg-neutral-tertiary p-8 shadow-sm">
@@ -68,7 +84,7 @@ function ContentCategory() {
                 >
                   <ToggleSwitch
                     checked={enabled}
-                    onChange={() => dispatch(toggleCategory(category.id))}
+                    onChange={() => toggleCategory(category.id)}
                   />
 
                   <motion.div

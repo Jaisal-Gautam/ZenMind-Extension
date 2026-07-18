@@ -1,35 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { formatTime } from "@/utils/formatTime";
 import {
   pauseFocus,
   resumeFocus,
   startFocus,
   stopFocus,
-} from "@/app/slices/focusSlice";
+} from "@/app/slices/focus/focusSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Play } from "lucide-react";
 import { motion } from "framer-motion";
-import { focusSessionService } from "@/utils/focusService";
-let isFinishingSession = false;
+import {
+  startFocusSession,
+  endFocusSession,
+} from "@/app/slices/focus/focusThunk";
+
 export function useFocusTimer() {
+  const hasCompletedRef = useRef(false);
   const dispatch = useDispatch();
   const focus = useSelector((state) => state.focus);
   const fullDurationMs = (focus.sessionDuration || focus.duration) * 60 * 1000;
 
   const [now, setNow] = useState(Date.now());
   useEffect(() => {
-  const listener = (message) => {
-    if (message.type === "FOCUS_SESSION_COMPLETED") {
-      window.location.reload();
-    }
-  };
+    const listener = (message) => {
+      if (message.type === "FOCUS_SESSION_COMPLETED") {
+        window.location.reload();
+      }
+    };
 
-  chrome.runtime.onMessage.addListener(listener);
+    chrome.runtime.onMessage.addListener(listener);
 
-  return () => {
-    chrome.runtime.onMessage.removeListener(listener);
-  };
-}, []);
+    return () => {
+      chrome.runtime.onMessage.removeListener(listener);
+    };
+  }, []);
 
   useEffect(() => {
     if (!focus.isActive) {
@@ -40,7 +44,7 @@ export function useFocusTimer() {
 
     const intervalId = setInterval(() => {
       setNow(Date.now());
-    }, 100);
+    }, 250);
 
     return () => clearInterval(intervalId);
   }, [focus.isActive]);
@@ -54,22 +58,70 @@ export function useFocusTimer() {
     remainingTime = fullDurationMs;
   }
 
-  const handleStart = () => {
-    const startTime = Date.now();
-    const endTime = startTime + fullDurationMs;
-    const sessionId = crypto.randomUUID();
+  const handleStart = async () => {
+  if (focus.loading || focus.isActive) {
+    return;
+  }
+
+  hasCompletedRef.current = false;
+
+  try {
+    const focusSession = await dispatch(
+      startFocusSession(focus.duration)
+    ).unwrap();
+
+    const startTime = new Date(focusSession.startTime).getTime();
+    const sessionDuration = focusSession.plannedDuration;
+    const endTime = startTime + sessionDuration * 60 * 1000;
+
     dispatch(
       startFocus({
         startTime,
         endTime,
-        sessionId,
-        sessionDuration: focus.duration,
-      }),
+        sessionId: focusSession._id,
+        sessionDuration,
+      })
     );
+  } catch (err) {
+    console.error("Failed to start focus session:", err);
+  }
+};
+  const handleSessionCompleted = async () => {
+    try {
+      await dispatch(endFocusSession("completed")).unwrap();
+      dispatch(stopFocus());
+    } catch (err) {
+      hasCompletedRef.current = false;
+      console.error("Failed to complete focus session:", err);
+    }
   };
+  useEffect(() => {
+    if (
+      !focus.isActive ||
+      !focus.currentSessionId ||
+      remainingTime > 0 ||
+      hasCompletedRef.current
+    ) {
+      return;
+    }
 
-  const handleStop = () => {
-    dispatch(stopFocus());
+    hasCompletedRef.current = true;
+    handleSessionCompleted();
+  }, [remainingTime, focus.isActive, focus.currentSessionId]);
+
+  const handleStop = async () => {
+    if (focus.loading || !focus.currentSessionId || hasCompletedRef.current) {
+      return;
+    }
+    hasCompletedRef.current = true;
+    try {
+      await dispatch(endFocusSession("stopped")).unwrap();
+      dispatch(stopFocus());
+    } catch (err) {
+      hasCompletedRef.current = false;
+
+      console.error("Failed to cancel focus session:", err);
+    }
   };
   const handlePause = () => {
     dispatch(pauseFocus());
@@ -98,11 +150,12 @@ export function useFocusTimer() {
   };
 }
 
-const Controls = ({ onStart, onPause, onResume, focus, onReset }) => {
+const Controls = ({ onStart, onPause, onResume, focus, onReset, loading }) => {
   return (
     <div className="flex items-center space-x-4">
       <button
         onClick={onReset}
+        disabled={loading}
         className="px-6 py-2.5 border border-gray-400 rounded-full text-sm font-semibold text-gray-800 hover:bg-gray-50 transition-colors w-28"
       >
         Reset
@@ -110,6 +163,7 @@ const Controls = ({ onStart, onPause, onResume, focus, onReset }) => {
 
       <button
         onClick={focus.isActive ? onPause : focus.isPaused ? onResume : onStart}
+        disabled={loading}
         className="px-6 py-2.5 bg-green-secondary/75 text-neutral-600 rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-green-secondary hover:text-neutral-primary transition-all duration-300 w-32 disabled:cursor-not-allowed"
       >
         <Play size={16} fill="currentColor" className="mr-2" />
@@ -155,6 +209,7 @@ export function Timer() {
         onPause={handlePause}
         onResume={handleResume}
         focus={focus}
+        loading={focus.loading}
       />
     </div>
   );
@@ -222,10 +277,11 @@ export function PopupTimer({ taskName = "Current Session" }) {
       <div className="mt-8">
         <Controls
           onStart={handleStart}
+          onReset={handleStop}
           onPause={handlePause}
           onResume={handleResume}
-          onReset={handleStop}
           focus={focus}
+          loading={focus.loading}
         />
       </div>
     </div>
