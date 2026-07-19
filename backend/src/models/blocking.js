@@ -26,7 +26,7 @@ const blockingSchema = new mongoose.Schema(
       default: [],
     },
 
-    focus: {
+    deep: {
       type: [blockSiteSchema],
       default: [],
     },

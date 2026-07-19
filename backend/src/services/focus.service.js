@@ -32,7 +32,7 @@ export const endFocusSession = async (userId, endReason) => {
   }
   FocusSession.endTime = new Date();
   FocusSession.actualDuration =
-    ((FocusSession.endTime - FocusSession.startTime) / 1000 * 60);
+    ((FocusSession.endTime - FocusSession.startTime) / 1000 );
 
   FocusSession.completed = endReason === "completed";
 

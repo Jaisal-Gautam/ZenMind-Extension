@@ -15,6 +15,10 @@ const envSchema = z.object({
   ACCESS_TOKEN_EXPIRY: z.string(),
 
   REFRESH_TOKEN_EXPIRY: z.string(),
+
+  RESEND_API_KEY: z.string().startsWith("re_"),
+
+  EMAIL_FROM: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

@@ -7,7 +7,7 @@ export const updateBlockingSchema = z.object({
 });
 
 export const siteSchema=z.object({
-      mode: z.enum(["normal", "focus", "strict"]),
+      mode: z.enum(["normal", "deep", "strict"]),
       domain:z.string().nonempty(),
 })
 

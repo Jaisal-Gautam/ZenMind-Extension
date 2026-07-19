@@ -9,6 +9,7 @@ export const getOverview = async (userId) => {
   const tomorrowStart = new Date(todayStart);
   tomorrowStart.setDate(tomorrowStart.getDate() + 1);
 
+
   const focusStats = await Focus.aggregate([
     {
       $match: {
@@ -55,6 +56,7 @@ export const getOverview = async (userId) => {
   const blocked = blockedStats[0] || {
     blockedAttempts: 0,
   };
+
 
   return {
     focusedTime: focus.focusedTime,

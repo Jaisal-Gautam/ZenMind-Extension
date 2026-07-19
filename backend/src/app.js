@@ -24,7 +24,6 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
-app.use(errorHandler);
 
 //Routes
 app.use("/", router);
@@ -36,4 +35,5 @@ app.use("/website",websiteRouter)
 app.use("/blocked",blockedAttemptRouter)
 app.use("/analytics",analyticRouter)
 
+app.use(errorHandler);
 export default app;
