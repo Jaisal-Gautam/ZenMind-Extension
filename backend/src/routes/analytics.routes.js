@@ -7,7 +7,13 @@ const analyticRouter = express.Router();
 analyticRouter.get("/overview",readLimiter,authMiddleware,getOverviewController);
 analyticRouter.get("/websites",readLimiter,authMiddleware,getWebsiteAnalyticsController);
 analyticRouter.get("/focus",readLimiter,authMiddleware,getFocusAnalyticsController);
-
+analyticRouter.get(
+    "/history",
+    readLimiter,
+    authMiddleware,
+    validateQuery(historySchema),
+    getHistoryController
+);
 
 
 export default analyticRouter;
