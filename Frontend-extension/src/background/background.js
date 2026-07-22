@@ -1,20 +1,18 @@
 import isBlocked from "./blockingManager";
 import { getData, setData } from "@/utils/chromeStorage";
+import { focusApi } from "@/api/focus.api";
 import {
   startTracking,
   switchTracking,
   getCurrentTracking,
   stopTracking,
 } from "./usageTracker";
-import {
-  saveWebsiteUsage,
-  saveBlockedAttempt,
-  saveWebsiteSession,
-} from "./usageStorage";
+
 import parseDomain from "@/utils/siteParser";
 import { recoverFocusSession } from "@/utils/SessionRecove.js";
 import { recoverCompletedSession } from "@/utils/completeFocusSession";
 import { showFocusCompleteNotification } from "@/utils/notification.js";
+import { websiteApi } from "@/api/website.api";
 async function initializeBackground() {
   const recovery = await recoverFocusSession();
 
@@ -69,8 +67,11 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   console.log("Switched to", tab.url);
   const session = switchTracking(tab);
   if (session) {
-    await saveWebsiteUsage(session.domain, session.duration);
-    await saveWebsiteSession(session);
+    try {
+      await websiteApi.createWebsiteSession(session);
+    } catch (err) {
+      console.error("Failed to save website session", err);
+    }
   }
 });
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
@@ -90,7 +91,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 
   if (isBlocked(tab.url, state.blocking)) {
-    await saveBlockedAttempt(parseDomain(tab.url));
+    try {
+      await websiteApi.createBlockedAttempt({
+        domain: parseDomain(tab.url),
+        mode: state.blocking.strictMode ? "strict" : "normal",
+        blockedAt: new Date(),
+      });
+    } catch (err) {
+      console.error("Failed to save blocked attempt", err);
+    }
     await chrome.tabs.update(tabId, {
       url:
         chrome.runtime.getURL("blocked.html") +
@@ -105,11 +114,11 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (currentDomain !== newDomain) {
       const previousSession = switchTracking(tab);
       if (previousSession) {
-        await saveWebsiteUsage(
-          previousSession.domain,
-          previousSession.duration,
-        );
-        await saveWebsiteSession(previousSession);
+        try {
+          await websiteApi.createWebsiteSession(previousSession);
+        } catch (err) {
+          console.error("Failed to save website session", err);
+        }
         console.log(
           "Saved usage:",
           previousSession.domain,
@@ -118,7 +127,6 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       }
     }
   }
-
 });
 
 chrome.idle.setDetectionInterval(60);
@@ -128,8 +136,11 @@ chrome.idle.onStateChanged.addListener(async (state) => {
     const session = stopTracking();
 
     if (session) {
-      await saveWebsiteUsage(session.domain, session.duration);
-      await saveWebsiteSession(session);
+      try {
+        await websiteApi.createWebsiteSession(session);
+      } catch (err) {
+        console.error("Failed to save website session", err);
+      }
     }
 
     return;
@@ -276,14 +287,6 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
   for (const tab of tabs) {
     if (!tab.url) continue;
-
-    try {
-      if (parseDomain(tab.url) === domain) {
-        chrome.tabs.reload(tab.id);
-      }
-    } catch {
-      continue;
-    }
   }
 });
 
@@ -350,15 +353,35 @@ async function timerFunction() {
         endTime: state.focus.endTime,
         duration: state.focus.sessionDuration,
       };
-      chrome.runtime.sendMessage({
-        type: "FOCUS_SESSION_COMPLETED",
-        session,
-      });
-      const updatedState = recoverCompletedSession(state);
-      await setData(updatedState);
-      showFocusCompleteNotification(duration);
+      try {
+        await focusApi.endFocus("completed");
+
+        const updatedState = recoverCompletedSession(state);
+        await setData(updatedState);
+
+        chrome.runtime.sendMessage({
+          type: "FOCUS_SESSION_COMPLETED",
+          session,
+        });
+
+        showFocusCompleteNotification(duration);
+      } catch (err) {
+        console.error("Failed to complete focus session:", err);
+      }
     }
   }
 }
 
 setInterval(timerFunction, 1000);
+
+self.addEventListener("install", () => {
+  console.log("Service worker installed");
+});
+
+self.addEventListener("activate", () => {
+  console.log("Service worker activated");
+});
+
+chrome.runtime.onSuspend.addListener(() => {
+  console.log("Service worker suspended");
+});

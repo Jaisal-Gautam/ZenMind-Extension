@@ -4,28 +4,37 @@ import {
   getWebsiteAnalytics,
   getFocusAnalytics,
   getHistory,
+  getLifetimeAnalytics
 } from "../services/analytics.service.js";
 
 export const getOverviewController = asyncHandler(async (req, res) => {
-  const overview = await getOverview(req.user._id);
+
+  const [overview, lifetime] = await Promise.all([
+  getOverview(req.user),
+  getLifetimeAnalytics(req.user),
+]);
+
+
   res.status(200).json({
     success: true,
     message: "Overview analytics fetched successfully.",
     overview,
+    lifetime,
   });
 });
 
 export const getWebsiteAnalyticsController = asyncHandler(async (req, res) => {
-  const websiteAnalytics = await getWebsiteAnalytics(req.user._id);
+  const data = await getWebsiteAnalytics(req.user);
+
   res.status(200).json({
     success: true,
     message: "Website analytics fetched successfully.",
-    websiteAnalytics,
+    ...data,
   });
 });
 
 export const getFocusAnalyticsController = asyncHandler(async (req, res) => {
-  const focusAnalytics = await getFocusAnalytics(req.user._id);
+  const focusAnalytics = await getFocusAnalytics(req.user);
   res.status(200).json({
     success: true,
     message: "Focus analytics fetched successfully.",
@@ -34,7 +43,7 @@ export const getFocusAnalyticsController = asyncHandler(async (req, res) => {
 });
 
 export const getHistoryController = asyncHandler(async (req, res) => {
-    const history = await getHistory(req.user._id, req.query.range);
+    const history = await getHistory(req.user, req.query.range);
 
     res.status(200).json({
         success: true,

@@ -1,9 +1,8 @@
-import { formatHourRange,analyticsTime } from "@/utils/formatTime";
+import { analyticsTime } from "@/utils/formatTime";
 import { Flame } from "lucide-react";
 
-function FocusInsight({ dashboardData }) {
-  const peak = dashboardData.focus.peakHour;
-  const peakHour = peak ? formatHourRange(peak.hour) : "--";
+function FocusInsight({ focus, overview }) {
+  const peakLabel = focus?.peakFocusHour?.label ?? "--";
   return (
     <>
       <h2 className="text-2xl font-mono text-neutral-700 mb-6">
@@ -16,7 +15,7 @@ function FocusInsight({ dashboardData }) {
             Longest Focus Session
           </span>
           <span className="text-4xl font-medium font-sans text-neutral-800">
-            {analyticsTime(dashboardData.focus.longestSession)}
+            {analyticsTime(focus?.longestSession ?? 0)}
           </span>
         </div>
         <div className="flex p-4 shadow-sm rounded-r-xl  border border-gray-200 border-l-2 border-l-green-secondary  flex-col gap-2">
@@ -25,7 +24,7 @@ function FocusInsight({ dashboardData }) {
             Average Focus Sessions
           </span>
           <span className="text-4xl font-medium font-sans text-neutral-800">
-            {analyticsTime(dashboardData.focus.averageSession)}
+            {analyticsTime(focus?.averageSession ?? 0)}
           </span>
         </div>
         <div className="flex p-4 shadow-sm rounded-r-xl  border border-gray-200 border-l-2 border-l-green-secondary  flex-col gap-2">
@@ -34,7 +33,7 @@ function FocusInsight({ dashboardData }) {
             Peak Focus Hour
           </span>
           <span className="text-3xl font-medium font-sans text-neutral-800">
-            {peakHour}
+            {peakLabel}
           </span>
         </div>
         <div className="flex p-4 shadow-sm rounded-r-xl  border bg-neutral-primary border-gray-200 border-l-2 border-l-green-secondary  flex-col gap-2">
@@ -43,7 +42,9 @@ function FocusInsight({ dashboardData }) {
             Longest Streak
           </span>
           <span className="flex items-center text-3xl  gap-2 text-green-primary font-medium font-sans ">
-            {`${dashboardData.summary.longestStreak} Day${dashboardData.summary.longestStreak === 1 ? "" : "s"}`}{" "}
+            {`${overview?.longestStreak ?? 0} Day${
+              (overview?.longestStreak ?? 0) === 1 ? "" : "s"
+            }`}
             <Flame color="#6B8E23" />{" "}
           </span>
         </div>

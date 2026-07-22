@@ -35,29 +35,17 @@ export const DefaultState = {
   },
 
   analytics: {
-    focusSessions: [],
-    websiteUsage: {},
-    dailyFocus: {},
+    overview: null,
+    lifetime:null,
+  focus: null,
+  websites: {
+    usage: [],
+    blocked: [],
+  },
+  history: [],
 
-    blockedAttempts: {},
-    dailyBlockedAttempts: {},
-    dailyWebsiteUsage: {},
-    dailyBlockedWebsiteUsage: {},
-    websiteSessions: [],
-
-    // Backend analytics
-    totalFocusTime: 0,
-
-    todayFocusedTime: 0,
-    focusSessionCount: 0,
-    todayBlockedAttempts: 0,
-
-    longestSession: 0,
-    averageSession: 0,
-    peakFocusHour: null,
-
-    loading: false,
-    error: null,
+  loading: false,
+  error: null,
   },
 
   settings: {

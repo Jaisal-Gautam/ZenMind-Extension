@@ -7,6 +7,7 @@ export const loadOverview = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await analyticApi.getOverview();
+       console.log(response);
       return response;
     } catch (err) {
       return rejectWithValue(
@@ -43,4 +44,16 @@ export const loadFocusAnalytics = createAsyncThunk(
   },
 );
 
-
+export const loadHistoryAnalytics = createAsyncThunk(
+  "analytics/history",
+  async (range = "daily", { rejectWithValue }) => {
+    try {
+      const response = await analyticApi.getHistory(range);
+      return response;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || "History fetch failed"
+      );
+    }
+  }
+);

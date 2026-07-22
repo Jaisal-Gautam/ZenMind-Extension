@@ -22,6 +22,21 @@ export const authApi = {
     return response.data;
   },
 
+  async changePassword(passwords) {
+    const response = await apiClient.patch("/auth/change-password", passwords);
+    return response.data;
+  },
+
+  async forgotPassword(email) {
+    const response = await apiClient.post("/auth/forgot-password", { email });
+    return response.data;
+  },
+
+  async resetPassword(resetData) {
+    const response = await apiClient.post("/auth/reset-password", resetData);
+    return response.data;
+  },
+
   async refresh(refreshToken) {
     const response = await axios.post(`${baseURL}/auth/refresh`, {
       refreshToken:refreshToken,

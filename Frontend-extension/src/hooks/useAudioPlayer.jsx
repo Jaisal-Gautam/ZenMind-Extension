@@ -161,9 +161,7 @@ function useAudioPlayer() {
         dispatch(syncAudioState(message));
       }
 
-      if (message.type === "FOCUS_SESSION_COMPLETED") {
-        window.location.reload();
-      }
+     
     };
 
     chrome.runtime.onMessage.addListener(listener);

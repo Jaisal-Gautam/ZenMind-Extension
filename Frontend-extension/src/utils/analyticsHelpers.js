@@ -1,9 +1,9 @@
-import { getData } from "./chromeStorage";
 import { getTodayKey, getWeekKey, getDateKey } from "./todayDate";
 export const getFocus = (analytics, period) => {
+  const dailyFocus = analytics?.dailyFocus || {};
   if (period === "today") {
     const today = getTodayKey();
-    return analytics.dailyFocus?.[today] || 0;
+    return dailyFocus[today] || 0;
   }
 
   if (period === "week") {
@@ -11,25 +11,23 @@ export const getFocus = (analytics, period) => {
     let total = 0;
 
     for (const day of week) {
-      total += analytics.dailyFocus?.[day] || 0;
+      total += dailyFocus[day] || 0;
     }
     return total;
   }
-  if(period=="all"){
-    let total=0;
-    for(let i=0;i<analytics.focusSessions.length;i++){
-      
-    }
 
+  if (period === "all") {
+    return Object.values(dailyFocus).reduce((sum, value) => sum + (value || 0), 0);
   }
 
   return 0;
 };
 
 export const getBlockedAttempts = (analytics, period) => {
+  const dailyBlockedAttempts = analytics?.dailyBlockedAttempts || {};
   if (period === "today") {
     const today = getTodayKey();
-    return analytics.dailyBlockedAttempts?.[today] || 0;
+    return dailyBlockedAttempts[today] || 0;
   }
 
   if (period === "week") {
@@ -37,7 +35,7 @@ export const getBlockedAttempts = (analytics, period) => {
     let total = 0;
 
     for (const day of week) {
-      total += analytics.dailyBlockedAttempts?.[day] || 0;
+      total += dailyBlockedAttempts[day] || 0;
     }
 
     return total;
@@ -48,7 +46,7 @@ export const getBlockedAttempts = (analytics, period) => {
 
 export const getWebsiteUsage = (analytics, period) => {
   if (period === "today") {
-    return analytics.websiteUsage || [];
+    return analytics?.websiteUsage || [];
   }
 
   // Keep existing weekly aggregation until backend supports it
@@ -57,7 +55,7 @@ export const getWebsiteUsage = (analytics, period) => {
     const total = {};
 
     for (const day of week) {
-      const dailyData = analytics.dailyWebsiteUsage?.[day];
+      const dailyData = analytics?.dailyWebsiteUsage?.[day];
       if (!dailyData) continue;
 
       for (const domain in dailyData) {
@@ -76,7 +74,7 @@ export const getWebsiteUsage = (analytics, period) => {
 export const getBlockedWebsiteUsage = (analytics, period) => {
   if (period === "today") {
     const today = getTodayKey();
-    return analytics.dailyBlockedWebsiteUsage?.[today] || {};
+    return analytics?.dailyBlockedWebsiteUsage?.[today] || {};
   }
 
   if (period === "week") {
@@ -84,7 +82,7 @@ export const getBlockedWebsiteUsage = (analytics, period) => {
     const total = {};
 
     for (const day of week) {
-      const dailyData = analytics.dailyBlockedWebsiteUsage?.[day];
+      const dailyData = analytics?.dailyBlockedWebsiteUsage?.[day];
       if (!dailyData) continue;
 
       for (const domain in dailyData) {
@@ -99,10 +97,11 @@ export const getBlockedWebsiteUsage = (analytics, period) => {
 };
 
 export const getFocusSessions = (analytics, period) => {
+  const sessions = analytics?.focusSessions || [];
   if (period === "today") {
     const today = getTodayKey();
 
-    return analytics.focusSessions.filter((session) => {
+    return sessions.filter((session) => {
       return getDateKey(new Date(session.startTime)) === today;
     });
   }
@@ -110,7 +109,7 @@ export const getFocusSessions = (analytics, period) => {
   if (period === "week") {
     const week = new Set(getWeekKey());
 
-    return analytics.focusSessions.filter((session) => {
+    return sessions.filter((session) => {
       return week.has(getDateKey(new Date(session.startTime)));
     });
   }
@@ -119,25 +118,22 @@ export const getFocusSessions = (analytics, period) => {
 };
 
 export const getWebsiteTimeline = (analytics, period) => {
+  const sessions = analytics?.websiteSessions || [];
   if (period === "today") {
     const today = getTodayKey();
-    return (
-      analytics.websiteSessions
-        ?.filter((session) => {
-          return getDateKey(new Date(session.startTime)) === today;
-        })
-        .sort((a, b) => a.startTime - b.startTime) || []
-    );
+    return sessions
+      .filter((session) => {
+        return getDateKey(new Date(session.startTime)) === today;
+      })
+      .sort((a, b) => a.startTime - b.startTime);
   }
   if (period === "week") {
     const week = new Set(getWeekKey());
-    return (
-      analytics.websiteSessions
-        ?.filter((session) => {
-          return week.has(getDateKey(new Date(session.startTime)));
-        })
-        .sort((a, b) => a.startTime - b.startTime) || []
-    );
+    return sessions
+      .filter((session) => {
+        return week.has(getDateKey(new Date(session.startTime)));
+      })
+      .sort((a, b) => a.startTime - b.startTime);
   }
   return [];
 };
@@ -163,7 +159,7 @@ export const getWebsiteTimelineChartData = (sessions) => {
 };
 
 export const getHourlyFocus = (analytics, period) => {
-  const hourlyFocus = Array.from({ length: 24 }, (_, hour) => ({
+  const hourlyFocus = Array.from({ length: 25 }, (_, hour) => ({
     hour: hour.toString().padStart(2, "0"),
     minutes: 0,
   }));
@@ -185,47 +181,6 @@ export const getHourlyFocus = (analytics, period) => {
   return hourlyFocus;
 };
 
-export const getCurrentStreak = (analytics) => {
-  let date = new Date();
-  let streak = 0;
-  while (true) {
-    const key = getDateKey(date);
-    if ((analytics.dailyFocus[key] || 0) > 0) streak++;
-    else break;
-    date.setDate(date.getDate() - 1);
-  }
-  return streak;
-};
-
-export const getLongestStreak = (analytics) => {
-  const dates = Object.keys(analytics.dailyFocus || {}).sort();
-  if (dates.length === 0) {
-    return 0;
-  }
-  let currentStreak = 0;
-  let longestStreak = 0;
-  let previousDate = null;
-  for (const dateKey of dates) {
-    const currentDate = new Date(dateKey);
-    if (previousDate) {
-      const diff = (currentDate - previousDate) / (1000 * 60 * 60 * 24);
-      if (diff !== 1) {
-        currentStreak = 0;
-      }
-    }
-
-    if ((analytics.dailyFocus[dateKey] || 0) > 0) {
-      currentStreak++;
-      longestStreak = Math.max(longestStreak, currentStreak);
-    } else {
-      currentStreak = 0;
-    }
-
-    previousDate = currentDate;
-  }
-
-  return longestStreak;
-};
 
 export const getPeakFocusHour = (analytics) => {
   if (analytics.peakFocusHour === null || analytics.peakFocusHour === undefined) {

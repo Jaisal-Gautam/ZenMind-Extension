@@ -35,3 +35,5 @@ export const getWebsiteHistory = async (userId, page = 1, limit = 20) => {
     totalPages: Math.ceil(totalWebsiteSessions / limit),
   };
 };
+
+

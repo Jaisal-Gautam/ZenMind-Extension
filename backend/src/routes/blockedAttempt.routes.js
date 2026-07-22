@@ -18,7 +18,7 @@ blockedAttemptRouter.post(
   createBlockedAttemptController,
 );
 blockedAttemptRouter.get(
-  "/history",writeLimiter,
+  "/history",readLimiter,
   authMiddleware,
   validateQuery(paginationSchema),
   getBlockedHistoryController,

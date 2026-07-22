@@ -1,8 +1,10 @@
-export const getTotalXP=(analytics)=>{
-    const dailyFocus=analytics.dailyFocus;
-    if(!dailyFocus) return 0;
-    let xp=0;
-    Object.keys(dailyFocus).forEach(focus=>xp+=5*dailyFocus[focus]);
-    return xp;
+export const getTotalXP = (analytics = {}) => {
+  const {
+    totalFocusTime = 0,
 
-}
+  } = analytics;
+
+  return (
+    Math.floor(totalFocusTime/60 * 5) 
+  );
+};

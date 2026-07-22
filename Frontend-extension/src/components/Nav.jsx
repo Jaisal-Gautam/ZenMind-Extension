@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { logoutUser } from "@/app/slices/auth/authThunk";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { removeData,removeAuth } from "@/utils/chromeStorage";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,12 +55,20 @@ function Navbar() {
         {/* Right Action Icons & Mobile Toggle */}
         <div className="flex items-center space-x-4 md:space-x-6 text-green-primary shrink-0">
           {isAuthenticated ? (
-            <button
-              onClick={handleLogout}
-              className="text-sm font-medium text-green-primary transition hover:text-green-secondary"
-            >
-              Logout
-            </button>
+            <>
+              <NavLink
+                to="/auth/change-password"
+                className="hidden text-sm font-medium text-green-primary transition hover:text-green-secondary md:block"
+              >
+                Change password
+              </NavLink>
+              <button
+                onClick={handleLogout}
+                className="text-sm font-medium text-green-primary transition hover:text-green-secondary"
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <NavLink
               to="/auth/login"
@@ -109,6 +118,15 @@ function Navbar() {
                 {link.name}
               </NavLink>
             ))}
+            {isAuthenticated ? (
+              <NavLink
+                to="/auth/change-password"
+                onClick={closeMenu}
+                className="px-6 py-4 text-[17px] font-medium text-gray-500 transition-colors border-l-4 border-transparent hover:text-green-primary hover:bg-gray-50"
+              >
+                Change password
+              </NavLink>
+            ) : null}
           </motion.div>
         )}
       </AnimatePresence>

@@ -24,7 +24,7 @@ const blockedAttemptSchema = new mongoose.Schema(
 );
 blockedAttemptSchema.index({
   user: 1,
-  blockedAt: -1,
+    domain: 1,
 });
 const BlockedAttempt = mongoose.model("BlockedAttempt", blockedAttemptSchema);
 

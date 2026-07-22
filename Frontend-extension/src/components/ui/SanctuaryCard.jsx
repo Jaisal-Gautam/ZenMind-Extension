@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-function SanctuaryCard({dashboardData}) {
+function SanctuaryCard({ dashboardData }) {
   return (
     <div className="w-full rounded-xl    p-8">
       <div className="flex flex-col-reverse lg:flex-row items-center gap-10">
@@ -19,9 +19,9 @@ function SanctuaryCard({dashboardData}) {
           </p>
 
           <ExperienceBar
-            currentLevel={dashboardData.lvl}
-            currentXP={dashboardData.xpIntoLevel}
-            maxXP={dashboardData.levelXP}
+            currentLevel={dashboardData.lvl ?? 1}
+            currentXP={dashboardData.xpIntoLevel ?? 0}
+            maxXP={dashboardData.levelXP || 100}
           />
 
           <div className="mt-10 rounded-xl border border-green-secondary/50 bg-neutral-primary p-5">
@@ -32,7 +32,7 @@ function SanctuaryCard({dashboardData}) {
             </h3>
 
             <p className="text-sm text-neutral-600 mt-2">
-              {dashboardData.remainingXP} XP Remaining
+              {dashboardData.remainingXP ?? 0} XP Remaining
             </p>
           </div>
         </div>
@@ -61,9 +61,8 @@ function SanctuaryCard({dashboardData}) {
   );
 }
 
-function ExperienceBar({ currentLevel, currentXP, maxXP }) {
-  const progress = (currentXP / maxXP) * 100;
-
+function ExperienceBar({ currentLevel = 1, currentXP = 0, maxXP = 100 }) {
+  const progress = maxXP > 0 ? (currentXP / maxXP) * 100 : 0;
   return (
     <div className="w-full">
       <div className="flex items-center gap-4">

@@ -23,7 +23,7 @@ export const validateQuery = (schema) => {
         errors: result.error.issues,
       });
     }
-    req.query = result.data;
+    Object.assign(req.query, result.data);
     next();
   };
 };

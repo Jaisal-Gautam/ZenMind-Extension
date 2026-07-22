@@ -5,7 +5,7 @@ const hasChromeStorage =
 
 export const setData = async (state) => {
   try {
-    console.log("Saving", state);
+
 
     const serializedState = JSON.stringify(state);
 
@@ -58,7 +58,6 @@ export const removeData = async () => {
 
 export const setAuth = async (auth) => {
   try {
-    console.log("Saving", auth);
 
     const serializedAuth = JSON.stringify(auth);
 

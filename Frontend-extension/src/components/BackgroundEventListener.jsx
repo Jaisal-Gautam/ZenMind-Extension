@@ -1,14 +1,34 @@
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { addFocusSession } from "@/app/slices/analytic/analyticsSlice";
+
 import { stopFocus } from "@/app/slices/focus/focusSlice";
+
+import { loadFocusHistory } from "@/app/slices/focus/focusThunk";
+import {  loadOverview,
+  loadFocusAnalytics,
+  loadWebsiteAnalytics,
+  loadHistoryAnalytics, } from "@/app/slices/analytic/analyticThunk";
+
 function BackgroundEventListener() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const listener = (message) => {
       switch (message.type) {
         case "FOCUS_SESSION_COMPLETED":
-          dispatch(addFocusSession(message.session));
+          console.log("Received completion event");
+
           dispatch(stopFocus());
+
+          dispatch(loadOverview());
+          dispatch(loadFocusAnalytics());
+          dispatch(loadWebsiteAnalytics());
+          dispatch(loadHistoryAnalytics());
+          dispatch(loadFocusHistory());
+
+          break;
+
+        default:
           break;
       }
     };
@@ -19,6 +39,7 @@ function BackgroundEventListener() {
       chrome.runtime.onMessage.removeListener(listener);
     };
   }, [dispatch]);
+
   return null;
 }
 

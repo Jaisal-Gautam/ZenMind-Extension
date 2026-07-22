@@ -10,10 +10,13 @@ export const formatLabel = (date, range) => {
     weekday: "short",
   });
 };
-
 export const formatHour = (hour) => {
-  const period = hour >= 12 ? "PM" : "AM";
-  const displayHour = hour % 12 || 12;
+  const format = (h) => {
+    const displayHour = h % 12 || 12;
+    const period = h < 12 ? "AM" : "PM";
 
-  return `${displayHour} ${period}`;
+    return `${displayHour} ${period}`;
+  };
+
+  return `${format(hour)} – ${format((hour + 1) % 24)}`;
 };

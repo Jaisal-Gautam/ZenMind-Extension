@@ -12,7 +12,6 @@ import {
 import { sendPasswordResetEmail } from "../utils/email.js";
 
 export const createUser = async ({ username, email, password }) => {
-  const userExist = await User.findOne({ $or: [{ username }, { email }] });
   const normalizedEmail = email.toLowerCase().trim();
   const userExist = await User.findOne({
     $or: [{ username }, { email: normalizedEmail }],
@@ -22,6 +21,7 @@ export const createUser = async ({ username, email, password }) => {
     username,
     email: normalizedEmail,
     password: hashedPassword,
+    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone
   });
   await createDefaultPreferences(user._id);
   await createDefaultBlocking(user._id);

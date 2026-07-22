@@ -34,7 +34,11 @@ const userSchema = new mongoose.Schema(
     refreshToken: {
       type: String,
       index: true,
-      select:false,
+      select: false,
+    },
+    timezone: {
+      type: String,
+      default: "UTC",
     },
   },
   { timestamps: true },

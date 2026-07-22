@@ -2,32 +2,38 @@ import { Clock, BadgeCheck, Flame, ShieldBan } from "lucide-react";
 import WeekAnalyticsCard from "./WeekAnalyticsCard";
 import { analyticsTime } from "@/utils/formatTime";
 
-function AnalyticsCards({ dashboardData }) {
+function AnalyticsCards({ overview }) {
   return (
     <div className="w-full flex flex-col md:flex-row  gap-4">
       <WeekAnalyticsCard
         icon={<Clock className="text-green-secondary size-8" />}
         heading="Focused Time"
-        value={analyticsTime(dashboardData.focusedTime)}
+        value={analyticsTime(overview?.focusedTime ?? 0)}
       />
       <WeekAnalyticsCard
         icon={<BadgeCheck className="text-green-secondary size-8" />}
         heading="Focus Sessions"
-        value={dashboardData.sessions}
+        value={overview?.focusSessions ?? 0}
       />
       <WeekAnalyticsCard
         icon={
           <Flame
-            className={`${dashboardData.currentStreak < dashboardData.longestStreak? "text-green-secondary" : "text-[#D01C1F]"} size-8`}
+            className={`${
+              (overview?.currentStreak ?? 0) < (overview?.longestStreak ?? 0)
+                ? "text-green-secondary"
+                : "text-[#D01C1F]"
+            } size-8`}
           />
         }
         heading="Streak"
-        value={`${dashboardData.currentStreak} Day${dashboardData.currentStreak === 1 ? "" : "s"}`}
+        value={`${overview?.currentStreak ?? 0} Day${
+          (overview?.currentStreak ?? 0) === 1 ? "" : "s"
+        }`}
       />
       <WeekAnalyticsCard
         icon={<ShieldBan className="text-red-700 size-8" />}
         heading="Distraction Blocked"
-        value={dashboardData.blockedAttempts}
+        value={overview?.blockedAttempts ?? 0}
       />
     </div>
   );

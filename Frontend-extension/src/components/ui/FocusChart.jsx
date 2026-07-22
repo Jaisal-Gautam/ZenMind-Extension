@@ -4,6 +4,8 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { analyticsTime } from "@/utils/formatTime";
+
 const chartConfig = {
   minutes: {
     label: "Focus Time",
@@ -11,12 +13,12 @@ const chartConfig = {
   },
 };
 
-const FocusChart = ({ dashboardData }) => {
-  const chartData = dashboardData.hourly;
-  const peak = chartData.reduce(
-    (best, current) => (current.minutes > best.minutes ? current : best),
-    chartData[0],
-  );
+const FocusChart = ({ focus, overview }) => {
+  const chartData = focus?.hourly ?? [];
+  const peak = focus?.peakFocusHour ?? {
+    hour: 0,
+    label: "12 AM - 1 AM",
+  };
 
   return (
     <div className="rounded-xl w-full border bg-white p-6 shadow-sm">
@@ -31,13 +33,7 @@ const FocusChart = ({ dashboardData }) => {
           <p className="text-sm text-neutral-500">Peak Focus Hour</p>
 
           <p className="text-xl font-semibold text-green-primary">
-            {Number(peak.hour) % 12 || 12}
-            {Number(peak.hour) < 12 ? " AM" : " PM"}
-            {" - "}
-            {(Number(peak.hour) + 1) % 12 || 12}
-            {Number(peak.hour) + 1 < 12 || Number(peak.hour) + 1 === 24
-              ? " AM"
-              : " PM"}
+            {peak.label}
           </p>
         </div>
 
@@ -45,7 +41,7 @@ const FocusChart = ({ dashboardData }) => {
           <p className="text-sm text-neutral-500">Focused</p>
 
           <p className="text-xl font-semibold text-green-primary">
-            {peak.minutes} min
+            {analyticsTime(overview?.focusedTime ?? 0)}
           </p>
         </div>
       </div>
@@ -81,21 +77,16 @@ const FocusChart = ({ dashboardData }) => {
             strokeDasharray="4 4"
             opacity={0.25}
           />
-          mar
           <XAxis
             dataKey="hour"
             tickLine={false}
             axisLine={false}
             tickMargin={10}
-            tickFormatter={(value) => {
-              const hour = Number(value);
-
-              if (hour % 2 !== 0) return "";
-
+            interval={0}
+            tickFormatter={(hour) => {
               if (hour === 0) return "12AM";
               if (hour < 12) return `${hour}AM`;
               if (hour === 12) return "12PM";
-
               return `${hour - 12}PM`;
             }}
           />
@@ -104,19 +95,23 @@ const FocusChart = ({ dashboardData }) => {
             cursor={false}
             content={
               <ChartTooltipContent
-                labelFormatter={(label) => {
-                  const hour = Number(label);
+                labelFormatter={(_, payload) => {
+                  if (!payload?.length) return "";
 
-                  const startHour = hour % 12 || 12;
-                  const endHour = (hour + 1) % 12 || 12;
+                  const hour = payload[0].payload.hour;
 
-                  const startPeriod = hour < 12 ? "AM" : "PM";
-                  const endPeriod =
-                    hour + 1 < 12 || hour + 1 === 24 ? "AM" : "PM";
+                  const formatHour = (h) => {
+                    const display = h % 12 || 12;
+                    const period = h < 12 ? "AM" : "PM";
+                    return `${display} ${period}`;
+                  };
 
-                  return `${startHour} ${startPeriod} – ${endHour} ${endPeriod}`;
+                  return `${formatHour(hour)} – ${formatHour((hour + 1) % 24)}`;
                 }}
-                formatter={(value) => [`${value} minutes`, "Focused"]}
+                formatter={(value) => [
+                  Number(value) !== 0 ? analyticsTime(Number(value)) : "0m",
+                  "Focused",
+                ]}
               />
             }
           />

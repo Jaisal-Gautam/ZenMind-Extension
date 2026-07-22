@@ -9,6 +9,7 @@ export default function AuthInput({
   onChange,
   placeholder,
   disabled,
+  inputMode,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -25,6 +26,7 @@ export default function AuthInput({
           onChange={onChange}
           placeholder={placeholder}
           disabled={disabled}
+          inputMode={inputMode}
           className="w-full rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-2 focus:ring-neutral-primary disabled:cursor-not-allowed disabled:opacity-70"
         />
         {isPassword ? (

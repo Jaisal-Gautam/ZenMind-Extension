@@ -10,7 +10,10 @@ import {
   loadOverview,
   loadFocusAnalytics,
   loadWebsiteAnalytics,
+  loadHistoryAnalytics,
 } from "./slices/analytic/analyticThunk";
+import BackgroundEventListener from "@/components/BackgroundEventListener";
+import DayChangeListener from "@/components/ui/DayChangeListener";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
   useEffect(() => {
@@ -26,6 +29,7 @@ function StoreProvider({ children }) {
           await appStore.dispatch(loadOverview()).unwrap();
           await appStore.dispatch(loadWebsiteAnalytics()).unwrap();
           await appStore.dispatch(loadFocusAnalytics()).unwrap();
+          await appStore.dispatch(loadHistoryAnalytics("daily")).unwrap();
           const { focus, settings } = appStore.getState();
 
           if (!focus.isActive && !focus.isPaused) {
@@ -58,7 +62,10 @@ function StoreProvider({ children }) {
     );
   }
 
-  return <Provider store={store}>{children}</Provider>;
+  return <Provider store={store}>
+      <BackgroundEventListener />
+      <DayChangeListener/>
+    {children}</Provider>;
 }
 
 export default StoreProvider;

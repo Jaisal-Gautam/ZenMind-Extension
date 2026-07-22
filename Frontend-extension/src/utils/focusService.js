@@ -1,5 +1,4 @@
 import { stopFocus } from "@/app/slices/focus/focusSlice";
-import { addFocusSession } from "@/app/slices/analytic/analyticsSlice";
 export const focusSessionService = ({dispatch, focus}) => {
   const session = buildSession(focus);
   // Adding Focus Session to Analytics
@@ -20,9 +19,7 @@ const buildSession=(focus)=>{
   };
 }
 
-const recordFocusSession=(dispatch, session)=>{
-    dispatch(addFocusSession(session));
-}
+ 
 const stopFocusSession=(dispatch)=>{
     dispatch(stopFocus());
 }

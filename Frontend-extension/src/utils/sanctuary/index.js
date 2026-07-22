@@ -3,18 +3,18 @@ import { getTreeLevel } from "./levelEngine";
 import { getStageInfo } from "./stageEngine";
 import { getProgressInfo } from "./progressEngine";
 import { getUnlockInfo } from "./unlockEngine";
+export const getSanctuaryData = (analytics) => {
+  const xp = getTotalXP(analytics);
+  const lvl = getTreeLevel(xp);
+  const stage = getStageInfo(lvl);
+  const progress = getProgressInfo(xp, lvl);
+  const unlock = getUnlockInfo(lvl);
 
-export const getSanctuaryData=(analytics)=>{
-    const xp=getTotalXP(analytics);
-    const lvl=getTreeLevel(xp);
-    const stage=getStageInfo(lvl);
-    const progress=getProgressInfo(xp,lvl);
-    const unlock=getUnlockInfo(lvl);
-    return{
-        xp:xp,
-        lvl:lvl,
-        ...stage,
-        ...progress,
-        ...unlock,
-    }
-}
+  return {
+    xp,
+    lvl,
+    ...stage,
+    ...progress,
+    ...unlock,
+  };
+};

@@ -21,19 +21,7 @@ export function useFocusTimer() {
   const fullDurationMs = (focus.sessionDuration || focus.duration) * 60 * 1000;
 
   const [now, setNow] = useState(Date.now());
-  useEffect(() => {
-    const listener = (message) => {
-      if (message.type === "FOCUS_SESSION_COMPLETED") {
-        window.location.reload();
-      }
-    };
 
-    chrome.runtime.onMessage.addListener(listener);
-
-    return () => {
-      chrome.runtime.onMessage.removeListener(listener);
-    };
-  }, []);
 
   useEffect(() => {
     if (!focus.isActive) {
@@ -86,28 +74,6 @@ export function useFocusTimer() {
     console.error("Failed to start focus session:", err);
   }
 };
-  const handleSessionCompleted = async () => {
-    try {
-      await dispatch(endFocusSession("completed")).unwrap();
-      dispatch(stopFocus());
-    } catch (err) {
-      hasCompletedRef.current = false;
-      console.error("Failed to complete focus session:", err);
-    }
-  };
-  useEffect(() => {
-    if (
-      !focus.isActive ||
-      !focus.currentSessionId ||
-      remainingTime > 0 ||
-      hasCompletedRef.current
-    ) {
-      return;
-    }
-
-    hasCompletedRef.current = true;
-    handleSessionCompleted();
-  }, [remainingTime, focus.isActive, focus.currentSessionId]);
 
   const handleStop = async () => {
     if (focus.loading || !focus.currentSessionId || hasCompletedRef.current) {

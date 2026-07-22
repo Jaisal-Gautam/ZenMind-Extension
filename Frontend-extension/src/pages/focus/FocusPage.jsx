@@ -6,8 +6,10 @@ import DailyGoal from "@/components/ui/DailyGoal";
 import { useSelector } from "react-redux";
 import { buildAnalyticsData } from "@/utils/analyticService";
 function FocusPage() {
-   const analytics = useSelector((state) => state.analytics);
-  const dashboard = buildAnalyticsData(analytics, "today");
+    const { overview, focus } = useSelector((state) => state.analytics);
+
+
+
   return (
     <main className="min-h-screen w-full mt-12  p-8 lg:p-4 xl:p-0">
       <section>
@@ -18,7 +20,7 @@ function FocusPage() {
           <DurationSelector />
         </div>
         <div className="w-full md:flex-1 border border-neutral-100 bg-neutral-secondary shadow-sm rounded-md p-4">
-          <FocusStats dashboardData={dashboard} />
+          <FocusStats focus={focus} overview={overview} />
         </div>
       </section>
       <section className="flex mt-8 flex-col md:flex-row  gap-8 justify-between ">

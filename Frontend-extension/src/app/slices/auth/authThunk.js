@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "@/api/auth.api";
-import { setAuth, getAuth, removeAuth } from "@/utils/chromeStorage";
+import { setAuth, getAuth, removeAuth,removeData } from "@/utils/chromeStorage";
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
@@ -50,6 +50,7 @@ export const logoutUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       await authApi.logout();
+      await removeData();
       await removeAuth();
     } catch (err) {
       return rejectWithValue(

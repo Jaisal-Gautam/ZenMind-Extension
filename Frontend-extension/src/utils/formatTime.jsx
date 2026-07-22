@@ -11,11 +11,12 @@ export const formatTime = (time) => {
   );
 };
 export const analyticsTime = (time) => {
-  const hour = Math.floor(time / 60);
-  const min = Math.floor(time % 60);
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor((time % 3600) / 60);
   return (
     <>
-      {hour < 1 ? "" : `${hour}h`} {min}m
+      {hours > 0 && `${hours}h `}
+      {minutes > 0 && `${minutes}m `}
     </>
   );
 };
