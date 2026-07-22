@@ -16,8 +16,6 @@ function BackgroundEventListener() {
     const listener = (message) => {
       switch (message.type) {
         case "FOCUS_SESSION_COMPLETED":
-          console.log("Received completion event");
-
           dispatch(stopFocus());
 
           dispatch(loadOverview());

@@ -1,9 +1,8 @@
 const audio = document.getElementById("player");
 
-console.log("Offscreen document created");
+
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  console.log("off received:", message);
   switch (message.type) {
     case "OFFSCREEN_PLAY": {
         if (!audio.src){

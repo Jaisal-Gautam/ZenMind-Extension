@@ -17,14 +17,6 @@ async function initializeBackground() {
   const recovery = await recoverFocusSession();
 
   switch (recovery.status) {
-    case "none":
-      console.log("Nothing to recover");
-      break;
-
-    case "active":
-      console.log("Recovered active session");
-      break;
-
     case "expired": {
       const updatedState = recoverCompletedSession(recovery.state);
       await setData(updatedState);
@@ -42,7 +34,6 @@ chrome.tabs
   .then((tab) => {
     if (tab.length !== 0) {
       if (tab[0].url) {
-        console.log(tab[0].url);
         if (
           !tab[0].url.startsWith("chrome-extension://") &&
           !tab[0].url.startsWith("chrome://") &&
@@ -64,11 +55,12 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   ) {
     return;
   }
-  console.log("Switched to", tab.url);
   const session = switchTracking(tab);
   if (session) {
     try {
-      await websiteApi.createWebsiteSession(session);
+      if (session.duration > 0) {
+        await websiteApi.createWebsiteSession(session);
+      }
     } catch (err) {
       console.error("Failed to save website session", err);
     }
@@ -115,15 +107,13 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       const previousSession = switchTracking(tab);
       if (previousSession) {
         try {
-          await websiteApi.createWebsiteSession(previousSession);
+          if (previousSession.duration > 0) {
+            await websiteApi.createWebsiteSession(previousSession);
+          }
         } catch (err) {
           console.error("Failed to save website session", err);
         }
-        console.log(
-          "Saved usage:",
-          previousSession.domain,
-          previousSession.duration,
-        );
+
       }
     }
   }
@@ -135,10 +125,13 @@ chrome.idle.onStateChanged.addListener(async (state) => {
   if (state === "locked") {
     const session = stopTracking();
 
-    if (session) {
+    if (session && session.duration > 0) {
       try {
         await websiteApi.createWebsiteSession(session);
-      } catch (err) {
+      } catch (e) {
+        console.error("Status:", e.response?.status);
+        console.error("Data:", e.response?.data);
+        console.error("Request:", e.config?.data);
         console.error("Failed to save website session", err);
       }
     }
@@ -181,7 +174,6 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
     case "PLAY":
       await ensureOffscreenDocument();
-      console.log("Forwarding to offscreen");
       chrome.runtime.sendMessage({
         type: "OFFSCREEN_PLAY",
         src: message.src,
@@ -374,14 +366,3 @@ async function timerFunction() {
 
 setInterval(timerFunction, 1000);
 
-self.addEventListener("install", () => {
-  console.log("Service worker installed");
-});
-
-self.addEventListener("activate", () => {
-  console.log("Service worker activated");
-});
-
-chrome.runtime.onSuspend.addListener(() => {
-  console.log("Service worker suspended");
-});

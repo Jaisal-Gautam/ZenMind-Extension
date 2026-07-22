@@ -4,7 +4,7 @@ function Strict() {
   const OpenDashboard = () => {
     try {
       const url = chrome.runtime.getURL("index.html");
-      console.log(url);
+
       chrome.tabs.create({
         url,
       });

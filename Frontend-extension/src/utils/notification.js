@@ -1,5 +1,5 @@
 export const showFocusCompleteNotification = (duration) => {
-  console.log("Creating notification");
+
   chrome.notifications.create({
   type: "basic",
   iconUrl: chrome.runtime.getURL("icons/icon16.png"),

@@ -4,7 +4,6 @@ function OpenDashboard() {
   const openFocus = () => {
     try {
       const url = chrome.runtime.getURL("index.html");
-      console.log(url);
       chrome.tabs.create({
         url,
       });

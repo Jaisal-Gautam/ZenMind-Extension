@@ -7,7 +7,6 @@ export const loadOverview = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await analyticApi.getOverview();
-       console.log(response);
       return response;
     } catch (err) {
       return rejectWithValue(
