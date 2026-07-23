@@ -3,32 +3,13 @@ import { useSelector } from "react-redux";
 import { buildAnalyticsData } from "@/utils/analyticService";
 
 function Insight() {
-  const analytics = useSelector((state) => state.analytics);
-  const dashboard = analytics ? buildAnalyticsData(analytics, "week") : null;
-
-  // Determine the peak time using the logic from FocusChart
-  let formattedPeakTime = "your peak hours";
-
-  if (dashboard?.focus?.hourly?.length > 0) {
-    const peak = dashboard.focus.hourly.reduce(
-      (best, current) => (current.minutes > best.minutes ? current : best),
-      dashboard.focus.hourly[0],
-    );
-
-    // If there is no focus data, don't show a misleading time.
-    if (peak.minutes > 0) {
-      const hour = Number(peak.hour);
-
-      const startDisplayHour = hour % 12 || 12;
-      const startPeriod = hour < 12 ? "AM" : "PM";
-
-      const endHour = (hour + 1) % 24;
-      const endDisplayHour = endHour % 12 || 12;
-      const endPeriod = endHour < 12 ? "AM" : "PM";
-
-      formattedPeakTime = `${startDisplayHour}:00 ${startPeriod} — ${endDisplayHour}:00 ${endPeriod}`;
-    }
-  }
+  const { focus } = useSelector(
+    (state) => state.analytics,
+  );
+  const peak = focus?.peakFocusHour ?? {
+    hour: 0,
+    label: "12 AM - 1 AM",
+  };
   return (
     <div className="w-full relative overflow-visible bg-green-primary p-4 rounded-4xl border backdrop-blur-sm shadow-sm font-sans mt-4 z-0">
       {" "}
@@ -46,10 +27,10 @@ function Insight() {
         </div>
 
         {/* Main Content */}
-        <p className="text-neutral-primary  text-[14px] tracking-wide font-medium pr-2">
-          You're most productive between{" "}
-          <span className="text-green-secondary font-semibold">
-            {formattedPeakTime}
+        <p className="text-neutral-primary  text-sm tracking-wide font-medium pr-2">
+          You're most productive between{" "} <br />
+          <span className="text-green-secondary tracking-wider font-semibold">
+            {peak.label}
           </span>
           . Schedule deep work then!
         </p>

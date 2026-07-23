@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { getFocus } from "@/utils/analyticsHelpers";
 import { analyticsTime } from "@/utils/formatTime";
 import { Sparkles } from "lucide-react";
 import { updatePreferences } from "@/app/slices/setting/settingsThunk";
@@ -11,7 +10,7 @@ function DailyGoal() {
   const analytics = useSelector((state) => state.analytics);
   const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
 
-  const focus = analytics.overview?.focusedTime/60 ?? 0;
+  const focus = analytics.overview?.focusedTime / 60 ?? 0;
 
   const [goalInput, setGoalInput] = useState(dailyFocusGoal);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -176,11 +175,13 @@ function DailyGoal() {
   );
 }
 export const PopupDailyGoal = () => {
+  const { overview } = useSelector(
+    (state) => state.analytics,
+  );
   const analytics = useSelector((state) => state.analytics);
+  const focus = analytics.overview?.focusedTime / 60 ?? 0;
 
   const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
-
-  const focus = getFocus(analytics, "today");
 
   const progressPercentage =
     dailyFocusGoal > 0 ? Math.min((focus / dailyFocusGoal) * 100, 100) : 0;
@@ -194,7 +195,9 @@ export const PopupDailyGoal = () => {
 
       <div>
         <span className="tracking-tight text-green-primary">
-          <span className="text-xl font-semibold">{analyticsTime(focus)}</span>{" "}
+          <span className="text-xl font-semibold">
+            {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
+          </span>{" "}
           Deep
         </span>
 
