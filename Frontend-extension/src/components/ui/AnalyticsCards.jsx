@@ -8,7 +8,9 @@ function AnalyticsCards({ overview }) {
       <WeekAnalyticsCard
         icon={<Clock className="text-green-secondary size-8" />}
         heading="Focused Time"
-        value={analyticsTime(overview?.focusedTime ?? 0)}
+        value={
+          overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"
+        }
       />
       <WeekAnalyticsCard
         icon={<BadgeCheck className="text-green-secondary size-8" />}

@@ -28,7 +28,7 @@ function FocusForest({dashboardData}) {
         </div>
         <div className="flex p-4 shadow-sm rounded-r-xl  bg-neutral-100 border border-gray-200  flex-col gap-2">
           <span className="text-3xl font-medium font-sans text-neutral-800">
-            {Math.floor(dashboardData.totalFocusTime/60)} min
+            {Math.floor(dashboardData.totalFocusTime/60)} m
           </span>
           <span className="text-md tracking-tight text-neutral-600 ">
             {" "}

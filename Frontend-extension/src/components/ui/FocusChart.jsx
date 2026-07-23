@@ -41,7 +41,7 @@ const FocusChart = ({ focus, overview }) => {
           <p className="text-sm text-neutral-500">Focused</p>
 
           <p className="text-xl font-semibold text-green-primary">
-            {analyticsTime(overview?.focusedTime ?? 0)}
+            {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
           </p>
         </div>
       </div>

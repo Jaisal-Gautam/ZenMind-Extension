@@ -11,7 +11,7 @@ function FocusStats({ focus, overview }) {
             Focused Time
           </span>
           <span className="text-4xl font-medium font-sans text-neutral-800">
-            {analyticsTime(overview?.focusedTime ?? 0)}
+            {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
           </span>
         </div>
         <div className="flex p-4 bg-neutral-300/60 rounded-md flex-col gap-2">
@@ -29,7 +29,7 @@ function FocusStats({ focus, overview }) {
             Longest Session
           </span>
           <span className="text-4xl font-medium font-sans text-neutral-800">
-            {analyticsTime(focus?.longestSession ?? 0)}
+            {focus?.longestSession ? analyticsTime(focus.longestSession) : "0m"}
           </span>
         </div>
         <div className="flex p-4 bg-neutral-primary rounded-md flex-col gap-2">

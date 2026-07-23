@@ -15,7 +15,9 @@ function FocusInsight({ focus, overview }) {
             Longest Focus Session
           </span>
           <span className="text-4xl font-medium font-sans text-neutral-800">
-            {analyticsTime(focus?.longestSession ?? 0)}
+            {focus?.longestSession
+              ? analyticsTime(focus?.longestSession)
+              : "0m"}
           </span>
         </div>
         <div className="flex p-4 shadow-sm rounded-r-xl  border border-gray-200 border-l-2 border-l-green-secondary  flex-col gap-2">
@@ -24,7 +26,9 @@ function FocusInsight({ focus, overview }) {
             Average Focus Sessions
           </span>
           <span className="text-4xl font-medium font-sans text-neutral-800">
-            {analyticsTime(focus?.averageSession ?? 0)}
+            {focus?.averageSession
+              ? analyticsTime(focus?.averageSession)
+              : "0m"}
           </span>
         </div>
         <div className="flex p-4 shadow-sm rounded-r-xl  border border-gray-200 border-l-2 border-l-green-secondary  flex-col gap-2">
