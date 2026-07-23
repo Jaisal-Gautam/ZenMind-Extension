@@ -1,49 +1,83 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
-import { logoutUser } from "@/app/slices/auth/authThunk";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  Sun,
+  Moon,
+  Menu,
+  X,
+  User,
+  LogOut,
+  KeyRound,
+  ChevronDown,
+} from "lucide-react";
+import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
-import { removeData,removeAuth } from "@/utils/chromeStorage";
+import { logoutUser } from "@/app/slices/auth/authThunk";
+import { useTheme } from "next-themes";
 
 function Navbar() {
+  const { theme, setTheme } = useTheme();
+
   const [isOpen, setIsOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  const userMenuRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const username = useSelector((state) => state.auth.user?.username);
 
-  const handleLogout = async () => {
-    try {
-      await dispatch(logoutUser()).unwrap();
-      navigate("/auth/login");
-    } catch (err) {
-      console.log(err);
-    }
-  };
   const links = [
     { id: 1, name: "Focus", href: "/" },
     { id: 2, name: "Analytics", href: "/analytics" },
     { id: 3, name: "Blocking", href: "/blocking" },
   ];
-  const closeMenu = () => setIsOpen(false);
+
+  const closeMobileMenu = () => setIsOpen(false);
+  const closeUserMenu = () => setIsUserMenuOpen(false);
+
+  const handleLogout = async () => {
+    try {
+      closeUserMenu();
+      closeMobileMenu();
+      await dispatch(logoutUser()).unwrap();
+      navigate("/auth/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        closeUserMenu();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <header className="relative z-50 w-full">
-      <nav className="w-full bg-white shadow-sm h-16 px-6 md:px-8 flex items-center justify-between border-b border-neutral-primary relative z-10">
-        <div className="shrink-0">
-          <h2 className="text-3xl font-bold text-green-primary">ZenMind</h2>
+      <nav className="relative z-20 flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-4 md:px-8 shadow-sm">
+        {/* Logo */}
+        <div className="shrink-0 flex items-center">
+          <NavLink to="/" className="text-2xl font-bold text-green-primary">
+            ZenMind
+          </NavLink>
         </div>
-        <div className="hidden md:flex space-x-8 h-full items-center">
+
+        {/* Desktop Navigation Links */}
+        <div className="hidden h-full items-center space-x-8 md:flex">
           {links.map((link) => (
             <NavLink
               key={link.id}
               to={link.href}
               className={({ isActive }) =>
-                `text-[17px] font-medium transition-colors h-full flex items-center border-b-2 pt-1 px-1 ${
+                `flex h-full items-center border-b-2 px-1 text-[17px] font-medium transition-colors ${
                   isActive
-                    ? "text-green-primary border-green-secondary"
-                    : "text-gray-500 border-transparent hover:text-green-primary"
+                    ? "border-green-secondary text-green-primary"
+                    : "border-transparent text-gray-500 hover:text-green-primary"
                 }`
               }
             >
@@ -52,35 +86,100 @@ function Navbar() {
           ))}
         </div>
 
-        {/* Right Action Icons & Mobile Toggle */}
-        <div className="flex items-center space-x-4 md:space-x-6 text-green-primary shrink-0">
+        {/* Right Action Section */}
+        <div className="flex shrink-0 items-center space-x-3 md:space-x-4">
+          {/* Theme Toggle Button */}
+          <button
+            type="button"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-gray-600 transition hover:bg-gray-100 hover:text-green-primary focus:outline-none"
+            aria-label="Toggle Theme"
+          >
+            <motion.div
+              initial={false}
+              animate={{ rotate: theme === "dark" ? 45 : 0 }}
+              transition={{ duration: 0.35, ease: easeInOut }}
+              className="flex items-center justify-center"
+            >
+              {theme === "dark" ? (
+                <Sun size={18} className="text-amber-500" />
+              ) : (
+                <Moon size={18} className="text-slate-600" />
+              )}
+            </motion.div>
+          </button>
+
+          {/* User Auth Controls */}
           {isAuthenticated ? (
-            <>
-              <NavLink
-                to="/auth/change-password"
-                className="hidden text-sm font-medium text-green-primary transition hover:text-green-secondary md:block"
-              >
-                Change password
-              </NavLink>
+            <div className="relative" ref={userMenuRef}>
               <button
-                onClick={handleLogout}
-                className="text-sm font-medium text-green-primary transition hover:text-green-secondary"
+                onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                className="flex items-center space-x-2 rounded-lg border border-gray-200 bg-gray-50/60 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-green-primary focus:outline-none"
+                aria-expanded={isUserMenuOpen}
+                aria-haspopup="true"
               >
-                Logout
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-green-primary">
+                  <User size={14} className="text-green-primary" />
+                </div>
+                <span className="max-w-25 truncate text-sm font-semibold sm:max-w-35 text-gray-800">
+                  {username || "User"}
+                </span>
+                <ChevronDown
+                  size={16}
+                  className={`text-gray-500 transition-transform duration-200 ${
+                    isUserMenuOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
-            </>
+
+              {/* User Dropdown Menu */}
+              <AnimatePresence>
+                {isUserMenuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute right-0 mt-2 w-52 rounded-xl border border-gray-100 bg-white py-1.5 shadow-lg ring-1 ring-black/5"
+                  >
+                    <NavLink
+                      to="/auth/change-password"
+                      onClick={closeUserMenu}
+                      className="flex items-center space-x-2.5 px-4 py-2.5 text-sm text-gray-700 transition hover:bg-gray-50 hover:text-green-primary"
+                    >
+                      <KeyRound size={16} className="text-gray-400" />
+                      <span>Change password</span>
+                    </NavLink>
+
+                    <div className="my-1 border-t border-gray-100" />
+
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center space-x-2.5 px-4 py-2.5 text-left text-sm text-red-600 transition hover:bg-red-50"
+                    >
+                      <LogOut size={16} className="text-red-500" />
+                      <span>Logout</span>
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ) : (
             <NavLink
               to="/auth/login"
               aria-label="Login"
-              
+              className="flex items-center space-x-1.5 rounded-lg border border-transparent px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-green-primary"
             >
-              <User className="hover:text-green-secondary" size={25} />
+              <User size={18} />
+              <span className="hidden sm:inline">Login</span>
             </NavLink>
           )}
+
+          {/* Mobile Hamburger Menu Trigger */}
           <button
+            type="button"
             aria-label="Toggle Menu"
-            className="md:hidden hover:opacity-70 transition-opacity"
+            className="p-1 text-gray-700 transition-opacity hover:opacity-70 md:hidden"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
@@ -92,7 +191,7 @@ function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Navigation Menu (framer-motion) */}
+      {/* Mobile Navigation Drawer */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -100,33 +199,24 @@ function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="absolute top-16 left-0 w-full bg-white border-b border-neutral-primary shadow-md md:hidden flex flex-col"
+            className="absolute left-0 top-16 z-10 flex w-full flex-col border-b border-gray-200 bg-white shadow-md md:hidden"
           >
             {links.map((link) => (
               <NavLink
                 key={link.id}
                 to={link.href}
-                onClick={closeMenu}
+                onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `px-6 py-4 text-[17px] font-medium transition-colors border-l-4 ${
+                  `border-l-4 px-6 py-4 text-[17px] font-medium transition-colors ${
                     isActive
-                      ? "text-green-primary border-green-secondary bg-green-50/50" // Active state for mobile
-                      : "text-gray-500 border-transparent hover:text-green-primary hover:bg-gray-50" // Inactive state
+                      ? "border-green-secondary bg-green-50/50 text-green-primary"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-green-primary"
                   }`
                 }
               >
                 {link.name}
               </NavLink>
             ))}
-            {isAuthenticated ? (
-              <NavLink
-                to="/auth/change-password"
-                onClick={closeMenu}
-                className="px-6 py-4 text-[17px] font-medium text-gray-500 transition-colors border-l-4 border-transparent hover:text-green-primary hover:bg-gray-50"
-              >
-                Change password
-              </NavLink>
-            ) : null}
           </motion.div>
         )}
       </AnimatePresence>
