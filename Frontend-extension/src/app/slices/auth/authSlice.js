@@ -11,6 +11,7 @@ const initialState = {
   error: null,
   isAuthenticated: false,
   initialized: false,
+  fieldErrors: {},
 };
 
 const authSlice = createSlice({
@@ -21,7 +22,12 @@ const authSlice = createSlice({
       state.user = null;
       state.error = null;
       state.isAuthenticated = false;
-      state.initialized = false;
+      state.initialized = true;
+      state.fieldErrors = {};
+    },
+    clearErrors(state) {
+      state.error = null;
+      state.fieldErrors = {};
     },
   },
   extraReducers: (builder) => {
@@ -30,19 +36,22 @@ const authSlice = createSlice({
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.fieldErrors = {};
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
+        state.fieldErrors = {};
         state.initialized = true;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.error = action.payload;
+        state.error = action.payload?.message;
+        state.fieldErrors = action.payload?.fieldErrors || {};
         state.initialized = true;
       })
 
@@ -50,33 +59,39 @@ const authSlice = createSlice({
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.fieldErrors = {};
       })
       .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
+        state.fieldErrors = {};
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload?.message;
+        state.fieldErrors = action.payload?.fieldErrors || {};
       })
 
       //Current User
       .addCase(loadCurrentUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.fieldErrors = {};
       })
       .addCase(loadCurrentUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
-        state.isAuthenticated = true;
+        state.isAuthenticated = !!action.payload;
         state.error = null;
+        state.fieldErrors = {};
         state.initialized = true;
       })
       .addCase(loadCurrentUser.rejected, (state, action) => {
         state.loading = false;
         state.user = null;
         state.isAuthenticated = false;
-        state.error = action.payload;
+        state.error = action.payload?.message;
+        state.fieldErrors = action.payload?.fieldErrors || {};
         state.initialized = true;
       })
 
@@ -84,23 +99,24 @@ const authSlice = createSlice({
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
         state.error = null;
+        state.fieldErrors = {};
       })
       .addCase(logoutUser.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
         state.loading = false;
         state.error = null;
+        state.fieldErrors = {};
         state.initialized = true;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload?.message;
+        state.fieldErrors = action.payload?.fieldErrors || {};
       });
   },
 });
 
-export const {
-    logoutLocal,
-} = authSlice.actions;
+export const { logoutLocal, clearErrors } = authSlice.actions;
 
 export default authSlice.reducer;

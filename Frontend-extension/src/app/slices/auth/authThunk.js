@@ -1,6 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { authApi } from "@/api/auth.api";
-import { setAuth, getAuth, removeAuth,removeData } from "@/utils/chromeStorage";
+import {
+  setAuth,
+  getAuth,
+  removeAuth,
+  removeData,
+} from "@/utils/chromeStorage";
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
@@ -14,9 +19,11 @@ export const loginUser = createAsyncThunk(
       });
 
       return response.user;
-    } catch (err) {
-      return rejectWithValue(err.response?.data?.message || "Login failed");
-    }
+    } catch(error){
+    return rejectWithValue(
+        parseApiError(error,"Login failed.")
+    );
+}
   },
 );
 export const registerUser = createAsyncThunk(
@@ -26,22 +33,35 @@ export const registerUser = createAsyncThunk(
       const response = await authApi.register(userData);
 
       return response.user;
-    } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || "Registration failed",
-      );
-    }
+    } catch(error){
+    return rejectWithValue(
+        parseApiError(error,"Registeration failed.")
+    );
+}
   },
 );
 
 export const loadCurrentUser = createAsyncThunk(
   "auth/me",
   async (_, { rejectWithValue }) => {
-    if (!(await getAuth())) {
-      return rejectWithValue("Not authenticated");
+    const auth = await getAuth();
+
+    if (!auth) {
+      return null;
     }
-    const response = await authApi.me();
-    return response.user;
+
+    try {
+      const response = await authApi.me();
+      return response.user;
+    } catch (err) {
+      if (err.response?.status === 401) {
+        await removeAuth();
+        return null;
+      }
+       return rejectWithValue(
+        parseApiError(err,"Load Current User failed.")
+    );
+    }
   },
 );
 
@@ -53,9 +73,9 @@ export const logoutUser = createAsyncThunk(
       await removeData();
       await removeAuth();
     } catch (err) {
-      return rejectWithValue(
-        err.response?.data?.message || "Logout failed",
-      );
+       return rejectWithValue(
+        parseApiError(err,"Login failed.")
+    );
     }
   },
 );

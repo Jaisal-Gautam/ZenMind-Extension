@@ -43,4 +43,14 @@ export const authApi = {
     });
     return response.data;
   },
+  async verifyResetOtp(email, otp) {
+  const response = await apiClient.post(
+    "/auth/verify-reset-otp",
+    {
+      email,
+      otp,
+    }
+  );
+  return response.data;
+},
 };

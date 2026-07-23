@@ -15,12 +15,17 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
   async (config) => {
     const auth = await getAuth();
+
     if (auth?.accessToken) {
-      config.headers.Authorization = `Bearer ${auth.accessToken}`;
+      config.headers.set(
+        "Authorization",
+        `Bearer ${auth.accessToken}`
+      );
     }
+
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 apiClient.interceptors.response.use(
   (response) => response,
@@ -30,10 +35,7 @@ apiClient.interceptors.response.use(
     if (!originalRequest) {
       return Promise.reject(error);
     }
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -42,12 +44,9 @@ apiClient.interceptors.response.use(
           await removeAuth();
           return Promise.reject(error);
         }
-        const response = await axios.post(
-          `${baseURL}/auth/refresh`,
-          {
-            refreshToken: auth.refreshToken,
-          }
-        );
+        const response = await axios.post(`${baseURL}/auth/refresh`, {
+          refreshToken: auth.refreshToken,
+        });
 
         const { accessToken } = response.data;
 
@@ -55,7 +54,6 @@ apiClient.interceptors.response.use(
           ...auth,
           accessToken,
         });
-
 
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
 
@@ -68,7 +66,7 @@ apiClient.interceptors.response.use(
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default apiClient;

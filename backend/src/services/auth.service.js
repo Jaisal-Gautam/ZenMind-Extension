@@ -13,15 +13,23 @@ import { sendPasswordResetEmail } from "../utils/email.js";
 
 export const createUser = async ({ username, email, password }) => {
   const normalizedEmail = email.toLowerCase().trim();
+  const normalizedUsername = username.trim().toLowerCase();
   const userExist = await User.findOne({
-    $or: [{ username }, { email: normalizedEmail }],
+    $or: [{ normalizedUsername }, { email: normalizedEmail }],
   });
+  if (userExist) {
+    if (userExist.email === normalizedEmail) {
+      throw new ApiError(409, "Email already exists.");
+    }
+
+    throw new ApiError(409, "Username already exists.");
+  }
   const hashedPassword = await bcrypt.hash(password, 10);
   const user = await User.create({
     username,
     email: normalizedEmail,
     password: hashedPassword,
-    timezone:Intl.DateTimeFormat().resolvedOptions().timeZone
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   });
   await createDefaultPreferences(user._id);
   await createDefaultBlocking(user._id);
@@ -98,12 +106,14 @@ export const requestPasswordReset = async ({ email }) => {
   try {
     await sendPasswordResetEmail(user.email, otp);
   } catch (error) {
-    user.resetPasswordOTP = undefined;
-    user.resetPasswordOTPExpiry = undefined;
-    await user.save({ validateBeforeSave: false });
+  user.resetPasswordOTP = undefined;
+  user.resetPasswordOTPExpiry = undefined;
+  await user.save({ validateBeforeSave: false });
 
-    throw new ApiError(500, "Failed to send verification email.");
-  }
+  console.error(error); // optional for server logs
+
+  throw new ApiError(500, "Failed to send verification email.");
+}
 };
 
 export const resetPassword = async ({ email, otp, newPassword }) => {
@@ -133,6 +143,35 @@ export const resetPassword = async ({ email, otp, newPassword }) => {
   user.resetPasswordOTPExpiry = undefined;
   user.refreshToken = null;
   await user.save({ validateBeforeSave: false });
+  return;
+};
+export const verifyResetOtp = async ({ email, otp }) => {
+  const user = await User.findOne({
+    email: email.toLowerCase().trim(),
+  }).select("+resetPasswordOTP +resetPasswordOTPExpiry");
+
+  if (!user || !user.resetPasswordOTP || !user.resetPasswordOTPExpiry) {
+    throw new ApiError(400, "Invalid or expired verification code.");
+  }
+
+  if (new Date(user.resetPasswordOTPExpiry) < new Date()) {
+    user.resetPasswordOTP = undefined;
+    user.resetPasswordOTPExpiry = undefined;
+
+    await user.save({ validateBeforeSave: false });
+
+    throw new ApiError(400, "Invalid or expired verification code.");
+  }
+
+  const isOtpValid = await bcrypt.compare(
+    otp,
+    user.resetPasswordOTP,
+  );
+
+  if (!isOtpValid) {
+    throw new ApiError(400, "Invalid or expired verification code.");
+  }
+
   return;
 };
 

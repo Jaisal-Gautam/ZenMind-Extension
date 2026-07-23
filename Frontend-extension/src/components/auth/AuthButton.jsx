@@ -1,9 +1,15 @@
-export default function AuthButton({ children, loading, disabled, type = "button" }) {
+export default function AuthButton({
+  children,
+  loading,
+  disabled,
+  className = "",
+  ...props
+}) {
   return (
     <button
-      type={type}
       disabled={disabled || loading}
-      className="inline-flex h-12 w-full items-center justify-center gap-3 rounded-3xl bg-green-primary px-4 text-sm font-semibold text-white transition hover:bg-green-secondary disabled:cursor-not-allowed disabled:bg-slate-400"
+      className={`inline-flex h-12 w-full items-center justify-center gap-3 rounded-3xl bg-green-primary px-4 text-sm font-semibold text-white transition hover:bg-green-secondary disabled:cursor-not-allowed disabled:bg-slate-400 ${className}`}
+      {...props}
     >
       {loading ? (
         <>

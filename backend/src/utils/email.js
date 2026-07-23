@@ -4,7 +4,7 @@ import { env } from "../config/env.js";
 const resend = new Resend(env.RESEND_API_KEY);
 
 export const sendPasswordResetEmail = async (email, otp) => {
-  const { error } = await resend.emails.send({
+  const response = await resend.emails.send({
     from: env.EMAIL_FROM,
     to: email,
     subject: "ZenMind Password Reset Code",
@@ -15,7 +15,10 @@ export const sendPasswordResetEmail = async (email, otp) => {
       <p>This code expires in 10 minutes.</p>
     `,
   });
-  if (error) {
-    throw new Error(error.message);
+
+
+
+  if (response.error) {
+    throw new Error(response.error.message);
   }
 };

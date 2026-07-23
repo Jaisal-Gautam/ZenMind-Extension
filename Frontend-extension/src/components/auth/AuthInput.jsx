@@ -10,6 +10,7 @@ export default function AuthInput({
   placeholder,
   disabled,
   inputMode,
+  error,
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -40,6 +41,11 @@ export default function AuthInput({
           </button>
         ) : null}
       </div>
+      {error?.map((message) => (
+        <p key={message} className="text-sm text-red-600">
+          {message}
+        </p>
+      ))}
     </label>
   );
 }

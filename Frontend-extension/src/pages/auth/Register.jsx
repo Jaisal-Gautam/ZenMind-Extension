@@ -5,12 +5,14 @@ import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { registerUser } from "@/app/slices/auth/authThunk";
+import { clearErrors } from "@/app/slices/auth/authSlice";
 
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.auth);
-  const [email, setEmail] = useState("");
+const { loading, error, fieldErrors } = useSelector(
+  (state) => state.auth
+);  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,6 +20,8 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    dispatch(clearErrors());
+
     setValidationError("");
 
     if (!email.trim() || !username.trim() || !password || !confirmPassword) {
@@ -55,6 +59,8 @@ export default function Register() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           disabled={loading}
+            error={fieldErrors.email}
+
         />
 
         <AuthInput
@@ -65,6 +71,8 @@ export default function Register() {
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           disabled={loading}
+            error={fieldErrors.username}
+
         />
 
         <AuthInput
@@ -75,6 +83,8 @@ export default function Register() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           disabled={loading}
+            error={fieldErrors.password}
+
         />
 
         <AuthInput

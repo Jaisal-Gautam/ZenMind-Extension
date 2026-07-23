@@ -7,6 +7,7 @@ export const DefaultState = {
     error: null,
     isAuthenticated: false,
     initialized: false,
+    fieldErrors:{}
   },
 
   focus: {

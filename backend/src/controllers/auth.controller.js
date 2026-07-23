@@ -6,6 +6,7 @@ import {
   changePassword,
   requestPasswordReset,
   resetPassword,
+  verifyResetOtp,
 } from "../services/auth.service.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
@@ -85,6 +86,16 @@ export const resetPasswordController = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Password reset successfully. Please log in again.",
+  });
+});
+export const verifyResetOtpController = asyncHandler(async (req, res) => {
+  const { email, otp } = req.body;
+
+  await verifyResetOtp({ email, otp });
+
+  res.status(200).json({
+    success: true,
+    message: "Verification successful.",
   });
 });
 

@@ -5,18 +5,20 @@ import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { loginUser } from "@/app/slices/auth/authThunk";
-
+import { clearErrors } from "@/app/slices/auth/authSlice";
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error, fieldErrors } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [validationError, setValidationError] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    dispatch(clearErrors());
     setValidationError("");
 
     if (!email.trim() || !password) {
@@ -49,6 +51,7 @@ export default function Login() {
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           disabled={loading}
+          error={fieldErrors.email}
         />
 
         <AuthInput
@@ -59,6 +62,7 @@ export default function Login() {
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           disabled={loading}
+          error={fieldErrors.password}
         />
 
         {(validationError || error) && (

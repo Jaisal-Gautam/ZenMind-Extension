@@ -1,5 +1,5 @@
 import isBlocked from "./blockingManager";
-import { getData, setData } from "@/utils/chromeStorage";
+import { getData, setData ,getAuth} from "@/utils/chromeStorage";
 import { focusApi } from "@/api/focus.api";
 import {
   startTracking,
@@ -8,12 +8,14 @@ import {
   stopTracking,
 } from "./usageTracker";
 
+
 import parseDomain from "@/utils/siteParser";
 import { recoverFocusSession } from "@/utils/SessionRecove.js";
 import { recoverCompletedSession } from "@/utils/completeFocusSession";
 import { showFocusCompleteNotification } from "@/utils/notification.js";
 import { websiteApi } from "@/api/website.api";
 async function initializeBackground() {
+  const auth = await getAuth();
   const recovery = await recoverFocusSession();
 
   switch (recovery.status) {
@@ -46,6 +48,7 @@ chrome.tabs
   });
 
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
+  const auth = await getAuth();
   const tab = await chrome.tabs.get(activeInfo.tabId);
   if (!tab?.url) return;
   if (
@@ -59,6 +62,9 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   if (session) {
     try {
       if (session.duration > 0) {
+        if (!auth?.accessToken) {
+          return;
+        }
         await websiteApi.createWebsiteSession(session);
       }
     } catch (err) {
@@ -67,6 +73,7 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
   }
 });
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  const auth = await getAuth();
   if (changeInfo.status !== "complete" || !tab.url) {
     return;
   }
@@ -108,12 +115,14 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
       if (previousSession) {
         try {
           if (previousSession.duration > 0) {
+            if (!auth?.accessToken) {
+              return;
+            }
             await websiteApi.createWebsiteSession(previousSession);
           }
         } catch (err) {
           console.error("Failed to save website session", err);
         }
-
       }
     }
   }
@@ -122,11 +131,16 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
 chrome.idle.setDetectionInterval(60);
 
 chrome.idle.onStateChanged.addListener(async (state) => {
+  const auth = await getAuth();
   if (state === "locked") {
     const session = stopTracking();
 
     if (session && session.duration > 0) {
       try {
+        if (!auth?.accessToken) {
+          return;
+        }
+
         await websiteApi.createWebsiteSession(session);
       } catch (e) {
         console.error("Status:", e.response?.status);
@@ -167,6 +181,7 @@ chrome.idle.onStateChanged.addListener(async (state) => {
 });
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+  const auth = await getAuth();
   switch (message.type) {
     case "AUDIO_STATE":
       await ensureOffscreenDocument();
@@ -261,6 +276,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
 });
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
+  const auth = await getAuth();
   if (!alarm.name.startsWith("unlock-")) return;
 
   const domain = alarm.name.replace("unlock-", "");
@@ -287,6 +303,7 @@ const OFFSCREEN_DOCUMENT_PATH = "offscreen.html";
 let creatingOffscreen = null;
 
 async function ensureOffscreenDocument() {
+  const auth = await getAuth();
   const offscreenUrl = chrome.runtime.getURL(OFFSCREEN_DOCUMENT_PATH);
 
   if (creatingOffscreen) {
@@ -330,6 +347,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 async function timerFunction() {
+  const auth = await getAuth();
   const state = await getData();
 
   if (!state || !state.focus) {
@@ -365,4 +383,3 @@ async function timerFunction() {
 }
 
 setInterval(timerFunction, 1000);
-
