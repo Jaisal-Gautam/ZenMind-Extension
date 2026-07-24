@@ -14,6 +14,7 @@ import {
 } from "./slices/analytic/analyticThunk";
 import BackgroundEventListener from "@/components/BackgroundEventListener";
 import DayChangeListener from "@/components/ui/DayChangeListener";
+import Loader from "@/components/Loader";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
   useEffect(() => {
@@ -55,11 +56,7 @@ function StoreProvider({ children }) {
   }, []);
 
   if (!store) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
+    return <Loader/>
   }
 
   return <Provider store={store}>

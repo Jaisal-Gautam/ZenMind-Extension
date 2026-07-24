@@ -90,7 +90,7 @@
     --color-green-primary:#2D4B41;
     --color-green-secondary:#6B8E23;
     --color-neutral-primary:#DCE7E0;
-    --color-neutral-secondary:#8F9F7;
+    --color-neutral-secondary:#F8F9F7;
     --color-neutral-tertiary:#FDFDFC;
     --shadow-primary: 0 3px 2px 0.5px rgb(0,0,0,0.1);
 
@@ -122,7 +122,7 @@
     --chart-5: oklch(0.269 0 0);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary: hwb(225 8% 10%);
     --sidebar-primary-foreground: oklch(0.985 0 0);
     --sidebar-accent: oklch(0.269 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
