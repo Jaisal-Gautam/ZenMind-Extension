@@ -9,7 +9,7 @@ function Card({ icon, heading, content, dispatcher, selector, deleter }) {
   };
 
   return (
-    // 1. Added `h-full` so the card expands to fill its container
+
     <div className="flex flex-col h-full gap-2 md:gap-4">
       <h2 className="text-2xl md:text-xl lg:text-3xl items-center flex gap-4 text-green-primary tracking-tight font-medium">
         {icon}

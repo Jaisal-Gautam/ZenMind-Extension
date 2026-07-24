@@ -16,7 +16,6 @@ import {
 
 import { musicTime } from "@/utils/formatTime";
 
-
 // ==========================================
 // Sub-Component 1: TrackInfo
 // Handles the display of the track title, tags, and visualizer
@@ -27,14 +26,14 @@ const TrackInfo = ({ currentTrack, isPlaying }) => {
   return (
     <div className="flex justify-between items-start">
       <div>
-        <div className="bg-neutral-primary text-green-secondary rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 w-max mb-4">
+        <div className="bg-surface-soft text-brand rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 w-max mb-4">
           <TreePine className="w-3.5 h-3.5" />
           Nature Sounds
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">
+        <h2 className="text-3xl font-bold text-text-muted mb-1 tracking-tight">
           {currentTrack?.title}
         </h2>
-        <p className="text-gray-500 font-medium">FocusFlow Ambient</p>
+        <p className="text-text-disabled font-medium">FocusFlow Ambient</p>
       </div>
 
       <div className="flex gap-1.5 items-end h-10 mt-6">
@@ -57,7 +56,7 @@ const TrackInfo = ({ currentTrack, isPlaying }) => {
                     duration: 2,
                   }
             }
-            className="w-1.5 bg-green-primary rounded-full"
+            className="w-1.5 bg-brand-muted rounded-full"
             style={{ height: `${height}px` }}
           />
         ))}
@@ -90,14 +89,14 @@ const ProgressBar = ({ currentTime, duration, onSeek }) => {
       <div
         ref={progressBarRef}
         onClick={handleSeekClick}
-        className="w-full h-2 bg-gray-200 rounded-full relative cursor-pointer"
+        className="w-full h-2 bg-border-light rounded-full relative cursor-pointer"
       >
         <div
-          className="absolute left-0 top-0 h-full bg-green-primary rounded-full"
+          className="absolute left-0 top-0 h-full bg-brand-muted rounded-full"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <div className="flex justify-between text-xs text-gray-500 mt-3 font-semibold tracking-wide">
+      <div className="flex justify-between text-xs text-text-disabled mt-3 font-semibold tracking-wide">
         <span>{musicTime(currentTime)}</span>
         <span>-{musicTime(Math.max(duration - currentTime, 0))}</span>
       </div>
@@ -137,7 +136,7 @@ const PlayerControls = ({
   if (type === "page") {
     return (
       <div className="flex justify-between items-center mt-6">
-        <div className="flex items-center gap-3 text-gray-500 w-32">
+        <div className="flex items-center gap-3 text-text-disabled w-32">
           {volume === 0 ? (
             <VolumeOff className="w-5 h-5 stroke-2 shrink-0" />
           ) : (
@@ -150,13 +149,13 @@ const PlayerControls = ({
             step="1"
             value={volume}
             onChange={(e) => onVolumeChange(Number(e.target.value))}
-            className="w-full h-1.5 bg-gray-200 rounded-full appearance-none cursor-pointer accent-green-primary"
+            className="w-full h-1.5 bg-border-light rounded-full appearance-none cursor-pointer accent-brand-muted"
           />
         </div>
 
         <div className="flex items-center gap-6">
           <button
-            className="text-gray-500 hover:text-gray-800 transition-colors"
+            className="text-text-disabled hover:text-text transition-colors"
             onClick={onPrev}
           >
             <SkipBack className="w-5 h-5 stroke-2" />
@@ -165,7 +164,7 @@ const PlayerControls = ({
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-14 h-14 rounded-full border-2 border-[#0f4a36] flex items-center justify-center text-[#0f4a36] hover:bg-[#f0f7f4] transition-colors"
+            className="w-14 h-14 rounded-full border-2 border-brand-muted flex items-center justify-center text-brand-muted hover:bg-text-muted transition-colors"
             onClick={onPlayPause}
           >
             {isPlaying ? (
@@ -176,7 +175,7 @@ const PlayerControls = ({
           </motion.button>
 
           <button
-            className="text-gray-500 hover:text-gray-800 transition-colors"
+            className="text-text-disabled hover:text-text transition-colors"
             onClick={onNext}
           >
             <SkipForward className="w-5 h-5 stroke-2" />
@@ -185,12 +184,12 @@ const PlayerControls = ({
 
         <div className="w-32 flex justify-end">
           <button
-            className="text-gray-500 hover:text-gray-800 transition-colors"
+            className="text-text-disabled hover:text-text transition-colors"
             onClick={onToggleLoop}
           >
             <Repeat
               className={`w-5 h-5 stroke-2 ${
-                isLooping ? "text-green-secondary stroke-3" : ""
+                isLooping ? "text-brand stroke-3" : ""
               }`}
             />
           </button>
@@ -204,7 +203,7 @@ const PlayerControls = ({
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="w-8 h-8 rounded-full border border-green-primary flex items-center justify-center text-green-primary hover:bg-neutral-primary transition-colors"
+          className="w-8 h-8 rounded-full border border-brand-muted flex items-center justify-center text-brand-muted hover:bg-surface-muted transition-colors"
           onClick={onPlayPause}
         >
           {isPlaying ? (
@@ -219,7 +218,7 @@ const PlayerControls = ({
           {/* The Volume Button (Click to Mute/Unmute) */}
           <button
             onClick={handleMuteToggle}
-            className="text-gray-500 hover:text-[#0f4a36] p-2 transition-colors rounded-full"
+            className="text-text-disabled hover:text-brand-muted p-2 transition-colors rounded-full"
           >
             {volume === 0 ? (
               <VolumeOff className="w-6 h-6 stroke-2" />
@@ -229,7 +228,7 @@ const PlayerControls = ({
           </button>
 
           {/* The Vertical Slider (Hidden by default, shown on group-hover) */}
-          <div className="absolute bottom-full z-10 pb-2 hidden group-hover:flex flex-col items-center bg-white p-3 rounded-xl shadow-lg border border-gray-100 transition-opacity duration-200">
+          <div className="absolute bottom-full z-10 pb-2 hidden group-hover:flex flex-col items-center bg-surface p-3 rounded-xl shadow-lg border border-border-light transition-opacity duration-200">
             <input
               type="range"
               min="0"
@@ -238,10 +237,10 @@ const PlayerControls = ({
               value={volume}
               onChange={(e) => onVolumeChange(Number(e.target.value))}
               style={{
-                writingMode: "vertical-lr", 
-                direction:"rtl" 
+                writingMode: "vertical-lr",
+                direction: "rtl",
               }}
-              className="h-24 w-1.5 bg-gray-200 rounded-full cursor-pointer accent-green-primary"
+              className="h-24 w-1.5 bg-border-light rounded-full cursor-pointer accent-brand-muted"
             />
           </div>
         </div>
@@ -250,18 +249,18 @@ const PlayerControls = ({
   }
 };
 
-const TrackChange = ({currentTrack,handleTrackChange}) => {
+const TrackChange = ({ currentTrack, handleTrackChange }) => {
   return (
     <div className="mt-6">
       <div className="flex gap-2 flex-wrap">
         {musicData.map((item) => (
           <button
             key={item.id}
-            onClick={()=>handleTrackChange(item)}
+            onClick={() => handleTrackChange(item)}
             className={`flex items-center gap-2 px-3 py-2 rounded-2xl text-sm font-medium transition-colors shadow-sm ${
               currentTrack?.id === item.id
-                ? "bg-green-secondary text-white"
-                : "bg-white text-neutral-700 hover:border-green-200"
+                ? "bg-brand text-surface"
+                : "bg-surface text-text-muted hover:border-border-brand border border-border-default"
             }`}
           >
             {item.title}
@@ -274,21 +273,21 @@ const TrackChange = ({currentTrack,handleTrackChange}) => {
 
 export default function AudioPlayer() {
   const {
-  currentTime,
-  duration,
-  isPlaying,
-  currentTrack,
-  volume,
-  isLooping,
+    currentTime,
+    duration,
+    isPlaying,
+    currentTrack,
+    volume,
+    isLooping,
 
-  handlePlayPause,
-  handleNext,
-  handlePrev,
-  handleSeek,
-  handleTrackChange,
-  handleVolumeChange,
-  handleToggleLoop,
-} = useAudioPlayer();
+    handlePlayPause,
+    handleNext,
+    handlePrev,
+    handleSeek,
+    handleTrackChange,
+    handleVolumeChange,
+    handleToggleLoop,
+  } = useAudioPlayer();
   return (
     <div className="flex items-center h-full justify-center">
       <div className="h-full rounded-md p-8 w-full">
@@ -324,21 +323,18 @@ export default function AudioPlayer() {
 
 export function PopupAudioPlayer() {
   const {
-  isPlaying,
-  currentTrack,
-  volume,
+    isPlaying,
+    currentTrack,
+    volume,
 
-  handlePlayPause,
-  handleVolumeChange,
-} = useAudioPlayer();
+    handlePlayPause,
+    handleVolumeChange,
+  } = useAudioPlayer();
   // --- Render ---
   return (
-    <div className="w-full  p-5 bg-neutral-tertiary rounded-lg border border-gray-100 backdrop-blur-sm shadow-sm font-sans mt-4">
-
-      
-
+    <div className="w-full  p-5 bg-page rounded-lg border border-border-light backdrop-blur-sm shadow-sm font-sans mt-4">
       {/* Top Label */}
-      <h3 className="text-xs font-semibold tracking-[0.15em] text-gray-500 mb-4 ml-1 uppercase">
+      <h3 className="text-xs font-semibold tracking-[0.15em] text-text-disabled mb-4 ml-1 uppercase">
         Ambience
       </h3>
 
@@ -346,13 +342,13 @@ export function PopupAudioPlayer() {
         {/* Left: Icon & Track Info */}
         <div className="flex items-center gap-4">
           {/* Icon Container */}
-          <div className="w-14 h-14 shrink-0 bg-[#eaf3d9] rounded-2xl flex items-center justify-center text-[#4a6a29]">
+          <div className="w-14 h-14 shrink-0 bg-surface-soft rounded-2xl flex items-center justify-center text-brand-muted">
             <Shell size={26} strokeWidth={2} />
           </div>
 
           {/* Text Container */}
           <div className="flex flex-col justify-center">
-            <h2 className="text-sm font-bold text-green-primary leading-tight tracking-tight ">
+            <h2 className="text-sm font-bold text-brand-muted leading-tight tracking-tight ">
               {currentTrack?.title || "Select Track"}
             </h2>
           </div>

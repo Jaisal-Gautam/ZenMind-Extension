@@ -59,10 +59,10 @@ function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <nav className="relative z-20 flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-4 md:px-8 shadow-sm">
+      <nav className="relative z-20 flex h-16 w-full items-center justify-between border-b border-border-default bg-surface px-4 md:px-8 shadow-sm">
         {/* Logo */}
         <div className="shrink-0 flex items-center">
-          <NavLink to="/" className="text-2xl font-bold text-green-primary">
+          <NavLink to="/" className="text-2xl font-bold text-brand">
             ZenMind
           </NavLink>
         </div>
@@ -76,8 +76,8 @@ function Navbar() {
               className={({ isActive }) =>
                 `flex h-full items-center border-b-2 px-1 text-[17px] font-medium transition-colors ${
                   isActive
-                    ? "border-green-secondary text-green-primary"
-                    : "border-transparent text-gray-500 hover:text-green-primary"
+                    ? "border-border-brand text-brand"
+                    : "border-transparent text-text-disabled hover:text-brand"
                 }`
               }
             >
@@ -92,7 +92,7 @@ function Navbar() {
           <button
             type="button"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-gray-600 transition hover:bg-gray-100 hover:text-green-primary focus:outline-none"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-default bg-surface-muted text-text-soft transition hover:bg-surface-hover hover:text-brand focus:outline-none"
             aria-label="Toggle Theme"
           >
             <motion.div
@@ -104,7 +104,7 @@ function Navbar() {
               {theme === "dark" ? (
                 <Sun size={18} className="text-amber-500" />
               ) : (
-                <Moon size={18} className="text-slate-600" />
+                <Moon size={18} className="text-text-soft" />
               )}
             </motion.div>
           </button>
@@ -114,19 +114,19 @@ function Navbar() {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setIsUserMenuOpen((prev) => !prev)}
-                className="flex items-center space-x-2 rounded-lg border border-gray-200 bg-gray-50/60 px-3 py-1.5 text-sm font-medium text-gray-700 transition hover:bg-gray-100 hover:text-green-primary focus:outline-none"
+                className="flex items-center space-x-2 rounded-lg border border-border-default bg-surface-muted/60 px-3 py-1.5 text-sm font-medium text-text-muted transition hover:bg-surface-hover hover:text-brand focus:outline-none"
                 aria-expanded={isUserMenuOpen}
                 aria-haspopup="true"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-100 text-green-primary">
-                  <User size={14} className="text-green-primary" />
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/15 text-brand">
+                  <User size={14} className="text-brand" />
                 </div>
-                <span className="max-w-25 truncate text-sm font-semibold sm:max-w-35 text-gray-800">
+                <span className="max-w-25 truncate text-sm font-semibold sm:max-w-35 text-text">
                   {username || "User"}
                 </span>
                 <ChevronDown
                   size={16}
-                  className={`text-gray-500 transition-transform duration-200 ${
+                  className={`text-text-disabled transition-transform duration-200 ${
                     isUserMenuOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -140,24 +140,24 @@ function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15, ease: "easeOut" }}
-                    className="absolute right-0 mt-2 w-52 rounded-xl border border-gray-100 bg-white py-1.5 shadow-lg ring-1 ring-black/5"
+                    className="absolute right-0 mt-2 w-52 rounded-xl border border-border-light bg-surface py-1.5 shadow-lg ring-1 ring-ring-subtle"
                   >
                     <NavLink
                       to="/auth/change-password"
                       onClick={closeUserMenu}
-                      className="flex items-center space-x-2.5 px-4 py-2.5 text-sm text-gray-700 transition hover:bg-gray-50 hover:text-green-primary"
+                      className="flex items-center space-x-2.5 px-4 py-2.5 text-sm text-text-muted transition hover:bg-surface-muted hover:text-brand"
                     >
                       <KeyRound size={16} className="text-gray-400" />
                       <span>Change password</span>
                     </NavLink>
 
-                    <div className="my-1 border-t border-gray-100" />
+                    <div className="my-1 border-t border-border-light" />
 
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center space-x-2.5 px-4 py-2.5 text-left text-sm text-red-600 transition hover:bg-red-50"
+                      className="flex w-full items-center space-x-2.5 px-4 py-2.5 text-left text-sm text-danger transition hover:bg-danger-soft"
                     >
-                      <LogOut size={16} className="text-red-500" />
+                      <LogOut size={16} className="text-danger" />
                       <span>Logout</span>
                     </button>
                   </motion.div>
@@ -168,7 +168,7 @@ function Navbar() {
             <NavLink
               to="/auth/login"
               aria-label="Login"
-              className="flex items-center space-x-1.5 rounded-lg border border-transparent px-3 py-1.5 text-sm font-medium text-gray-700 hover:text-green-primary"
+              className="flex items-center space-x-1.5 rounded-lg border border-transparent px-3 py-1.5 text-sm font-medium text-text-muted hover:text-brand"
             >
               <User size={18} />
               <span className="hidden sm:inline">Login</span>
@@ -179,7 +179,7 @@ function Navbar() {
           <button
             type="button"
             aria-label="Toggle Menu"
-            className="p-1 text-gray-700 transition-opacity hover:opacity-70 md:hidden"
+            className="p-1 text-text-muted transition-opacity hover:opacity-70 md:hidden"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
@@ -199,7 +199,7 @@ function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="absolute left-0 top-16 z-10 flex w-full flex-col border-b border-gray-200 bg-white shadow-md md:hidden"
+            className="absolute left-0 top-16 z-10 flex w-full flex-col border-b border-border-default bg-surface shadow-md md:hidden"
           >
             {links.map((link) => (
               <NavLink
@@ -209,8 +209,8 @@ function Navbar() {
                 className={({ isActive }) =>
                   `border-l-4 px-6 py-4 text-[17px] font-medium transition-colors ${
                     isActive
-                      ? "border-green-secondary bg-green-50/50 text-green-primary"
-                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-green-primary"
+                      ? "border-border-brand bg-success/10 text-brand"
+                      : "border-transparent text-text-soft hover:bg-surface-muted hover:text-brand"
                   }`
                 }
               >
