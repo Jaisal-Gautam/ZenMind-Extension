@@ -42,7 +42,7 @@ const hydrateBlocking = (state, blocking) => {
   state.activeMode = blocking.activeMode;
 
   state.blockedSites = (blocking.normal ?? []).map(site => site.domain);
-  state.deepFocusSites = (blocking.focus ?? []).map(site => site.domain);
+  state.deepFocusSites = (blocking.deep ?? []).map(site => site.domain);
   state.strictWhitelist = (blocking.strict ?? []).map(site => site.domain);
 
   state.blockedCategories = blocking.blockedCategories;

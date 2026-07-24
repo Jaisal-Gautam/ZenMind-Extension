@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { toast } from "sonner";
 import Loader from "../Loader";
 let lastAuthToast = 0;
-const AUTH_TOAST_COOLDOWN = 2000; // milliseconds
+const AUTH_TOAST_COOLDOWN = 1500; // milliseconds
 
 function ProtectedRoute() {
   const { initialized, isAuthenticated } = useSelector((state) => state.auth);
@@ -15,7 +15,7 @@ function ProtectedRoute() {
   if (!isAuthenticated) {
     const now = Date.now();
     if (now - lastAuthToast > AUTH_TOAST_COOLDOWN) {
-      toast.error("Authenticated");
+      toast.error("Not Authenticated");
       lastAuthToast = now;
     }
 

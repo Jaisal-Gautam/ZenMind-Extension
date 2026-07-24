@@ -1,5 +1,5 @@
 import isBlocked from "./blockingManager";
-import { getData, setData ,getAuth} from "@/utils/chromeStorage";
+import { getData, setData, getAuth } from "@/utils/chromeStorage";
 import { focusApi } from "@/api/focus.api";
 import {
   startTracking,
@@ -7,7 +7,6 @@ import {
   getCurrentTracking,
   stopTracking,
 } from "./usageTracker";
-
 
 import parseDomain from "@/utils/siteParser";
 import { recoverFocusSession } from "@/utils/SessionRecove.js";
@@ -143,10 +142,12 @@ chrome.idle.onStateChanged.addListener(async (state) => {
 
         await websiteApi.createWebsiteSession(session);
       } catch (e) {
-        console.error("Status:", e.response?.status);
-        console.error("Data:", e.response?.data);
-        console.error("Request:", e.config?.data);
-        console.error("Failed to save website session", err);
+        console.error("Complete error:", e);
+
+        console.error("message:", e.message);
+        console.error("response:", e.response);
+        console.error("request:", e.request);
+        console.error("config:", e.config);
       }
     }
 

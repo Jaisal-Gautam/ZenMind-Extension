@@ -4,9 +4,19 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthInput from "@/components/auth/AuthInput";
 import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
-import { loginUser } from "@/app/slices/auth/authThunk";
+import { loadCurrentUser, loginUser } from "@/app/slices/auth/authThunk";
 import { clearErrors } from "@/app/slices/auth/authSlice";
+import { loadPreferences } from "@/app/slices/setting/settingsThunk";
+import { loadBlockingConfig } from "@/app/slices/blocking/blockingThunk";
+import {
+  loadFocusAnalytics,
+  loadHistoryAnalytics,
+  loadOverview,
+  loadWebsiteAnalytics,
+} from "@/app/slices/analytic/analyticThunk";
+import Loader from "@/components/Loader";
 export default function Login() {
+  const [bootstrapping, setBootstrapping] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,12 +38,31 @@ export default function Login() {
 
     try {
       await dispatch(loginUser({ email, password })).unwrap();
+      setBootstrapping(true);
+
+      await dispatch(loadCurrentUser()).unwrap();
+
+      await Promise.all([
+        dispatch(loadPreferences()).unwrap(),
+        dispatch(loadBlockingConfig()).unwrap(),
+      ]);
+
+      await Promise.all([
+        dispatch(loadOverview()).unwrap(),
+        dispatch(loadWebsiteAnalytics()).unwrap(),
+        dispatch(loadFocusAnalytics()).unwrap(),
+        dispatch(loadHistoryAnalytics("daily")).unwrap(),
+      ]);
       navigate("/");
-    } catch {
-      // backend errors handled by Redux state
+    } catch (e) {
+      setBootstrapping(false);
+
+      console.log(e);
     }
   };
-
+  if (bootstrapping) {
+    return <Loader />;
+  }
   return (
     <AuthLayout
       title="Welcome back"
@@ -50,7 +79,7 @@ export default function Login() {
           placeholder="Enter your email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
-          disabled={loading}
+          disabled={loading || bootstrapping}
           error={fieldErrors.email}
         />
 
@@ -61,7 +90,7 @@ export default function Login() {
           placeholder="Enter your password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-          disabled={loading}
+          disabled={loading || bootstrapping}
           error={fieldErrors.password}
         />
 
@@ -77,7 +106,11 @@ export default function Login() {
           </p>
         ) : null}
 
-        <AuthButton loading={loading} disabled={loading} type="submit">
+        <AuthButton
+          loading={loading}
+          disabled={loading || bootstrapping}
+          type="submit"
+        >
           Sign in
         </AuthButton>
 

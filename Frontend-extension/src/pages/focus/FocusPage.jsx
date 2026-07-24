@@ -4,12 +4,12 @@ import FocusStats from "@/components/ui/FocusStats";
 import AudioPlayer from "@/components/ui/AudioPlayer";
 import DailyGoal from "@/components/ui/DailyGoal";
 import { useSelector } from "react-redux";
-import { buildAnalyticsData } from "@/utils/analyticService";
+import Loader from "@/components/Loader";
 function FocusPage() {
-    const { overview, focus } = useSelector((state) => state.analytics);
-
-
-
+  const { overview, focus, loading } = useSelector((state) => state.analytics);
+  if (loading || !overview || !focus) {
+    return <Loader />;
+  }
   return (
     <main className="min-h-screen w-full mt-12  p-8 lg:p-4 xl:p-0">
       <section>
@@ -25,7 +25,7 @@ function FocusPage() {
       </section>
       <section className="flex mt-8 flex-col md:flex-row  gap-8 justify-between ">
         <div className="w-full md:flex-2 bg-neutral-secondary border border-neutral-100 shadow-sm rounded-md p-4">
-          <DailyGoal/>
+          <DailyGoal />
         </div>
         <div className="w-full md:flex-4 border border-neutral-100  bg-neutral-secondary shadow-sm rounded-md ">
           <AudioPlayer />

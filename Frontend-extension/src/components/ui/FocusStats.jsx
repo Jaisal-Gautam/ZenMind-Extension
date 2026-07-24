@@ -1,6 +1,10 @@
 import { analyticsTime } from "@/utils/formatTime";
 import { Flame } from "lucide-react";
 function FocusStats({ focus, overview }) {
+  console.log({
+    overview,
+    focus,
+  });
   return (
     <>
       <h2 className="text-xl font-bold text-neutral-700 mb-6">Today's Focus</h2>

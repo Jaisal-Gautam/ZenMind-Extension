@@ -10,7 +10,7 @@ function DailyGoal() {
   const analytics = useSelector((state) => state.analytics);
   const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
 
-  const focus = analytics.overview?.focusedTime / 60 ?? 0;
+  const focus =( analytics.overview?.focusedTime ?? 0)/60;
 
   const [goalInput, setGoalInput] = useState(dailyFocusGoal);
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -13,7 +13,6 @@ export const getOverview = async (user) => {
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
 
-
   const { todayStart, tomorrowStart } = getDayBounds(timezone);
 
   const [focusStats, blockedStats, completedSessions, mostUsed, mostBlocked] =
@@ -90,12 +89,17 @@ export const getOverview = async (user) => {
 export const getWebsiteAnalytics = async (user) => {
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
+  const { todayStart, tomorrowStart } = getDayBounds(timezone);
 
   const [websiteStats, blockedStats] = await Promise.all([
     WebsiteSession.aggregate([
       {
         $match: {
           user: objectUserId,
+          startTime: {
+    $gte: todayStart,
+    $lt: tomorrowStart,
+  },
         },
       },
       {
@@ -119,6 +123,10 @@ export const getWebsiteAnalytics = async (user) => {
       {
         $match: {
           user: objectUserId,
+          blockedAt: {
+    $gte: todayStart,
+    $lt: tomorrowStart,
+  },
         },
       },
       {
@@ -163,12 +171,17 @@ export const getWebsiteAnalytics = async (user) => {
 export const getFocusAnalytics = async (user) => {
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
+  const { todayStart, tomorrowStart } = getDayBounds(timezone);
   const [focusStats, peakHourStats, hourlyStats] = await Promise.all([
     Focus.aggregate([
       {
         $match: {
           user: objectUserId,
           completed: true,
+          startTime: {
+            $gte: todayStart,
+            $lt: tomorrowStart,
+          },
         },
       },
       {
@@ -186,6 +199,10 @@ export const getFocusAnalytics = async (user) => {
         $match: {
           user: objectUserId,
           completed: true,
+          startTime: {
+            $gte: todayStart,
+            $lt: tomorrowStart,
+          },
         },
       },
       {
@@ -214,6 +231,10 @@ export const getFocusAnalytics = async (user) => {
         $match: {
           user: objectUserId,
           completed: true,
+          startTime: {
+            $gte: todayStart,
+            $lt: tomorrowStart,
+          },
         },
       },
       {
@@ -230,15 +251,14 @@ export const getFocusAnalytics = async (user) => {
     ]),
   ]);
 
-  const focus = focusStats[0] || {
+  const focus = focusStats[0] ?? {
     longestSession: 0,
     averageSession: 0,
     totalFocusTime: 0,
   };
 
-  const peakHour = peakHourStats[0] || { _id: null };
+  const peakHour = peakHourStats[0] ?? { _id: null };
 
-  // Build complete 24-hour dataset
   const hourlyMap = new Map(
     hourlyStats.map((hour) => [hour._id, hour.minutes]),
   );
@@ -388,8 +408,7 @@ export const getMostUsedWebsite = async (user) => {
 export const getMostBlockedWebsite = async (user) => {
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
-  const { todayStart, tomorrowStart } =
-    getDayBounds(timezone);
+  const { todayStart, tomorrowStart } = getDayBounds(timezone);
 
   const websites = await BlockedAttempt.aggregate([
     {

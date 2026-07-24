@@ -28,9 +28,13 @@ function StoreProvider({ children }) {
           await appStore.dispatch(loadPreferences()).unwrap();
           await appStore.dispatch(loadBlockingConfig()).unwrap();
           await appStore.dispatch(loadOverview()).unwrap();
+
           await appStore.dispatch(loadWebsiteAnalytics()).unwrap();
+
           await appStore.dispatch(loadFocusAnalytics()).unwrap();
+
           await appStore.dispatch(loadHistoryAnalytics("daily")).unwrap();
+
           const { focus, settings } = appStore.getState();
 
           if (!focus.isActive && !focus.isPaused) {
@@ -47,6 +51,7 @@ function StoreProvider({ children }) {
         }
       } catch (err) {
         console.log("Session restore skipped:", err);
+        console.error("Session restore failed:", err);
       } finally {
         setStore(appStore);
       }
@@ -56,13 +61,16 @@ function StoreProvider({ children }) {
   }, []);
 
   if (!store) {
-    return <Loader/>
+    return <Loader />;
   }
 
-  return <Provider store={store}>
+  return (
+    <Provider store={store}>
       <BackgroundEventListener />
-      <DayChangeListener/>
-    {children}</Provider>;
+      <DayChangeListener />
+      {children}
+    </Provider>
+  );
 }
 
 export default StoreProvider;
