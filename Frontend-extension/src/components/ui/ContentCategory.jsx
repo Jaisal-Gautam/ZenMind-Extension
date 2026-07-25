@@ -32,13 +32,13 @@ function ContentCategory() {
   };
 
   return (
-    <div className="rounded-2xl border border-neutral-200 bg-neutral-tertiary p-8 shadow-sm">
+    <div className="rounded-2xl border border-border-default bg-page dark:bg-app p-8 shadow-sm">
       <div className="mb-8">
-        <h2 className="text-3xl font-semibold text-green-primary">
+        <h2 className="text-3xl font-semibold text-brand">
           Content Categories
         </h2>
 
-        <p className="mt-2 text-neutral-500">
+        <p className="mt-2 text-text-soft">
           Block an entire category of distracting websites with one click.
         </p>
       </div>
@@ -55,7 +55,7 @@ function ContentCategory() {
           return (
             <motion.div
               layout
-              className="mb-5 break-inside-avoid overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
+              className="mb-5 break-inside-avoid overflow-hidden rounded-2xl border border-border-default bg-surface shadow-sm transition-colors hover:bg-surface-soft"
             >
               {/* Header */}
               <div
@@ -63,16 +63,16 @@ function ContentCategory() {
                 onClick={() => setExpanded(isOpen ? null : category.id)}
               >
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100">
-                    <Icon size={22} className="text-green-primary" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-surface-soft">
+                    <Icon size={22} className="text-brand-muted dark:text-brand" />
                   </div>
 
                   <div>
-                    <h3 className="font-semibold text-neutral-800">
+                    <h3 className="font-semibold text-text">
                       {category.name}
                     </h3>
 
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-sm text-text-disabled">
                       {category.domains.length} websites
                     </p>
                   </div>
@@ -92,7 +92,7 @@ function ContentCategory() {
                       rotate: isOpen ? 180 : 0,
                     }}
                     transition={{ duration: 0.2 }}
-                    className="text-neutral-400"
+                    className="text-text-disabled"
                   >
                     <ChevronDown size={18} />
                   </motion.div>
@@ -119,8 +119,8 @@ function ContentCategory() {
                     }}
                     className="overflow-hidden"
                   >
-                    <div className="border-t border-neutral-200 bg-neutral-50 px-5 py-4">
-                      <p className="mb-3 text-sm font-medium text-neutral-500">
+                    <div className="border-t border-border-default bg-surface-soft px-5 py-4">
+                      <p className="mb-3 text-sm font-medium text-text-soft">
                         Included Websites
                       </p>
 
@@ -128,7 +128,7 @@ function ContentCategory() {
                         {category.domains.map((site) => (
                           <span
                             key={site}
-                            className="rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-700"
+                            className="rounded-full border border-border-default bg-surface px-3 py-1 text-xs font-medium text-text-muted hover:bg-surface-hover"
                           >
                             {site}
                           </span>
@@ -151,11 +151,11 @@ function ToggleSwitch({ checked, onChange }) {
     <button
       onClick={onChange}
       className={`relative h-7 w-12 rounded-full transition-colors ${
-        checked ? "bg-green-primary" : "bg-neutral-300"
+        checked ? "bg-brand dark:bg-brand-muted" : "bg-border-strong"
       }`}
     >
       <motion.div
-        className="absolute top-1 h-5 w-5 rounded-full bg-white shadow-md"
+        className="absolute top-1 h-5 w-5 rounded-full bg-surface shadow-md"
         animate={{
           left: checked ? 24 : 4,
         }}

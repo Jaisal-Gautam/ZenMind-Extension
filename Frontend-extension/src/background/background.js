@@ -185,7 +185,6 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
   const auth = await getAuth();
   switch (message.type) {
     case "AUDIO_STATE":
-      await ensureOffscreenDocument();
       chrome.runtime.sendMessage(message);
       break;
     case "PLAY":
@@ -304,12 +303,10 @@ const OFFSCREEN_DOCUMENT_PATH = "offscreen.html";
 let creatingOffscreen = null;
 
 async function ensureOffscreenDocument() {
-  const auth = await getAuth();
   const offscreenUrl = chrome.runtime.getURL(OFFSCREEN_DOCUMENT_PATH);
 
   if (creatingOffscreen) {
-    await creatingOffscreen;
-    return;
+    return creatingOffscreen;
   }
 
   if ("getContexts" in chrome.runtime) {
@@ -319,33 +316,28 @@ async function ensureOffscreenDocument() {
     });
 
     if (contexts.length > 0) return;
-  } else {
-    const clients = await self.clients.matchAll();
-    const hasOffscreen = clients.some((client) => client.url === offscreenUrl);
-
-    if (hasOffscreen) return;
   }
 
-  try {
-    creatingOffscreen = chrome.offscreen.createDocument({
+  creatingOffscreen = chrome.offscreen
+    .createDocument({
       url: OFFSCREEN_DOCUMENT_PATH,
       reasons: ["AUDIO_PLAYBACK"],
-      justification: "Play ambient audio across popup and extension pages.",
+      justification: "Play ambient audio.",
+    })
+    .catch((err) => {
+      if (
+        !err.message.includes("Only a single offscreen document")
+      ) {
+        throw err;
+      }
+    })
+    .finally(() => {
+      creatingOffscreen = null;
     });
 
-    await creatingOffscreen;
-  } finally {
-    creatingOffscreen = null;
-  }
+  return creatingOffscreen;
 }
 
-chrome.runtime.onStartup.addListener(() => {
-  ensureOffscreenDocument();
-});
-
-chrome.runtime.onInstalled.addListener(() => {
-  ensureOffscreenDocument();
-});
 
 async function timerFunction() {
   const auth = await getAuth();

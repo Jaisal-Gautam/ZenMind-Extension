@@ -9,7 +9,7 @@ import { analyticsTime } from "@/utils/formatTime";
 const chartConfig = {
   minutes: {
     label: "Focus Time",
-    color: "#3D6B59",
+    color: "var(--color-brand)",
   },
 };
 
@@ -21,26 +21,26 @@ const FocusChart = ({ focus, overview }) => {
   };
 
   return (
-    <div className="rounded-xl w-full border bg-white p-6 shadow-sm">
+    <div className="rounded-xl w-full border border-border-default bg-surface dark:bg-app p-6 shadow-sm">
       <div className="mb-6">
-        <h2 className="text-2xl font-mono text-green-primary">
+        <h2 className="text-2xl font-mono text-text-text ">
           Focus Throughout the Day
         </h2>
       </div>
 
-      <div className="mb-8 flex items-center justify-between rounded-lg bg-neutral-50 p-4">
+      <div className="mb-8 flex items-center justify-between rounded-lg bg-surface-muted dark:bg-surface border border-border-light p-4">
         <div>
-          <p className="text-sm text-neutral-500">Peak Focus Hour</p>
+          <p className="text-sm text-text-disabled">Peak Focus Hour</p>
 
-          <p className="text-xl font-semibold text-green-primary">
+          <p className="text-xl font-semibold text-brand dark:text-brand">
             {peak.label}
           </p>
         </div>
 
         <div className="text-right">
-          <p className="text-sm text-neutral-500">Focused</p>
+          <p className="text-sm text-text-disabled">Focused</p>
 
-          <p className="text-xl font-semibold text-green-primary">
+          <p className="text-xl font-semibold text-brand dark:text-brand">
             {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
           </p>
         </div>
@@ -129,7 +129,7 @@ const FocusChart = ({ focus, overview }) => {
                   cx={props.cx}
                   cy={props.cy}
                   r={4}
-                  fill="white"
+                  fill="var(--color-surface)"
                   stroke="var(--color-minutes)"
                   strokeWidth={2}
                 />
@@ -137,6 +137,9 @@ const FocusChart = ({ focus, overview }) => {
             }}
             activeDot={{
               r: 7,
+              fill: "var(--color-brand)",
+              stroke: "var(--color-surface)",
+              strokeWidth: 2,
             }}
             strokeLinecap="round"
             strokeLinejoin="round"

@@ -179,13 +179,13 @@ export default function ForgotPassword() {
             />
 
             {error && (
-              <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
                 {error}
               </p>
             )}
 
             {success && (
-              <p className="rounded-2xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-800">
+              <p className="rounded-2xl border border-brand bg-success-soft px-4 py-3 text-sm text-brand">
                 {success}
               </p>
             )}
@@ -198,14 +198,12 @@ export default function ForgotPassword() {
 
         {step === "otp" && (
           <>
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-sm text-slate-600">
+            <div className="rounded-2xl border border-border-default bg-surface dark:bg-page text-text p-4">
+              <p className="text-sm text-text-soft">
                 We've sent a verification code to
               </p>
 
-              <p className="mt-1 font-semibold text-slate-900">
-                {maskEmail(email)}
-              </p>
+              <p className="mt-1 font-semibold text-text">{maskEmail(email)}</p>
 
               <button
                 type="button"
@@ -215,7 +213,7 @@ export default function ForgotPassword() {
                   setFieldErrors({});
                   setStep("email");
                 }}
-                className="mt-3 text-sm font-medium text-green-primary hover:underline"
+                className="mt-3 text-sm font-medium text-brand transition-colors hover:text-brand-muted"
               >
                 Incorrect email? Change email
               </button>
@@ -234,7 +232,7 @@ export default function ForgotPassword() {
             />
 
             {error && (
-              <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
                 {error}
               </p>
             )}
@@ -263,7 +261,7 @@ export default function ForgotPassword() {
               disabled={loading}
             />
 
-            <p className="-mt-3 text-xs leading-5 text-slate-500">
+            <p className="-mt-3 text-xs leading-5 text-text-disabled">
               {passwordRequirements}
             </p>
 
@@ -278,7 +276,7 @@ export default function ForgotPassword() {
             />
 
             {error && (
-              <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
                 {error}
               </p>
             )}

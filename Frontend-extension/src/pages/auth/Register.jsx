@@ -98,10 +98,10 @@ const { loading, error, fieldErrors } = useSelector(
         />
 
         {(validationError || error) && (
-          <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
-            {validationError || error}
-          </p>
-        )}
+  <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
+    {validationError || error}
+  </p>
+)}
 
         <AuthButton loading={loading} disabled={loading} type="submit">
           Create account

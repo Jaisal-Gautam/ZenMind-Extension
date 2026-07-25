@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { analyticsTime,goalTime } from "@/utils/formatTime";
+import { analyticsTime, goalTime } from "@/utils/formatTime";
 import { Sparkles } from "lucide-react";
 import { updatePreferences } from "@/app/slices/setting/settingsThunk";
 function DailyGoal() {
@@ -186,21 +186,22 @@ export const PopupDailyGoal = () => {
     dailyFocusGoal > 0 ? Math.min((focus / dailyFocusGoal) * 100, 100) : 0;
 
   return (
-    <div className="mt-4 w-full rounded-lg border border-border-light bg-page p-5 font-sans shadow-sm backdrop-blur-sm">
+    <div className="mt-4 w-full rounded-lg border border-border-default bg-surface p-5 shadow-sm">
       <h3 className="mb-4 flex justify-between text-xs font-semibold uppercase tracking-[0.15em] text-text-disabled">
         <span>Daily Goal</span>
-        <Sparkles className="text-brand" />
+        <Sparkles className="text-brand " />
       </h3>
 
       <div>
-        <span className="tracking-tight text-brand">
-          <span className="text-xl font-semibold">
+        <div className="tracking-tight">
+          <span className="text-xl font-semibold text-brand">
             {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
-          </span>{" "}
-          Deep
-        </span>
+          </span>
 
-        <div className="my-2 h-2 w-full rounded-full border bg-border-light">
+          <span className="ml-1 text-text-soft">Deep</span>
+        </div>
+
+        <div className="my-2 h-2 w-full rounded-full bg-border-light">
           <motion.div
             className="h-full bg-brand-muted"
             initial={{ width: "0%" }}

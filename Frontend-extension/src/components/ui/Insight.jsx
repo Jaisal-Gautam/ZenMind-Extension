@@ -3,23 +3,21 @@ import { useSelector } from "react-redux";
 import { buildAnalyticsData } from "@/utils/analyticService";
 
 function Insight() {
-  const { focus } = useSelector(
-    (state) => state.analytics,
-  );
+  const { focus } = useSelector((state) => state.analytics);
   const peak = focus?.peakFocusHour ?? {
     hour: 0,
     label: "12 AM - 1 AM",
   };
   return (
-    <div className="w-full relative overflow-visible bg-green-primary p-4 rounded-4xl border backdrop-blur-sm shadow-sm font-sans mt-4 z-0">
+    <div className="w-full relative overflow-visible bg-brand dark:bg-brand-muted p-4 rounded-4xl backdrop-blur-sm shadow-sm font-sans mt-4 z-0">
       {" "}
       {/* Subtle Background Graphic */}
-      <div className="absolute -right-4 -bottom-2 opacity-10 pointer-events-none text-white">
-        <Brain size={60} strokeWidth={1.5} />
+      <div className="absolute -right-4 -bottom-2 opacity-10 pointer-events-none text-text-inverse dark:text-brand overflow-hidden">
+        <Brain className="dark:text-brand " size={60} strokeWidth={1.5} />
       </div>
       <div className="relative z-10 flex flex-col gap-2">
         {/* Header Label */}
-        <div className="flex items-center gap-3 text-neutral-primary">
+        <div className="flex items-center gap-3  text-text-inverse">
           <Lightbulb size={20} strokeWidth={2.5} />
           <span className="text-sm font-semibold tracking-tight uppercase">
             Insight
@@ -27,9 +25,9 @@ function Insight() {
         </div>
 
         {/* Main Content */}
-        <p className="text-neutral-primary  text-sm tracking-wide font-medium pr-2">
-          You're most productive between{" "} <br />
-          <span className="text-green-secondary tracking-wider font-semibold">
+        <p className="text-text-inverse  text-sm tracking-wide font-medium pr-2">
+          You're most productive between <br />
+          <span className="font-semibold tracking-wider dark:text-brand text-brand-muted ">
             {peak.label}
           </span>
           . Schedule deep work then!

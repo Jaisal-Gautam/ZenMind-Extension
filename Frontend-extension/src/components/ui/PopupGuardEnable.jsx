@@ -17,29 +17,29 @@ function PopupGuardEnable() {
 
   const activeMode = useSelector((state) => state.blocking.activeMode);
   const modeOptions = [
-  { value: "normal", label: "Normal" },
-  { value: "deep", label: "Deep Focus" },
-  { value: "strict", label: "Strict" },
-];
-  const handleModeChange = async(newMode) => await dispatch(
-  updateBlockingSettings({
-    activeMode: newMode,
-  })
-).unwrap();;
-  
+    { value: "normal", label: "Normal" },
+    { value: "deep", label: "Deep Focus" },
+    { value: "strict", label: "Strict" },
+  ];
+  const handleModeChange = async (newMode) =>
+    await dispatch(
+      updateBlockingSettings({
+        activeMode: newMode,
+      }),
+    ).unwrap();
 
   return (
-    <div className="w-full bg-white/60 backdrop-blur-sm border border-gray-100 p-4 mt-4 rounded-lg shadow-sm">
+    <div className="w-full bg-surface/70 backdrop-blur-sm border border-border-default p-4 mt-4 rounded-lg shadow-sm">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
           {isLockdown ? (
-            <Lock className="w-7 h-7 text-green-secondary" strokeWidth={2.5} />
+            <Lock className="w-7 h-7 text-brand" strokeWidth={2.5} />
           ) : (
-            <Unlock className="w-7 h-7 text-slate-700" strokeWidth={2.5} />
+            <Unlock className="w-7 h-7 text-text-soft" strokeWidth={2.5} />
           )}
           <div>
-            <h3 className="text-sm font-semibold text-slate-900">Guard</h3>
-            <p className="text-xs text-slate-500">
+            <h3 className="text-sm font-semibold text-text">Guard</h3>
+            <p className="text-xs text-text-disabled">
               {isLockdown ? "Blocking is active" : "Enable blocking "}
             </p>
           </div>
@@ -106,7 +106,7 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
     >
       {disabled && isHover && (
         <div className="z-9999 absolute left-1/2 top-full mt-2 -translate-x-1/2 -translate-y-3">
-          <div className="bg-neutral-primary text-neutral-600 text-xs px-2 py-1 rounded-md shadow-sm">
+          <div className="bg-surface text-text-soft text-xs px-2 py-1 rounded-md shadow-sm">
             Enable blocking to choose a mode
           </div>
         </div>
@@ -115,8 +115,10 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
         ref={triggerRef}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className={`flex items-center justify-between w-full bg-white p-2.5 pl-10 pr-3 rounded-lg shadow-sm border text-sm font-medium text-slate-900 ${
-          disabled ? "opacity-60" : ""
+        className={`flex w-full items-center justify-between rounded-lg border border-border-default bg-surface p-2.5 pl-10 pr-3 text-sm font-medium text-text shadow-sm transition-colors ${
+          disabled
+            ? "cursor-not-allowed opacity-60"
+            : "hover:border-border-brand hover:bg-surface-soft"
         }`}
       >
         <span>{selectedOption?.label ?? selected}</span>
@@ -127,11 +129,17 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
-      {isOpen && coords &&
+      {isOpen &&
+        coords &&
         createPortal(
           <AnimatePresence>
             <motion.div
@@ -139,8 +147,14 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.15 }}
-              style={{ position: "absolute", top: coords.top, left: coords.left, width: coords.width, zIndex: 99999 }}
-              className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden p-1.5"
+              style={{
+                position: "absolute",
+                top: coords.top,
+                left: coords.left,
+                width: coords.width,
+                zIndex: 99999,
+              }}
+              className="overflow-hidden rounded-xl border border-border-default bg-surface p-1.5 shadow-sm"
             >
               {options.map((option) => (
                 <button
@@ -148,15 +162,25 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
                   onClick={() => !disabled && handleSelect(option.value)}
                   className={`w-full text-left py-2 px-3 text-sm rounded-md transition-colors flex items-center justify-between ${
                     selected === option.value
-                      ? "bg-slate-100 text-slate-900"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      ? "bg-surface-soft text-text"
+                      : "text-text-soft hover:text-text hover:bg-surface-soft"
                   }`}
                 >
                   <span>{option.label}</span>
 
                   {selected === option.value && (
-                    <svg className="w-4 h-4 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-4 h-4 text-brand"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                   )}
                 </button>
@@ -165,8 +189,6 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
           </AnimatePresence>,
           document.body,
         )}
-
-      
     </div>
   );
 };

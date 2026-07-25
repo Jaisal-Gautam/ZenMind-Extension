@@ -30,8 +30,15 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
   }
 });
+let lastSent = 0;
 
 const sendAudioState = () => {
+  const now = Date.now();
+
+  if (now - lastSent < 250) return;
+
+  lastSent = now;
+
   chrome.runtime.sendMessage({
     type: "AUDIO_STATE",
     currentTime: audio.currentTime,

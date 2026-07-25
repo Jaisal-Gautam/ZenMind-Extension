@@ -23,9 +23,9 @@ function BlockedSitesCard() {
     ).unwrap();
   };
   return (
-    <div className="w-full bg-neutral-tertiary  shadow-sm  p-4 md:p-6 lg:p-8 border border-gray-200 rounded-md border-t-6 border-t-green-secondary">
+    <div className="w-full bg-page dark:bg-app  shadow-sm  p-4 md:p-6 lg:p-8 border border-border-default rounded-md border-t-6 border-t-brand dark:border-t-brand-muted">
       <Card
-        icon={<Sprout className=" size-6 lg:size-8 text-green-primary" />}
+        icon={<Sprout className=" size-6 lg:size-8 text-brand" />}
         heading="Normal Mode"
         content="Balanced mode for everyday tasks.Always blocked while Website Blocking is enabled."
         dispatcher={handleAddWebsite}

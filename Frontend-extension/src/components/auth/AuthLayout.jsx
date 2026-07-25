@@ -1,4 +1,4 @@
-import authImage from "@/assets/Auth.jpeg";
+import authImage from "@/assets/Auth.png";
 import { Link } from "react-router-dom";
 
 export default function AuthLayout({
@@ -10,37 +10,41 @@ export default function AuthLayout({
   footerLinkTo,
 }) {
   return (
-    <div className="min-h-screen  py-6 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-h-200 max-w-6xl overflow-hidden rounded-[2rem] bg-white shadow-lg border border-gray-200 sm:grid-cols-1 lg:grid-cols-[1fr_1fr]">
+    <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
+      <div className="mx-auto grid max-h-200 max-w-6xl overflow-hidden rounded-[2rem] border border-border-default bg-surface shadow-lg sm:grid-cols-1 lg:grid-cols-[1fr_1fr]">
         <div className="px-6 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-16">
           <div className="max-w-xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-500">
+            <p className="text-text-disabled text-sm font-semibold uppercase tracking-[0.2em]">
               Welcome to ZenMind
             </p>
-            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-green-primary  sm:text-4xl">
+
+            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-brand sm:text-4xl">
               {title}
             </h1>
-            <p className="mt-4 text-sm leading-6 text-slate-500 sm:text-base">
+
+            <p className="mt-4 text-sm leading-6 text-text-soft sm:text-base">
               {subtitle}
             </p>
           </div>
 
-          <div className="mt-10 space-y-6">{children}</div>
+          <div className="mt-10 space-y-6">
+            {children}
+          </div>
 
-          {footerText && footerLinkText && footerLinkTo ? (
-            <p className="mt-10 text-sm text-slate-500">
+          {footerText && footerLinkText && footerLinkTo && (
+            <p className="mt-10 text-sm text-text-soft">
               {footerText}{" "}
               <Link
                 to={footerLinkTo}
-                className="font-semibold text-slate-900 transition hover:text-slate-700"
+                className="font-semibold text-brand transition-colors hover:text-brand-muted"
               >
                 {footerLinkText}
               </Link>
             </p>
-          ) : null}
+          )}
         </div>
 
-        <div className="relative overflow-hidden bg-slate-900 sm:h-72 lg:h-auto">
+        <div className="relative overflow-hidden bg-page dark:bg-app sm:h-72 lg:h-auto">
           <img
             src={authImage}
             alt="Authentication design"

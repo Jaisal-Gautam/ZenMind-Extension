@@ -23,9 +23,9 @@ function DeepFocusCard() {
     ).unwrap();
   };
   return (
-    <div className="w-full bg-neutral-tertiary  shadow-sm  p-4 md:p-6 lg:p-8 border border-gray-200 rounded-md border-t-6 border-t-green-primary">
+    <div className="w-full bg-page dark:bg-app  shadow-sm  p-4 md:p-6 lg:p-8 border border-border-default rounded-md border-t-6 dark:border-t-brand border-t-brand-muted">
       <Card
-        icon={<Timer className=" size-6 lg:size-8 text-green-primary" />}
+        icon={<Timer className=" size-6 lg:size-8 text-brand" />}
         heading="Deep Focus"
         content="High intensity mode for deep work. Blocked only during Deep Focus sessions."
         dispatcher={handleAddWebsite}

@@ -6,7 +6,7 @@ import AuthInput from "@/components/auth/AuthInput";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { authApi } from "@/api/auth.api";
 import { logoutLocal } from "@/app/slices/auth/authSlice";
-import { removeAuth,removeData } from "@/utils/chromeStorage";
+import { removeAuth, removeData } from "@/utils/chromeStorage";
 import { parseApiError } from "@/utils/apiError";
 import {
   getPasswordValidationError,
@@ -107,7 +107,7 @@ export default function ChangePassword() {
           disabled={loading}
           error={fieldErrors.newPassword}
         />
-        <p className="-mt-3 text-xs leading-5 text-slate-500">
+        <p className="-mt-3 text-xs leading-5 text-text-disabled">
           {passwordRequirements}
         </p>
         <AuthInput
@@ -122,7 +122,7 @@ export default function ChangePassword() {
         />
 
         {error ? (
-          <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger-max">
             {error}
           </p>
         ) : null}

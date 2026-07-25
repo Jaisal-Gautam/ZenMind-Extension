@@ -95,13 +95,14 @@ export default function Login() {
         />
 
         {(validationError || error) && (
-          <p className="rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
+            
             {validationError || error}
           </p>
         )}
 
         {location.state?.successMessage ? (
-          <p className="rounded-2xl border border-green-100 bg-green-50 px-4 py-3 text-sm text-green-800">
+          <p className="rounded-2xl border border-brand bg-success-soft px-4 py-3 text-sm text-brand">
             {location.state.successMessage}
           </p>
         ) : null}
@@ -117,7 +118,7 @@ export default function Login() {
         <div className="text-right">
           <Link
             to="/auth/forgot-password"
-            className="text-sm font-semibold text-slate-700 transition hover:text-green-primary"
+            className="text-sm font-semibold text-brand transition-colors hover:text-brand-muted"
           >
             Forgot your password?
           </Link>

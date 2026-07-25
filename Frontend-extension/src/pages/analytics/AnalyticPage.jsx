@@ -20,13 +20,13 @@ function AnalyticPage() {
   return (
     <main className=" min-h-screen w-full mt-12  p-8 lg:p-4 xl:p-0">
       <section className="  flex items-center  max-w-2xl mx-auto justify-center">
-        <h1 className="md:text-4xl text-2xl text-green-primary text-center ">
+        <h1 className="md:text-4xl text-2xl text-brand text-center ">
           Understand your focus habits without the pressure of traditional
           productivity metrics.
         </h1>
       </section>
-      <section className="relative mt-8 border border-gray-200 bg-neutral-tertiary shadow-primary p-8 rounded-md  flex flex-col items-center  mx-auto justify-center">
-        <h2 className="text-2xl font-medium tracking-tight text-green-primary mb-6">
+      <section className="relative mt-8 border border-border-default dark:bg-app bg-text-inverse  shadow-primary p-8 rounded-md  flex flex-col items-center  mx-auto justify-center">
+        <h2 className="text-2xl font-medium tracking-tight text-brand mb-6">
           Todays Analytics
         </h2>
         <AnalyticsCards overview={overview} />
@@ -39,14 +39,14 @@ function AnalyticPage() {
         <FocusChart focus={focus} overview={overview} />
       </section>
       <section className="mt-8 rounded-md  flex  items-start gap-16 ">
-        <div className="w-full md:flex-1 border border-gray-200  bg-neutral-secondary shadow-sm rounded-md p-4">
+        <div className="w-full md:flex-1 border border-border-default   dark:bg-app bg-text-inverse shadow-sm rounded-md p-4">
           <FocusForest dashboardData={dashboard.sanctuary} />
         </div>
-        <div className="w-full md:flex-1 border border-gray-200  bg-neutral-secondary shadow-sm rounded-md p-4">
+        <div className="w-full md:flex-1 border border-border-default   dark:bg-app bg-text-inverse shadow-sm rounded-md p-4">
           <FocusInsight focus={focus} overview={overview} />
         </div>
       </section>
-      <section className="w-full border border-gray-200  bg-neutral-secondary shadow-sm rounded-md  flex-col  justify-center items-center mt-8">
+      <section className="w-full border border-border-default dark:bg-app   bg-text-inverse shadow-sm rounded-md  flex-col  justify-center items-center mt-8">
         <SanctuaryCard dashboardData={dashboard.sanctuary} />
       </section>
     </main>

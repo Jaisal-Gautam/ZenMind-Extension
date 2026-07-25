@@ -1,4 +1,4 @@
-import Seed from "@/assets/Sanctuary/seed.jpeg";
+import Seed from "@/assets/Sanctuary/seed.png";
 import Sprout from "@/assets/Sanctuary/sprout.jpeg";
 import Sapling from "@/assets/Sanctuary/sapling.jpeg";
 import YoungPine from "@/assets/Sanctuary/young_pine.jpeg";

@@ -6,6 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+    --color-danger-max: var(--color-danger-max);
   --font-heading: var(--font-sans);
   --font-sans: "Geist Variable", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
@@ -79,9 +80,11 @@
 
   --color-overlay: var(--color-overlay);
   --color-success-soft: var(--color-success-soft);
+
 }
 
 :root {
+  --color-brand-glow: rgb(187 247 208 / 0.45);
   --color-success-soft: #edf7e8;
   /* Brand */
   --color-brand: var(--brand);
@@ -113,7 +116,7 @@
   /* Success / Error */
   --color-success: var(--brand-muted);
   --color-danger: #dc2626;
-  --color-danger-soft: #fef2f2;
+  --color-danger-soft: #ffbdbd;
 
   /* Overlay */
   --color-overlay: rgb(0 0 0 / 0.4);
@@ -160,11 +163,15 @@
   --page: #fdfdfc;
   --shadow-primary: 0 3px 2px 0.5px rgb(0, 0, 0, 0.1);
   --color-ring-subtle: #0000000d;
+  --color-danger-max:oklch(50.5% 0.213 27.518);
 }
 
+
 .dark {
+    --color-brand-glow: rgb(34 197 94 / 0.18);
   --color-danger: #ef4444;
-  --color-danger-soft: #3b1010;
+  --color-danger-soft: #3b101063;
+  --color-danger-max:oklch(39.6% 0.141 25.723);
   --color-success: var(--brand-muted);
   --color-accent-slider: var(--brand);
   --background: oklch(0.145 0 0);

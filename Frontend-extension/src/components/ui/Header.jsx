@@ -28,18 +28,22 @@ function Header() {
   };
 
   return (
-    <div className="flex justify-between w-full max-h-12 p-2 bg-white border-b-2 border-gray-200 ">
-      <h2 className="text-xl font-medium text-green-primary ">ZenMind</h2>
+    <div className="flex w-full max-h-12 items-center justify-between border-b border-border-default bg-surface p-2">
+      <h2 className="text-xl font-medium text-brand ">ZenMind</h2>
       {isAuthenticated ? (
         <button
           onClick={handleLogout}
-          className="text-sm font-semibold text-green-primary transition hover:text-green-secondary"
+          className="text-sm font-semibold text-brand transition-colors hover:text-brand-muted"
         >
           Logout
         </button>
       ) : (
-        <button onClick={openSetting} aria-label="Open dashboard">
-          <User className="hover:text-green-secondary" size={25} />
+        <button
+          onClick={openSetting}
+          aria-label="Open dashboard"
+          className="rounded-lg p-1 text-text-muted transition-colors hover:bg-surface-soft hover:text-brand"
+        >
+          <User size={25} />
         </button>
       )}
     </div>

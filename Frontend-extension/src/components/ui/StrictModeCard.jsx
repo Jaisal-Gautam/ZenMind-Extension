@@ -24,9 +24,9 @@ function StrictModeCard() {
     ).unwrap();
   };
   return (
-    <div className="w-full bg-neutral-tertiary  shadow-sm  p-4 md:p-6 lg:p-8 border border-gray-200 rounded-md border-t-6 border-t-red-700">
+    <div className="w-full bg-page dark:bg-app  shadow-sm  p-4 md:p-6 lg:p-8 border border-border-default rounded-md border-t-6 border-t-danger-max">
       <Card
-        icon={<LockKeyhole className=" size-6 lg:size-8 text-red-800" />}
+        icon={<LockKeyhole className=" size-6 lg:size-8 text-danger" />}
         heading="Strict Mode"
         content="Total lockdown. Only whitelisted essential sites are allowed."
         dispatcher={handleAddWebsite}

@@ -200,7 +200,7 @@ export function PopupTimer({ taskName = "Current Session" }) {
     circumference - (progressPercentage / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 w-full max-w-sm mx-auto">
+    <div className="flex flex-col bg-page dark:bg-app items-center justify-center p-6 w-full max-w-sm mx-auto">
       <div className="relative flex items-center justify-center size-60">
         <svg
           height={radius * 2}
@@ -208,7 +208,7 @@ export function PopupTimer({ taskName = "Current Session" }) {
           className="-rotate-90 transform"
         >
           <circle
-            stroke="#f3f4f6"
+            className="stroke-surface-hover"
             fill="transparent"
             strokeWidth={stroke}
             r={normalizedRadius}
@@ -229,8 +229,8 @@ export function PopupTimer({ taskName = "Current Session" }) {
           />
         </svg>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-bold text-inverse tracking-tight leading-none mb-2">
+        <div className="absolute inset-0  flex flex-col items-center justify-center text-center">
+          <span className="text-3xl font-bold text-text tracking-tight leading-none mb-2">
             {time}
           </span>
           <span className="text-[12px] font-semibold text-text-disabled uppercase tracking-[0.12em] max-w-45 px-2 leading-tight">

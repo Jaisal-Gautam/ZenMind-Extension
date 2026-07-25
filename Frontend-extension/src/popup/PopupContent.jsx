@@ -7,7 +7,7 @@ import Insight from "@/components/ui/Insight";
 function PopupContent() {
   return (
     <>
-      <main className="min-h-full relative max-w-md bg-[#F9FAF8] p-4">
+      <main className="min-h-full relative max-w-md bg-page dark:bg-app p-4">
         <PopupTimer />
         <PopupGuardEnable />
         <Insight />

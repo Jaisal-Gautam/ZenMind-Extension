@@ -6,14 +6,14 @@ function AnalyticsCards({ overview }) {
   return (
     <div className="w-full flex flex-col md:flex-row  gap-4">
       <WeekAnalyticsCard
-        icon={<Clock className="text-green-secondary size-8" />}
+        icon={<Clock className="text-brand-muted size-8" />}
         heading="Focused Time"
         value={
           overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"
         }
       />
       <WeekAnalyticsCard
-        icon={<BadgeCheck className="text-green-secondary size-8" />}
+        icon={<BadgeCheck className="text-brand-muted size-8" />}
         heading="Focus Sessions"
         value={overview?.focusSessions ?? 0}
       />
@@ -22,8 +22,8 @@ function AnalyticsCards({ overview }) {
           <Flame
             className={`${
               (overview?.currentStreak ?? 0) < (overview?.longestStreak ?? 0)
-                ? "text-green-secondary"
-                : "text-[#D01C1F]"
+                ? "text-danger"
+                :  "text-brand-muted"
             } size-8`}
           />
         }
@@ -33,7 +33,7 @@ function AnalyticsCards({ overview }) {
         }`}
       />
       <WeekAnalyticsCard
-        icon={<ShieldBan className="text-red-700 size-8" />}
+        icon={<ShieldBan className="text-danger size-8" />}
         heading="Distraction Blocked"
         value={overview?.blockedAttempts ?? 0}
       />

@@ -205,7 +205,7 @@ const PlayerControls = ({
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="w-8 h-8 rounded-full border border-brand-muted flex items-center justify-center text-brand-muted hover:bg-surface-muted transition-colors"
+          className="w-8 h-8 rounded-full border border-brand-muted flex items-center justify-center text-brand hover:bg-surface-muted transition-colors"
           onClick={onPlayPause}
         >
           {isPlaying ? (
@@ -334,7 +334,7 @@ export function PopupAudioPlayer() {
   } = useAudioPlayer();
   // --- Render ---
   return (
-    <div className="w-full  p-5 bg-page rounded-lg border border-border-light backdrop-blur-sm shadow-sm font-sans mt-4">
+    <div className="w-full  p-5 bg-page dark:bg-app rounded-lg border border-border-light backdrop-blur-sm shadow-sm font-sans mt-4">
       {/* Top Label */}
       <h3 className="text-xs font-semibold tracking-[0.15em] text-text-disabled mb-4 ml-1 uppercase">
         Ambience
@@ -344,13 +344,13 @@ export function PopupAudioPlayer() {
         {/* Left: Icon & Track Info */}
         <div className="flex items-center gap-4">
           {/* Icon Container */}
-          <div className="w-14 h-14 shrink-0 bg-surface-soft rounded-2xl flex items-center justify-center text-brand-muted">
+          <div className="w-14 h-14 shrink-0 bg-surface-soft rounded-2xl flex items-center justify-center text-brand">
             <Shell size={26} strokeWidth={2} />
           </div>
 
           {/* Text Container */}
           <div className="flex flex-col justify-center">
-            <h2 className="text-sm font-bold text-brand-muted leading-tight tracking-tight ">
+            <h2 className="text-sm font-bold text-brand dark:text-brand-muted leading-tight tracking-tight ">
               {currentTrack?.title || "Select Track"}
             </h2>
           </div>
