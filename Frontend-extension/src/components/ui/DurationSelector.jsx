@@ -101,7 +101,7 @@ function DurationSelector() {
                     }),
                   );
                 }}
-               className="w-full flex flex-col items-center justify-center py-6 px-4 rounded-xl border border-border-default bg-app hover:bg-app-soft hover:border-border-brand transition-all duration-200 text-text-muted"
+               className="w-full flex flex-col items-center justify-center py-6 px-4 rounded-xl border border-border-default bg-page dark:bg-app hover:bg-app-soft hover:border-border-brand transition-all duration-200 text-text-muted"
               >
                 <Icon
                   size={24}
@@ -119,7 +119,7 @@ function DurationSelector() {
               ) && (
                 <button
                   onClick={(e) => removePreset(preset.id, e)}
-                  className="absolute top-2 right-2 text-text-disabled hover:text-danger transition-colors p-1 bg-app rounded-full opacity-0 group-hover:opacity-100 shadow-sm md:shadow-none focus:opacity-100"
+                  className="absolute top-2 right-2 text-text-disabled hover:text-danger transition-colors p-1 bg-page dark:bg-app rounded-full opacity-0 group-hover:opacity-100 shadow-sm md:shadow-none focus:opacity-100"
                   aria-label="Remove preset"
                   disabled={loading}
                 >
@@ -137,7 +137,7 @@ function DurationSelector() {
           setError(null);
           setIsModalOpen(true);
         }}
-        className="mt-8  w-full flex items-center justify-center py-3 rounded-xl border-2 border-dashed border-border-default bg-app text-text-soft font-medium hover:bg-app-soft hover:border-border-brand transition-colors duration-200"
+        className="mt-8  w-full flex items-center justify-center py-3 rounded-xl border-2 border-dashed border-border-default bg-page dark:bg-app text-text-soft font-medium hover:bg-app-soft hover:border-border-brand transition-colors duration-200"
       >
         <Plus size={18} className="mr-2" strokeWidth={2} /> Create Custom Preset
       </button>
@@ -179,7 +179,7 @@ function DurationSelector() {
                 <button
                   type="button"
                   onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-lg font-medium text-text-soft hover:bg-app-hover transition-colors"
+                  className="px-4 py-2 border border-border-light rounded-lg font-medium text-text-soft hover:bg-app-hover transition-colors"
                   disabled={loading}
                 >
                   Cancel
@@ -187,7 +187,7 @@ function DurationSelector() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-4 py-2 rounded-lg font-medium bg-brand-muted  text-text-inverse shadow-sm hover:bg-brand transition-colors disabled:cursor-not-allowed disabled:opacity-60"
+                  className="px-4 py-2 rounded-lg font-medium bg-brand-muted dark:bg-brand-muted/80  text-text shadow-sm hover:bg-brand transition-colors disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {loading ? "Saving..." : "Add Preset"}
                 </button>

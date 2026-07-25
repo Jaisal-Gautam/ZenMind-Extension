@@ -9,7 +9,7 @@ function FocusStats({ focus, overview }) {
     <>
       <h2 className="text-xl font-bold text-text-muted mb-6">Today's Focus</h2>
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div className="flex p-4 bg-app rounded-md border border-border-light flex-col gap-2">
+        <div className="flex p-4 bg-surface-hover hover:border-border-brand dark:bg-app rounded-md border border-border-light flex-col gap-2">
           <span className="text-md font-bold tracking-wide text-text-soft ">
             {" "}
             Focused Time
@@ -18,7 +18,7 @@ function FocusStats({ focus, overview }) {
             {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
           </span>
         </div>
-        <div className="flex p-4 bg-app border border-border-light rounded-md flex-col gap-2">
+        <div className="flex p-4 bg-surface-hover hover:border-border-brand dark:bg-app border border-border-light rounded-md flex-col gap-2">
           <span className="text-md font-bold tracking-wide text-text-soft ">
             {" "}
             Sessions
@@ -27,7 +27,7 @@ function FocusStats({ focus, overview }) {
             {overview?.focusSessions ?? 0}
           </span>
         </div>
-        <div className="flex p-4 bg-app border border-border-light rounded-md flex-col gap-2">
+        <div className="flex p-4 bg-surface-hover hover:border-border-brand dark:bg-app border border-border-light rounded-md flex-col gap-2">
           <span className="text-md font-bold tracking-wide text-text-soft ">
             {" "}
             Longest Session
@@ -37,7 +37,7 @@ function FocusStats({ focus, overview }) {
           </span>
         </div>
 
-        <div className="flex p-4 bg-app border border-brand/20 rounded-md flex-col gap-2">
+        <div className="flex p-4 bg-surface-soft hover:border-border-brand border border-brand/20 rounded-md flex-col gap-2">
           <span className="text-md font-bold tracking-wide text-text-soft ">
             {" "}
             Streak

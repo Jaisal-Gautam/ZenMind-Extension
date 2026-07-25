@@ -129,7 +129,7 @@ const Controls = ({ onStart, onPause, onResume, focus, onReset, loading }) => {
       <button
         onClick={focus.isActive ? onPause : focus.isPaused ? onResume : onStart}
         disabled={loading}
-        className="px-6 py-2.5 bg-brand-muted  rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-brand-muted  transition-all duration-300 w-32 disabled:cursor-not-allowed"
+        className="px-6 py-2.5 bg-brand-muted/80  text-text-muted  dark:text-text rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-brand-muted  transition-all duration-300 w-32 disabled:cursor-not-allowed"
       >
         <Play size={16} fill="currentColor" className="mr-2" />
         {focus.isActive ? "Pause" : focus.isPaused ? "Resume" : "Start"}

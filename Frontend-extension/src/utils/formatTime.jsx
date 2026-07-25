@@ -20,6 +20,17 @@ export const analyticsTime = (time) => {
     </>
   );
 };
+
+export const goalTime = (time)=>{
+  const hours = Math.floor(time / 60);
+  return (
+    <>
+      {hours > 0 && `${hours}h `}
+      {time > 0 && `${time}m `}
+    </>
+  );
+
+}
 export const usageTime = (time) => {
   const hour = Math.floor(time / 3600);
   const min = Math.floor((time / 60) % 60);

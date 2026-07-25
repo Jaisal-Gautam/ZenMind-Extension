@@ -26,14 +26,16 @@ const TrackInfo = ({ currentTrack, isPlaying }) => {
   return (
     <div className="flex justify-between items-start">
       <div>
-        <div className="bg-surface-soft text-brand rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 w-max mb-4">
+        <div className="bg-surface-soft text-brand-muted dark:text-brand rounded-full px-3 py-1.5 text-xs font-medium flex items-center gap-1.5 w-max mb-4">
           <TreePine className="w-3.5 h-3.5" />
           Nature Sounds
         </div>
         <h2 className="text-3xl font-bold text-text-muted mb-1 tracking-tight">
           {currentTrack?.title}
         </h2>
-        <p className="text-text-disabled font-medium">FocusFlow Ambient</p>
+        <p className="dark:text-text-disabled text-text-soft   text-lg font-medium">
+          FocusFlow Ambient
+        </p>
       </div>
 
       <div className="flex gap-1.5 items-end h-10 mt-6">
@@ -56,7 +58,7 @@ const TrackInfo = ({ currentTrack, isPlaying }) => {
                     duration: 2,
                   }
             }
-            className="w-1.5 bg-brand-muted rounded-full"
+            className="w-1.5 dark:bg-brand-muted bg-brand rounded-full"
             style={{ height: `${height}px` }}
           />
         ))}
@@ -92,7 +94,7 @@ const ProgressBar = ({ currentTime, duration, onSeek }) => {
         className="w-full h-2 bg-border-light rounded-full relative cursor-pointer"
       >
         <div
-          className="absolute left-0 top-0 h-full bg-brand-muted rounded-full"
+          className="absolute left-0 top-0 h-full bg-brand dark:bg-brand-muted rounded-full"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -149,13 +151,13 @@ const PlayerControls = ({
             step="1"
             value={volume}
             onChange={(e) => onVolumeChange(Number(e.target.value))}
-            className="w-full h-1.5 bg-border-light rounded-full appearance-none cursor-pointer accent-brand-muted"
+            className="w-full h-1.5 bg-border-light rounded-full appearance-none cursor-pointer  accent-brand dark:accent-brand-muted "
           />
         </div>
 
         <div className="flex items-center gap-6">
           <button
-            className="text-text-disabled hover:text-text transition-colors"
+            className="text-text-disabled hover:text-brand transition-colors"
             onClick={onPrev}
           >
             <SkipBack className="w-5 h-5 stroke-2" />
@@ -164,7 +166,7 @@ const PlayerControls = ({
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="w-14 h-14 rounded-full border-2 border-brand-muted flex items-center justify-center text-brand-muted hover:bg-text-muted transition-colors"
+            className="w-14 h-14 rounded-full border-2 border-brand dark:border-brand-muted flex items-center justify-center text-brand dark:text-brand-muted  hover:bg-surface-soft transition-colors"
             onClick={onPlayPause}
           >
             {isPlaying ? (
@@ -175,7 +177,7 @@ const PlayerControls = ({
           </motion.button>
 
           <button
-            className="text-text-disabled hover:text-text transition-colors"
+            className="text-text-disabled hover:text-brand transition-colors"
             onClick={onNext}
           >
             <SkipForward className="w-5 h-5 stroke-2" />
@@ -189,7 +191,7 @@ const PlayerControls = ({
           >
             <Repeat
               className={`w-5 h-5 stroke-2 ${
-                isLooping ? "text-brand stroke-3" : ""
+                isLooping ? "text-brand-muted dark:text-brand stroke-3" : ""
               }`}
             />
           </button>
@@ -259,7 +261,7 @@ const TrackChange = ({ currentTrack, handleTrackChange }) => {
             onClick={() => handleTrackChange(item)}
             className={`flex items-center gap-2 px-3 py-2 rounded-2xl text-sm font-medium transition-colors shadow-sm ${
               currentTrack?.id === item.id
-                ? "bg-brand text-surface"
+                ? "bg-brand-muted dark:bg-brand text-surface"
                 : "bg-surface text-text-muted hover:border-border-brand border border-border-default"
             }`}
           >

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { analyticsTime } from "@/utils/formatTime";
+import { analyticsTime,goalTime } from "@/utils/formatTime";
 import { Sparkles } from "lucide-react";
 import { updatePreferences } from "@/app/slices/setting/settingsThunk";
 function DailyGoal() {
@@ -60,7 +60,7 @@ function DailyGoal() {
           className="-rotate-90 transform"
         >
           <circle
-            stroke="#a3a3a3"
+            className="stroke-surface-hover"
             fill="transparent"
             strokeWidth={stroke}
             r={normalizedRadius}
@@ -69,7 +69,7 @@ function DailyGoal() {
           />
 
           <circle
-            stroke="#6A8E24"
+            stroke="#2d4b41"
             fill="transparent"
             strokeWidth={stroke}
             strokeDasharray={`${circumference} ${circumference}`}
@@ -83,12 +83,12 @@ function DailyGoal() {
         </svg>
 
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="mb-2 text-3xl font-bold leading-none tracking-tight text-brand">
+          <span className="mb-2 text-3xl font-bold leading-none tracking-tight dark:text-text-soft text-brand">
             {Math.round(progressPercentage)} %
           </span>
 
-          <span className="max-w-45 px-2 text-sm font-semibold leading-tight tracking-[0.12em] text-text-disabled">
-            Of {analyticsTime(dailyFocusGoal)} Goal
+          <span className="max-w-45 px-2 text-sm font-semibold leading-tight tracking-[0.12em] text-brand  dark:text-text-soft font-mono">
+            Of {goalTime(dailyFocusGoal)} Goal
           </span>
         </div>
       </div>
@@ -97,7 +97,7 @@ function DailyGoal() {
         onClick={handleOpenModal}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.97 }}
-        className="mt-4 rounded-sm bg-brand-muted px-4 py-2 text-sm font-semibold text-text shadow-sm"
+        className="mt-4 rounded-sm bg-brand-muted px-4 py-2 text-sm font-semibold dark:text-text text-text-inverse shadow-sm"
       >
         Set Daily Goal
       </motion.button>
