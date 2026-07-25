@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-
+import { removeData } from "@/utils/chromeStorage";
 import { getData, setData } from "@/utils/chromeStorage";
 import { DefaultState } from "@/utils/constants";
 
@@ -57,13 +57,17 @@ export const createAppStore = async () => {
     preloadedState,
   });
 
-  store.subscribe(() => {
-    const state = store.getState();
+  store.subscribe(async () => {
+  const state = store.getState();
 
-    const { auth, ...persistedState } = state;
+  if (!state.auth.isAuthenticated) {
+    await removeData();
+    return;
+  }
 
-    setData(persistedState);
-  });
+  const { auth, ...persistedState } = state;
+  await setData(persistedState);
+});
 
   return store;
 };

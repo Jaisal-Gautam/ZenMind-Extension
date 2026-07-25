@@ -45,6 +45,7 @@ export const getData = async () => {
 };
 
 export const removeData = async () => {
+  hasChromeStorage
   try {
     if (hasChromeStorage) {
       await chrome.storage.local.remove(STORAGE_KEY);
