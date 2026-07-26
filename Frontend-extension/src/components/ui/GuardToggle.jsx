@@ -3,9 +3,9 @@ import { easeIn, easeInOut, motion } from "framer-motion";
 import { Unlock, Lock } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 
-import DeepFocus from "@/assets/DeepFocusBg.png";
-import GentleGuard from "@/assets/GentleGuardBg.png";
-import StrictMode from "@/assets/StrictBg.jpg";
+import DeepFocus from "@/assets/DeepFocusBg.webp";
+import GentleGuard from "@/assets/GentleGuardBg.webp";
+import StrictMode from "@/assets/StrictBg.webp";
 import { updateBlockingSettings } from "@/app/slices/blocking/blockingThunk";
 export default function GuardToggle() {
   const bgImages = {

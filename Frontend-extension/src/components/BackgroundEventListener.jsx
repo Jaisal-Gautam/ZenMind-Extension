@@ -4,11 +4,8 @@ import { useDispatch } from "react-redux";
 import { stopFocus } from "@/app/slices/focus/focusSlice";
 
 import { loadFocusHistory } from "@/app/slices/focus/focusThunk";
-import {  loadOverview,
-  loadFocusAnalytics,
-  loadWebsiteAnalytics,
-  loadHistoryAnalytics, } from "@/app/slices/analytic/analyticThunk";
 
+import { loadDashboard } from "@/api/dashboard.api";
 function BackgroundEventListener() {
   const dispatch = useDispatch();
 
@@ -18,10 +15,8 @@ function BackgroundEventListener() {
         case "FOCUS_SESSION_COMPLETED":
           dispatch(stopFocus());
 
-          dispatch(loadOverview());
-          dispatch(loadFocusAnalytics());
-          dispatch(loadWebsiteAnalytics());
-          dispatch(loadHistoryAnalytics());
+          dispatch(loadDashboard());
+          
           dispatch(loadFocusHistory());
 
           break;

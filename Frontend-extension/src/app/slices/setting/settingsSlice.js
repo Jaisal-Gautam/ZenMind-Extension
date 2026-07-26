@@ -1,8 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  loadPreferences,
-  updatePreferences,
-} from "./settingsThunk";
+import { loadPreferences, updatePreferences } from "./settingsThunk";
+import { loadDashboard } from "@/api/dashboard.api";
 
 const initialState = {
   defaultFocusDuration: 30,
@@ -63,6 +61,12 @@ const settingsSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+      .addCase(loadDashboard.fulfilled, (state, action) => {
+        Object.assign(state, action.payload.preferences);
+
+        state.loading = false;
+        state.error = null;
+      })
       .addCase(loadPreferences.pending, (state) => {
         state.loading = true;
         state.error = null;

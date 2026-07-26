@@ -6,14 +6,10 @@ import AuthButton from "@/components/auth/AuthButton";
 import AuthLayout from "@/components/auth/AuthLayout";
 import { loadCurrentUser, loginUser } from "@/app/slices/auth/authThunk";
 import { clearErrors } from "@/app/slices/auth/authSlice";
-import { loadPreferences } from "@/app/slices/setting/settingsThunk";
+
 import { loadBlockingConfig } from "@/app/slices/blocking/blockingThunk";
-import {
-  loadFocusAnalytics,
-  loadHistoryAnalytics,
-  loadOverview,
-  loadWebsiteAnalytics,
-} from "@/app/slices/analytic/analyticThunk";
+
+import { loadDashboard } from "@/api/dashboard.api";
 import Loader from "@/components/Loader";
 export default function Login() {
   const [bootstrapping, setBootstrapping] = useState(false);
@@ -43,15 +39,8 @@ export default function Login() {
       await dispatch(loadCurrentUser()).unwrap();
 
       await Promise.all([
-        dispatch(loadPreferences()).unwrap(),
         dispatch(loadBlockingConfig()).unwrap(),
-      ]);
-
-      await Promise.all([
-        dispatch(loadOverview()).unwrap(),
-        dispatch(loadWebsiteAnalytics()).unwrap(),
-        dispatch(loadFocusAnalytics()).unwrap(),
-        dispatch(loadHistoryAnalytics("daily")).unwrap(),
+        dispatch(loadDashboard()).unwrap()
       ]);
       navigate("/");
     } catch (e) {
@@ -96,7 +85,6 @@ export default function Login() {
 
         {(validationError || error) && (
           <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
-            
             {validationError || error}
           </p>
         )}

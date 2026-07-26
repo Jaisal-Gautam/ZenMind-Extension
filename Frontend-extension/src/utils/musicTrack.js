@@ -1,7 +1,7 @@
-import Rain from "@/assets/music/Rain.mp3";
-import Forest from "@/assets/music/Forest.mp3";
-import Ocean from "@/assets/music/Ocean.mp3";
-import Fire from "@/assets/music/Fire.mp3";
+import Rain from "@/assets/music/Rain.opus";
+import Forest from "@/assets/music/Forest.opus";
+import Ocean from "@/assets/music/Ocean.opus";
+import Fire from "@/assets/music/Fire.opus";
 export const musicData = [
     {
         id: "rain",

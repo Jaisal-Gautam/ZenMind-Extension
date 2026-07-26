@@ -1,4 +1,4 @@
-import NormalBlocked from "@/assets/NormalBlocked.png";
+import NormalBlocked from "@/assets/NormalBlocked.webp";
 import { CircleAlert } from "lucide-react";
 import parseDomain from "@/utils/siteParser";
 

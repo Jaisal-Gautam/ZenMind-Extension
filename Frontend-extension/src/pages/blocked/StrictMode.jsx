@@ -1,4 +1,4 @@
-import StrictBlocked from "@/assets/StrictBlocked.png";
+import StrictBlocked from "@/assets/StrictBlocked.webp";
 import { CircleAlert } from "lucide-react";
 function Strict() {
   const OpenDashboard = () => {

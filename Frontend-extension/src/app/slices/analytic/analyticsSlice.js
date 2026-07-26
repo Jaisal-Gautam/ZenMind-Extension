@@ -5,11 +5,11 @@ import {
   loadWebsiteAnalytics,
   loadHistoryAnalytics,
 } from "./analyticThunk";
-
+import { loadDashboard } from "@/api/dashboard.api";
 const initialState = {
   overview: null,
   focus: null,
-  lifetime:null,
+  lifetime: null,
   websites: {
     usage: [],
     blocked: [],
@@ -35,8 +35,7 @@ const analyticsSlice = createSlice({
       .addCase(loadOverview.fulfilled, (state, action) => {
         state.loading = false;
         state.overview = action.payload.overview;
-        state.lifetime=action.payload.lifetime;
-         
+        state.lifetime = action.payload.lifetime;
       })
       .addCase(loadOverview.rejected, (state, action) => {
         state.loading = false;
@@ -84,6 +83,27 @@ const analyticsSlice = createSlice({
       })
 
       .addCase(loadHistoryAnalytics.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(loadDashboard.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(loadDashboard.fulfilled, (state, action) => {
+        state.loading = false;
+
+        const analytics = action.payload.analytics;
+
+        state.overview = analytics.overview;
+        state.lifetime = analytics.lifetime;
+        state.focus = analytics.focus;
+        state.websites = analytics.websites;
+        state.history = analytics.history;
+      })
+
+      .addCase(loadDashboard.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

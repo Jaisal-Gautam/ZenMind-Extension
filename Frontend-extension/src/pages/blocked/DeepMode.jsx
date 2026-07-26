@@ -1,4 +1,4 @@
-import DeepBlocked from "@/assets/DeepBlocked.png";
+import DeepBlocked from "@/assets/DeepBlocked.webp";
 import { CircleAlert } from "lucide-react";
 import parseDomain from "@/utils/siteParser";
 function DeepMode() {

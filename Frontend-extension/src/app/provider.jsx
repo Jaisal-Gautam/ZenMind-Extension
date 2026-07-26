@@ -2,20 +2,14 @@ import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { createAppStore } from "./store";
 import { loadCurrentUser } from "./slices/auth/authThunk";
-import { loadPreferences } from "./slices/setting/settingsThunk";
 import { setDuration } from "./slices/focus/focusSlice";
 import { initializeMusic } from "./slices/musicSlice";
 import { loadBlockingConfig } from "./slices/blocking/blockingThunk";
-import { syncFocusState } from "./slices/focus/focusSlice";
-import {
-  loadOverview,
-  loadFocusAnalytics,
-  loadWebsiteAnalytics,
-  loadHistoryAnalytics,
-} from "./slices/analytic/analyticThunk";
+
 import BackgroundEventListener from "@/components/BackgroundEventListener";
 import DayChangeListener from "@/components/ui/DayChangeListener";
 import Loader from "@/components/Loader";
+import { loadDashboard } from "@/api/dashboard.api";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
   useEffect(() => {
@@ -26,16 +20,10 @@ function StoreProvider({ children }) {
         const currUser = await appStore.dispatch(loadCurrentUser()).unwrap();
 
         if (currUser) {
-          await appStore.dispatch(loadPreferences()).unwrap();
           await appStore.dispatch(loadBlockingConfig()).unwrap();
-          await appStore.dispatch(loadOverview()).unwrap();
-
-          await appStore.dispatch(loadWebsiteAnalytics()).unwrap();
-
-          await appStore.dispatch(loadFocusAnalytics()).unwrap();
-
-          await appStore.dispatch(loadHistoryAnalytics("daily")).unwrap();
-
+                    await appStore.dispatch(loadDashboard()).unwrap();
+          
+         
           const { focus, settings } = appStore.getState();
 
           if (!focus.isActive && !focus.isPaused) {
