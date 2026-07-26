@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+  background: #FAFBF7;
+  color: #183C38;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.035;
+  mix-blend-mode: multiply;
+  background-image: radial-gradient(circle at 1px 1px, #0F2928 1px, transparent 0);
+  background-size: 3px 3px;
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .fade-up {
+    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .fade-up-delay-1 { animation-delay: 0.1s; }
+  .fade-up-delay-2 { animation-delay: 0.2s; }
+  .fade-up-delay-3 { animation-delay: 0.3s; }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes driftSlow {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-1.5%); }
+  }
+
+  @keyframes driftSlower {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(1.2%); }
+  }
+
+  .animate-drift-slow {
+    animation: driftSlow 42s ease-in-out infinite;
+  }
+
+  .animate-drift-slower {
+    animation: driftSlower 60s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
