@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Provider } from "react-redux";
 import { createAppStore } from "./store";
 import { loadCurrentUser } from "./slices/auth/authThunk";
-import { setDuration } from "./slices/focus/focusSlice";
+import {   setDuration } from "./slices/focus/focusSlice";
 import { initializeMusic } from "./slices/musicSlice";
 import { loadBlockingConfig } from "./slices/blocking/blockingThunk";
 
@@ -10,6 +10,7 @@ import BackgroundEventListener from "@/components/BackgroundEventListener";
 import DayChangeListener from "@/components/ui/DayChangeListener";
 import Loader from "@/components/Loader";
 import { loadDashboard } from "@/api/dashboard.api";
+import { loadCurrentFocusSession } from "./slices/focus/focusThunk";
 function StoreProvider({ children }) {
   const [store, setStore] = useState(null);
   useEffect(() => {
@@ -20,12 +21,12 @@ function StoreProvider({ children }) {
         const currUser = await appStore.dispatch(loadCurrentUser()).unwrap();
 
         if (currUser) {
-          await appStore.dispatch(loadBlockingConfig()).unwrap();
-                    await appStore.dispatch(loadDashboard()).unwrap();
-          
-         
+          await Promise.all([
+            appStore.dispatch(loadBlockingConfig()).unwrap(),
+            appStore.dispatch(loadDashboard()).unwrap(),
+            appStore.dispatch(loadCurrentFocusSession()).unwrap(),
+          ]);
           const { focus, settings } = appStore.getState();
-
           if (!focus.isActive && !focus.isPaused) {
             appStore.dispatch(setDuration(settings.defaultFocusDuration));
           }

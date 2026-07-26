@@ -14,4 +14,8 @@ export const focusApi = {
     });
     return response.data;
   },
+  async getCurrentFocus(){
+    const response=await apiClient.get("/focus/current");
+    return response.data;
+  }
 };

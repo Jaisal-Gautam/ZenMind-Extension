@@ -3,6 +3,7 @@ import {
   getFocusHistory,
   startFocusSession,
   endFocusSession,
+  getCurrentFocusSession,
 } from "../services/focus.service.js";
 
 export const startFocusSessionController = asyncHandler(async (req, res) => {
@@ -32,5 +33,14 @@ export const getFocusHistoryController = asyncHandler(async (req, res) => {
     success: true,
     message: "Focus History Fetched successfully.",
     focusHistory,
+  });
+});
+
+export const getCurrentFocusSessionController = asyncHandler(async (req, res) => {
+const focusSession = await getCurrentFocusSession(req.user._id);
+  res.status(200).json({
+    success: true,
+    message: "Unfinished FocusSession Fetched successfully.",
+    focusSession,
   });
 });

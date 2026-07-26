@@ -15,7 +15,7 @@ function ProtectedRoute() {
   if (!isAuthenticated) {
     const now = Date.now();
     if (now - lastAuthToast > AUTH_TOAST_COOLDOWN) {
-      toast.error("Not Authenticated");
+      toast.error("You Are Not Logged In...");
       lastAuthToast = now;
     }
 

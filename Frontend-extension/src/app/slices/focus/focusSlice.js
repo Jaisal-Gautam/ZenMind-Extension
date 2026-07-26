@@ -3,6 +3,7 @@ import {
   startFocusSession,
   endFocusSession,
   loadFocusHistory,
+  loadCurrentFocusSession,
 } from "./focusThunk";
 
 const initialState = {
@@ -71,7 +72,16 @@ const focusSlice = createSlice({
         ...action.payload,
       };
     },
+    pauseOnBrowserRestart:(state,action)=>{
+      state.remainingTime =
+        Math.max(0, state.endTime - Date.now());
 
+    state.endTime = null;
+
+    state.isActive = false;
+    state.isPaused = true;
+
+    },
     resetFocus: () => initialState,
   },
 
@@ -118,6 +128,36 @@ const focusSlice = createSlice({
       .addCase(loadFocusHistory.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(loadCurrentFocusSession.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(loadCurrentFocusSession.fulfilled, (state, action) => {
+        const session = action.payload;
+
+        if (!session) {
+          state.loading = false;
+          return;
+        }
+
+        const startTime = new Date(session.startTime).getTime();
+        const endTime = startTime + session.plannedDuration * 60 * 1000;
+
+        state.loading = false;
+        state.error = null;
+
+
+
+        state.startTime = startTime;
+        state.endTime = endTime;
+        state.currentSessionId = session._id;
+        state.sessionDuration = session.plannedDuration;
+      })
+      .addCase(loadCurrentFocusSession.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -130,6 +170,7 @@ export const {
   setDuration,
   resetFocus,
   syncFocusState,
+  pauseOnBrowserRestart
 } = focusSlice.actions;
 
 export default focusSlice.reducer;

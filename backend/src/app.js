@@ -15,6 +15,7 @@ import focusRouter from "./routes/focus.routes.js";
 import websiteRouter from "./routes/websiteSession.routes.js";
 import blockedAttemptRouter from "./routes/blockedAttempt.routes.js";
 import analyticRouter from "./routes/analytics.routes.js";
+import dashboardRouter from "./routes/dashboard.routes.js";
 //App
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/focus",focusRouter)
 app.use("/website",websiteRouter)
 app.use("/blocked",blockedAttemptRouter)
 app.use("/analytics",analyticRouter)
+app.use("/dashboard",dashboardRouter)
 
 app.use(errorHandler);
 export default app;

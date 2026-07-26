@@ -36,3 +36,15 @@ export const loadFocusHistory = createAsyncThunk(
     }
   },
 );
+
+export const loadCurrentFocusSession = createAsyncThunk(
+  "focus/current",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await focusApi.getCurrentFocus();
+      return response.focusSession;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || err.message || "Focus failed");
+    }
+  },
+);

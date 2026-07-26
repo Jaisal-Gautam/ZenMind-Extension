@@ -60,3 +60,12 @@ export const getFocusHistory = async (userId, page = 1, limit = 20) => {
     totalPages: Math.ceil(totalSessions / limit),
   };
 };
+
+export const getCurrentFocusSession=async (userId)=>{
+   const focusSessions = await Focus.findOne({
+    user:userId,
+        completed: false,
+    endTime: null
+  });
+  return focusSessions;
+}
