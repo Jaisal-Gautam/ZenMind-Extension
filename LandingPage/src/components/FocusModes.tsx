@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Moon, Feather, BookOpen, Sliders } from 'lucide-react';
+import { Moon, Feather, BookOpen } from 'lucide-react';
 
 const modes = [
   {
@@ -61,8 +61,8 @@ export default function FocusModes() {
                     whileHover={{ y: -2 }}
                     whileTap={{ scale: 0.96 }}
                     className={`min-h-[40px] px-4 rounded-full text-[13px] font-medium transition-all duration-200 cursor-pointer ${isSelected
-                        ? 'bg-zen-deep text-zen-accent border border-zen-deep shadow-md shadow-zen-deep/15'
-                        : 'text-zen-ink/80 border border-zen-sage bg-white/60 hover:border-zen-forest/40 hover:bg-white'
+                      ? 'bg-zen-deep text-zen-accent border border-zen-deep shadow-md shadow-zen-deep/15'
+                      : 'text-zen-ink/80 border border-zen-sage bg-white/60 hover:border-zen-forest/40 hover:bg-white'
                       }`}
                   >
                     {preset}
