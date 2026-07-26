@@ -1,5 +1,5 @@
-const STORAGE_KEY = "ZenMind-Data";
-const AUTH_KEY = "ZenMind-Auth";
+export const STORAGE_KEY = "ZenMind-Data";
+export const AUTH_KEY = "ZenMind-Auth";
 const hasChromeStorage =
   typeof chrome !== "undefined" && chrome.storage && chrome.storage.local;
 

@@ -96,14 +96,16 @@ export function useFocusTimer() {
   };
 
   const time = formatTime(remainingTime);
-  let progressPercentage = 0;
 
-  if (focus.isActive && focus.startTime && focus.endTime) {
-    const sessionDurationMs = focus.endTime - focus.startTime;
-    const elapsedTime = sessionDurationMs - remainingTime;
-    progressPercentage = (elapsedTime / sessionDurationMs) * 100;
-  }
-
+  const progressPercentage = Math.min(
+    100,
+    Math.max(
+      0,
+      fullDurationMs > 0
+        ? ((fullDurationMs - remainingTime) / fullDurationMs) * 100
+        : 0,
+    ),
+  );
   return {
     time,
     progressPercentage,

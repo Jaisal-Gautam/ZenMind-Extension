@@ -65,6 +65,12 @@ const focusSlice = createSlice({
     setDuration: (state, action) => {
       state.duration = action.payload;
     },
+    syncFocusState: (state, action) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
 
     resetFocus: () => initialState,
   },
@@ -123,7 +129,7 @@ export const {
   resumeFocus,
   setDuration,
   resetFocus,
-
+  syncFocusState,
 } = focusSlice.actions;
 
 export default focusSlice.reducer;

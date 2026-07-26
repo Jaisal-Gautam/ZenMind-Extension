@@ -6,6 +6,7 @@ import { loadPreferences } from "./slices/setting/settingsThunk";
 import { setDuration } from "./slices/focus/focusSlice";
 import { initializeMusic } from "./slices/musicSlice";
 import { loadBlockingConfig } from "./slices/blocking/blockingThunk";
+import { syncFocusState } from "./slices/focus/focusSlice";
 import {
   loadOverview,
   loadFocusAnalytics,

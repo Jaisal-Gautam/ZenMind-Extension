@@ -10,13 +10,16 @@ function DailyGoal() {
   const analytics = useSelector((state) => state.analytics);
   const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
 
-  const focus = (analytics.overview?.focusedTime ?? 0) / 60;
 
+  const focusedMinutes = (analytics.overview?.focusedTime ?? 0) / 60;
+
+const progressPercentage =
+  dailyFocusGoal > 0
+    ? Math.min(100, (focusedMinutes / dailyFocusGoal) * 100)
+    : 0;
   const [goalInput, setGoalInput] = useState(dailyFocusGoal);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const progressPercentage =
-    dailyFocusGoal > 0 ? Math.min((focus / dailyFocusGoal) * 100, 100) : 0;
 
   const radius = 120;
   const stroke = 10;
@@ -177,14 +180,15 @@ function DailyGoal() {
 }
 export const PopupDailyGoal = () => {
   const { overview } = useSelector((state) => state.analytics);
-  const analytics = useSelector((state) => state.analytics);
-  const focus = (analytics.overview?.focusedTime ?? 0) / 60;
 
-  const dailyFocusGoal = useSelector((state) => state.settings.dailyFocusGoal);
-
-  const progressPercentage =
-    dailyFocusGoal > 0 ? Math.min((focus / dailyFocusGoal) * 100, 100) : 0;
-
+  const focusedMinutes = (overview?.focusedTime ?? 0) / 60;
+  const dailyFocusGoal = useSelector(
+  (state) => state.settings.dailyFocusGoal
+);
+const progressPercentage =
+  dailyFocusGoal > 0
+    ? Math.min(100, (focusedMinutes / dailyFocusGoal) * 100)
+    : 0;
   return (
     <div className="mt-4 w-full rounded-lg border border-border-default bg-surface p-5 shadow-sm">
       <h3 className="mb-4 flex justify-between text-xs font-semibold uppercase tracking-[0.15em] text-text-disabled">

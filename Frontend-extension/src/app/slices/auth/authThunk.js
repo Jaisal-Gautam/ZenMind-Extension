@@ -6,6 +6,7 @@ import {
   removeAuth,
   removeData,
 } from "@/utils/chromeStorage";
+import { parseApiError } from "@/utils/apiError";
 export const loginUser = createAsyncThunk(
   "auth/login",
   async (credentials, { rejectWithValue }) => {
