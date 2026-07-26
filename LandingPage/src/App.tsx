@@ -8,6 +8,7 @@ import Insights from '@/components/Insights';
 import Pricing from '@/components/Pricing';
 import FinalCta from '@/components/FinalCta';
 import Footer from '@/components/Footer';
+import { Analytics } from "@vercel/analytics/next"
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Pricing />
       <FinalCta />
       <Footer />
+      <Analytics/>
     </div>
   );
 }
