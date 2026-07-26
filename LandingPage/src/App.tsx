@@ -8,8 +8,7 @@ import Insights from '@/components/Insights';
 import Pricing from '@/components/Pricing';
 import FinalCta from '@/components/FinalCta';
 import Footer from '@/components/Footer';
-import { Analytics } from "@vercel/analytics/next"
-
+import { Analytics } from '@vercel/analytics/react';
 function App() {
   return (
     <div className="min-h-screen bg-zen-cream">
