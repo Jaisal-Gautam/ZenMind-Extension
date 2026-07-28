@@ -59,4 +59,8 @@ export const authApi = {
     return response.data;
   },
 };
-const getTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
+const getTimezone = () => {
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  console.log("Browser timezone:", timezone);
+  return timezone;
+};

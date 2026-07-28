@@ -26,6 +26,7 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 export const login = asyncHandler(async (req, res) => {
+    console.log(req.body);
   const { email, password,timezone } = req.body;
   const { user, accessToken, refreshToken } = await loginUser({
     email,
