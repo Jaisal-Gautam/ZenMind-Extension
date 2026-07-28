@@ -11,13 +11,17 @@ const passwordSchema = z
 
 export const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string().trim().min(1)
+  password: z.string().trim().min(1),
+    timezone: z.string().optional(),
+
 });
 
 export const registerSchema = z.object({
   email: z.string().email(),
   username: z.string().min(2).max(20),
   password: passwordSchema,
+    timezone: z.string().optional(),
+
 });
 
 export const changePasswordSchema = z.object({
