@@ -21,7 +21,7 @@ export const getOverview = async (user) => {
         {
           $match: {
             user: objectUserId,
-            completed: true,
+            status: "completed",
             startTime: {
               $gte: todayStart,
               $lt: tomorrowStart,
@@ -57,7 +57,7 @@ export const getOverview = async (user) => {
 
       Focus.find({
         user: objectUserId,
-        completed: true,
+        status: "completed",
       }).select("startTime"),
 
       getMostUsedWebsite(user),
@@ -177,7 +177,7 @@ export const getFocusAnalytics = async (user) => {
       {
         $match: {
           user: objectUserId,
-          completed: true,
+          status: "completed",
           startTime: {
             $gte: todayStart,
             $lt: tomorrowStart,
@@ -198,7 +198,7 @@ export const getFocusAnalytics = async (user) => {
       {
         $match: {
           user: objectUserId,
-          completed: true,
+          status: "completed",
           startTime: {
             $gte: todayStart,
             $lt: tomorrowStart,
@@ -230,7 +230,7 @@ export const getFocusAnalytics = async (user) => {
       {
         $match: {
           user: objectUserId,
-          completed: true,
+          status: "completed",
           startTime: {
             $gte: todayStart,
             $lt: tomorrowStart,
@@ -310,7 +310,7 @@ export const getHistory = async (user, range) => {
     {
       $match: {
         user: objectUserId,
-        completed: true,
+        status: "completed",
         startTime: {
           $gte: startDate.toUTC().toJSDate(),
         },
@@ -450,7 +450,7 @@ export const getLifetimeAnalytics = async (user) => {
       {
         $match: {
           user: objectUserId,
-          completed: true,
+          status: "completed",
         },
       },
       {
@@ -478,7 +478,7 @@ export const getLifetimeAnalytics = async (user) => {
 
     Focus.find({
       user: objectUserId,
-      completed: true,
+      status: "completed",
     }).select("startTime"),
   ]);
 
