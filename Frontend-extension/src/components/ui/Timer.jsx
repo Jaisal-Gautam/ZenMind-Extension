@@ -12,6 +12,8 @@ import { motion } from "framer-motion";
 import {
   startFocusSession,
   endFocusSession,
+  pauseFocusSession,
+  resumeFocusSession,
 } from "@/app/slices/focus/focusThunk";
 
 export function useFocusTimer() {
@@ -37,13 +39,19 @@ export function useFocusTimer() {
   }, [focus.isActive]);
 
   let remainingTime;
-  if (focus.isActive) {
-    remainingTime = Math.max(0, focus.endTime - now);
-  } else if (focus.isPaused) {
-    remainingTime = focus.remainingTime;
-  } else {
-    remainingTime = fullDurationMs;
-  }
+
+if (focus.isActive) {
+  const elapsed = now - focus.lastResumedAt;
+
+  remainingTime = Math.max(
+    0,
+    focus.remainingTime - elapsed
+  );
+} else if (focus.isPaused) {
+  remainingTime = focus.remainingTime;
+} else {
+  remainingTime = fullDurationMs;
+}
 
   const handleStart = async () => {
     if (focus.loading || focus.isActive) {
@@ -59,16 +67,15 @@ export function useFocusTimer() {
 
       const startTime = new Date(focusSession.startTime).getTime();
       const sessionDuration = focusSession.plannedDuration;
-      const endTime = startTime + sessionDuration * 60 * 1000;
-
       dispatch(
-        startFocus({
-          startTime,
-          endTime,
-          sessionId: focusSession._id,
-          sessionDuration,
-        }),
-      );
+  startFocus({
+    startTime,
+    sessionId: focusSession._id,
+    sessionDuration,
+  })
+);
+
+      
     } catch (err) {
       console.error("Failed to start focus session:", err);
     }
@@ -80,7 +87,7 @@ export function useFocusTimer() {
     }
     hasCompletedRef.current = true;
     try {
-      await dispatch(endFocusSession("stopped")).unwrap();
+      await dispatch(endFocusSession("cancelled")).unwrap();
       dispatch(stopFocus());
     } catch (err) {
       hasCompletedRef.current = false;
@@ -88,11 +95,25 @@ export function useFocusTimer() {
       console.error("Failed to cancel focus session:", err);
     }
   };
-  const handlePause = () => {
-    dispatch(pauseFocus());
+  const handlePause = async () => {
+    if (focus.loading) return;
+
+    try {
+      await dispatch(pauseFocusSession()).unwrap();
+      dispatch(pauseFocus());
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const handleResume = () => {
-    dispatch(resumeFocus());
+  const handleResume = async () => {
+    if (focus.loading) return;
+
+    try {
+      await dispatch(resumeFocusSession()).unwrap();
+      dispatch(resumeFocus(Date.now()));
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const time = formatTime(remainingTime);

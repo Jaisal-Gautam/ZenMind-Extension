@@ -15,9 +15,9 @@ export const startFocusSession = createAsyncThunk(
 
 export const endFocusSession = createAsyncThunk(
   "focus/endSession",
-  async (endReason, { rejectWithValue }) => {
+  async (status, { rejectWithValue }) => {
     try {
-      const response = await focusApi.endFocus(endReason);
+      const response = await focusApi.endFocus(status);
       return response.focusSession;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || err.message || "End Focus failed");
@@ -47,4 +47,31 @@ export const loadCurrentFocusSession = createAsyncThunk(
       return rejectWithValue(err.response?.data?.message || err.message || "Focus failed");
     }
   },
+);
+export const pauseFocusSession = createAsyncThunk(
+  "focus/pauseSession",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await focusApi.pauseFocus();
+      return response.focusSession;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || err.message
+      );
+    }
+  }
+);
+
+export const resumeFocusSession = createAsyncThunk(
+  "focus/resumeSession",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await focusApi.resumeFocus();
+      return response.focusSession;
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.message || err.message
+      );
+    }
+  }
 );

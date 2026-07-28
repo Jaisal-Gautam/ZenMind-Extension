@@ -1,50 +1,132 @@
 import Focus from "../models/focus.js";
 import { ApiError } from "../utils/apiError.js";
 
+const closeActiveSession = async (userId, status) => {
+  const session = await Focus.findOne({
+    user: userId,
+    status: "active",
+  });
+
+  if (!session) return null;
+
+  const now = new Date();
+
+  if (!session.isPaused && session.lastResumedAt) {
+    session.actualDuration += Math.floor(
+      (now - session.lastResumedAt) / 1000
+    );
+  }
+
+  session.endTime = now;
+  session.status = status;
+  session.isPaused = true;
+  session.lastResumedAt = null;
+
+  await session.save();
+
+  return session;
+};
+
 export const startFocusSession = async (userId, plannedDuration) => {
-  const prevFocus = await Focus.findOne({
-    user: userId,
-    completed: false,
-    endTime: null,
-  });
+  await closeActiveSession(userId, "restarted");
 
-  if (prevFocus) {
-    throw new ApiError(409, "Focus session already running.");
-  }
+  const now = new Date();
 
-  const focus = await Focus.create({
+  return await Focus.create({
     user: userId,
-    startTime: new Date(),
+    startTime: now,
     plannedDuration,
+    actualDuration: 0,
+    lastResumedAt: now,
+    isPaused: false,
+    status: "active",
   });
-  return focus;
 };
 
-export const endFocusSession = async (userId, endReason) => {
-  const FocusSession = await Focus.findOne({
+export const pauseFocusSession = async (userId) => {
+  const session = await Focus.findOne({
     user: userId,
-    completed: false,
-    endTime: null,
+    status: "active",
   });
 
-  if (!FocusSession) {
-    throw new ApiError(404, "No Active Focus session .");
+  if (!session) {
+    throw new ApiError(404, "No active focus session.");
   }
-  FocusSession.endTime = new Date();
-  FocusSession.actualDuration =
-    ((FocusSession.endTime - FocusSession.startTime) / 1000 );
 
-  FocusSession.completed = endReason === "completed";
+  if (session.isPaused) {
+    return session;
+  }
 
-  FocusSession.endReason = endReason;
-  await FocusSession.save();
-  return FocusSession;
+  const now = new Date();
+
+  session.actualDuration += Math.floor(
+    (now - session.lastResumedAt) / 1000
+  );
+
+  session.isPaused = true;
+  session.lastResumedAt = null;
+
+  await session.save();
+
+  return session;
 };
 
-export const getFocusHistory = async (userId, page = 1, limit = 20) => {
-  const focusSessions = await Focus.find({
+export const resumeFocusSession = async (userId) => {
+  const session = await Focus.findOne({
     user: userId,
-  })
+    status: "active",
+  });
+
+  if (!session) {
+    throw new ApiError(404, "No active focus session.");
+  }
+
+  if (!session.isPaused) {
+    return session;
+  }
+
+  session.isPaused = false;
+  session.lastResumedAt = new Date();
+
+  await session.save();
+
+  return session;
+};
+
+export const endFocusSession = async (userId, status) => {
+  const session = await Focus.findOne({
+    user: userId,
+    status: "active",
+  });
+
+  if (!session) {
+    throw new ApiError(404, "No active focus session.");
+  }
+
+  const now = new Date();
+
+  if (!session.isPaused && session.lastResumedAt) {
+    session.actualDuration += Math.floor(
+      (now - session.lastResumedAt) / 1000
+    );
+  }
+
+  session.endTime = now;
+  session.status = status;
+  session.isPaused = true;
+  session.lastResumedAt = null;
+
+  await session.save();
+
+  return session;
+};
+
+export const getFocusHistory = async (
+  userId,
+  page = 1,
+  limit = 20
+) => {
+  const focusSessions = await Focus.find({ user: userId })
     .sort({ startTime: -1 })
     .skip((page - 1) * limit)
     .limit(limit);
@@ -61,11 +143,9 @@ export const getFocusHistory = async (userId, page = 1, limit = 20) => {
   };
 };
 
-export const getCurrentFocusSession=async (userId)=>{
-   const focusSessions = await Focus.findOne({
-    user:userId,
-        completed: false,
-    endTime: null
+export const getCurrentFocusSession = async (userId) => {
+  return await Focus.findOne({
+    user: userId,
+    status: "active",
   });
-  return focusSessions;
-}
+};

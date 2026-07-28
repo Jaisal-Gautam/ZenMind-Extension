@@ -1,11 +1,13 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
+
 import {
   getFocusHistory,
   startFocusSession,
   endFocusSession,
   getCurrentFocusSession,
+  pauseFocusSession,
+  resumeFocusSession,
 } from "../services/focus.service.js";
-
 export const startFocusSessionController = asyncHandler(async (req, res) => {
   const { plannedDuration } = req.body;
   const focusSession = await startFocusSession(req.user._id, plannedDuration);
@@ -17,11 +19,33 @@ export const startFocusSessionController = asyncHandler(async (req, res) => {
 });
 
 export const endFocusSessionController = asyncHandler(async (req, res) => {
-  const { endReason } = req.body;
-  const focusSession = await endFocusSession(req.user._id, endReason);
+  const { status } = req.body;
+
+  const focusSession = await endFocusSession(req.user._id, status);
+
   res.status(200).json({
     success: true,
     message: "Focus session ended successfully.",
+    focusSession,
+  });
+});
+
+export const pauseFocusSessionController = asyncHandler(async (req, res) => {
+  const focusSession = await pauseFocusSession(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    message: "Focus session paused successfully.",
+    focusSession,
+  });
+});
+
+export const resumeFocusSessionController = asyncHandler(async (req, res) => {
+  const focusSession = await resumeFocusSession(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    message: "Focus session resumed successfully.",
     focusSession,
   });
 });

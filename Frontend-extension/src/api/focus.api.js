@@ -4,8 +4,16 @@ export const focusApi = {
     const response = await apiClient.post("/focus/start", { plannedDuration });
     return response.data;
   },
-  async endFocus(endReason) {
-    const response = await apiClient.post("/focus/end", { endReason });
+  async endFocus(status) {
+    const response = await apiClient.post("/focus/end", { status });
+    return response.data;
+  },
+  async pauseFocus() {
+    const response = await apiClient.post("/focus/pause");
+    return response.data;
+  },
+  async resumeFocus() {
+    const response = await apiClient.post("/focus/resume");
     return response.data;
   },
   async getHistory(page, limit) {
@@ -14,8 +22,8 @@ export const focusApi = {
     });
     return response.data;
   },
-  async getCurrentFocus(){
-    const response=await apiClient.get("/focus/current");
+  async getCurrentFocus() {
+    const response = await apiClient.get("/focus/current");
     return response.data;
-  }
+  },
 };

@@ -11,6 +11,9 @@
     "notifications",
     "offscreen"
   ],
+  "host_permissions": [
+  "https://zenmind-extension.onrender.com/*"
+],
   "icons": {
     "16": "icons/icon16.png"
   },
@@ -18,6 +21,7 @@
     "service_worker": "background.js",
     "type": "module"
   },
+  
 
   "action": {
     "default_popup": "popup.html"

@@ -6,41 +6,65 @@ const focusSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
+
     startTime: {
       type: Date,
       required: true,
     },
+
     endTime: {
       type: Date,
+      default: null,
     },
+
     plannedDuration: {
-      type: Number,
+      type: Number, 
       required: true,
       min: 1,
     },
+
+
     actualDuration: {
       type: Number,
+      default: 0,
       min: 0,
     },
-    completed: {
+
+
+    lastResumedAt: {
+      type: Date,
+      default: null,
+    },
+
+    isPaused: {
       type: Boolean,
       default: false,
     },
-    endReason: {
+
+    status: {
       type: String,
-      enum: ["completed", "stopped", "crashed"],
-      default: "stopped"
+      enum: [
+        "active",
+        "completed",
+        "cancelled",
+        "restarted",
+        "expired",
+      ],
+      default: "active",
     },
   },
   {
     timestamps: true,
-  },
+  }
 );
-focusSchema.index({
-  user: 1,
-  startTime: -1,
-});
+
+
+focusSchema.index({ user: 1, status: 1 });
+
+
+focusSchema.index({ user: 1, startTime: -1 });
 
 const Focus = mongoose.model("Focus", focusSchema);
 

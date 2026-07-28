@@ -15,13 +15,14 @@ export const DefaultState = {
     isPaused: false,
     duration: 25,
     startTime: null,
-    endTime: null,
+
     remainingTime: null,
     currentSessionId: null,
     sessionDuration: null,
     loading: false,
     error: null,
     history: [],
+    lastResumedAt: null,
   },
 
   blocking: {

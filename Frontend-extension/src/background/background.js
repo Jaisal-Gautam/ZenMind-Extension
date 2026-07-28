@@ -7,7 +7,10 @@ import {
   getCurrentTracking,
   stopTracking,
 } from "./usageTracker";
-
+import {
+  startFocusSession,
+  endFocusSession,
+} from "@/app/slices/focus/focusThunk";
 import parseDomain from "@/utils/siteParser";
 import { recoverFocusSession } from "@/utils/SessionRecove.js";
 import { recoverCompletedSession } from "@/utils/completeFocusSession";
@@ -18,11 +21,17 @@ async function initializeBackground() {
   const recovery = await recoverFocusSession();
 
   switch (recovery.status) {
-    case "expired": {
-      const updatedState = recoverCompletedSession(recovery.state);
-      await setData(updatedState);
-      break;
-    }
+   case "expired": {
+    try {
+        await focusApi.endFocus("expired");
+    } catch {}
+
+    const updatedState = recoverCompletedSession(recovery.state);
+
+    await setData(updatedState);
+
+    break;
+}
   }
 }
 
@@ -340,38 +349,37 @@ async function ensureOffscreenDocument() {
 
 
 async function timerFunction() {
-  const auth = await getAuth();
   const state = await getData();
 
-  if (!state || !state.focus) {
-    return;
-  }
+  if (!state?.focus?.isActive) return;
 
-  if (state.focus.isActive) {
-    if (Date.now() >= state.focus.endTime) {
-      const duration = state.focus.sessionDuration;
-      const session = {
+  const remaining =
+    state.focus.remainingTime -
+    (Date.now() - state.focus.lastResumedAt);
+
+  if (remaining > 0) return;
+
+  try {
+    await focusApi.endFocus("completed");
+
+    const updatedState = recoverCompletedSession(state);
+
+    await setData(updatedState);
+
+    chrome.runtime.sendMessage({
+      type: "FOCUS_SESSION_COMPLETED",
+      session: {
         id: state.focus.currentSessionId,
         startTime: state.focus.startTime,
-        endTime: state.focus.endTime,
         duration: state.focus.sessionDuration,
-      };
-      try {
-        await focusApi.endFocus("completed");
+      },
+    });
 
-        const updatedState = recoverCompletedSession(state);
-        await setData(updatedState);
-
-        chrome.runtime.sendMessage({
-          type: "FOCUS_SESSION_COMPLETED",
-          session,
-        });
-
-        showFocusCompleteNotification(duration);
-      } catch (err) {
-        console.error("Failed to complete focus session:", err);
-      }
-    }
+    showFocusCompleteNotification(
+      state.focus.sessionDuration
+    );
+  } catch (err) {
+    console.error("Failed to complete focus session:", err);
   }
 }
 

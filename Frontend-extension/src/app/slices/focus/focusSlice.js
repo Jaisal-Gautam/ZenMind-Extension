@@ -4,19 +4,20 @@ import {
   endFocusSession,
   loadFocusHistory,
   loadCurrentFocusSession,
+  pauseFocusSession,
+  resumeFocusSession,
 } from "./focusThunk";
-
 const initialState = {
   // Runtime timer state
   isActive: false,
   isPaused: false,
   duration: 25,
   startTime: null,
-  endTime: null,
+
   remainingTime: null,
   currentSessionId: null,
   sessionDuration: null,
-
+  lastResumedAt: null,
   // API state
   loading: false,
   error: null,
@@ -29,38 +30,49 @@ const focusSlice = createSlice({
 
   reducers: {
     startFocus: (state, action) => {
-      const { startTime, endTime, sessionId, sessionDuration } = action.payload;
+      const { startTime, sessionId, sessionDuration } = action.payload;
 
       state.isActive = true;
       state.isPaused = false;
+
       state.startTime = startTime;
-      state.endTime = endTime;
+      state.lastResumedAt = startTime;
+
       state.currentSessionId = sessionId;
       state.sessionDuration = sessionDuration;
+
+      state.remainingTime = sessionDuration * 60 * 1000;
     },
 
     stopFocus: (state) => {
       state.isActive = false;
       state.isPaused = false;
+
       state.startTime = null;
-      state.endTime = null;
       state.remainingTime = null;
       state.currentSessionId = null;
       state.sessionDuration = null;
+      state.lastResumedAt = null;
     },
 
     pauseFocus: (state) => {
+      if (!state.lastResumedAt) return;
+
+      const elapsed = Date.now() - state.lastResumedAt;
+
+      state.remainingTime = Math.max(0, state.remainingTime - elapsed);
+
       state.isPaused = true;
       state.isActive = false;
-      state.remainingTime = state.endTime - Date.now();
-      state.endTime = null;
+
+      state.lastResumedAt = null;
     },
 
-    resumeFocus: (state) => {
+    resumeFocus: (state, action) => {
       state.isPaused = false;
       state.isActive = true;
-      state.endTime = Date.now() + state.remainingTime;
-      state.remainingTime = null;
+
+      state.lastResumedAt = action.payload ?? Date.now();
     },
 
     setDuration: (state, action) => {
@@ -72,21 +84,45 @@ const focusSlice = createSlice({
         ...action.payload,
       };
     },
-    pauseOnBrowserRestart:(state,action)=>{
-      state.remainingTime =
-        Math.max(0, state.endTime - Date.now());
+    pauseOnBrowserRestart: (state) => {
+      if (!state.lastResumedAt) return;
 
-    state.endTime = null;
+      const elapsed = Date.now() - state.lastResumedAt;
 
-    state.isActive = false;
-    state.isPaused = true;
+      state.remainingTime = Math.max(0, state.remainingTime - elapsed);
 
+      state.isActive = false;
+      state.isPaused = true;
+      state.lastResumedAt = null;
     },
     resetFocus: () => initialState,
   },
 
   extraReducers: (builder) => {
     builder
+    .addCase(pauseFocusSession.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(pauseFocusSession.fulfilled, (state) => {
+  state.loading = false;
+})
+.addCase(pauseFocusSession.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload;
+})
+
+.addCase(resumeFocusSession.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(resumeFocusSession.fulfilled, (state) => {
+  state.loading = false;
+})
+.addCase(resumeFocusSession.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload;
+})
       // Start Focus
       .addCase(startFocusSession.pending, (state) => {
         state.loading = true;
@@ -135,25 +171,30 @@ const focusSlice = createSlice({
         state.error = null;
       })
       .addCase(loadCurrentFocusSession.fulfilled, (state, action) => {
-        const session = action.payload;
-
-        if (!session) {
-          state.loading = false;
-          return;
-        }
-
-        const startTime = new Date(session.startTime).getTime();
-        const endTime = startTime + session.plannedDuration * 60 * 1000;
-
         state.loading = false;
         state.error = null;
 
+        const session = action.payload;
 
+        if (!session) return;
 
-        state.startTime = startTime;
-        state.endTime = endTime;
+        const totalDurationMs = session.plannedDuration * 60 * 1000;
+
+        state.startTime = new Date(session.startTime).getTime();
         state.currentSessionId = session._id;
         state.sessionDuration = session.plannedDuration;
+
+        state.remainingTime = Math.max(
+          0,
+          totalDurationMs - session.actualDuration * 1000,
+        );
+
+        state.isPaused = session.isPaused;
+        state.isActive = !session.isPaused;
+
+        state.lastResumedAt = session.lastResumedAt
+          ? new Date(session.lastResumedAt).getTime()
+          : null;
       })
       .addCase(loadCurrentFocusSession.rejected, (state, action) => {
         state.loading = false;
@@ -170,7 +211,7 @@ export const {
   setDuration,
   resetFocus,
   syncFocusState,
-  pauseOnBrowserRestart
+  pauseOnBrowserRestart,
 } = focusSlice.actions;
 
 export default focusSlice.reducer;

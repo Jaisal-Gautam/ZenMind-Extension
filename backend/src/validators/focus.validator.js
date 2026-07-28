@@ -1,8 +1,11 @@
 import { z } from "zod";
+
 export const startFocusSchema = z.object({
-    plannedDuration:z.number().min(1).max(1440)
+  plannedDuration: z.number().min(1).max(1440),
 });
 
 export const endFocusSchema = z.object({
-    endReason:z.enum(["completed","stopped","crashed"])
+  status: z.enum(["completed", "cancelled", "expired"]),
 });
+
+export const pauseResumeSchema = z.object({});
