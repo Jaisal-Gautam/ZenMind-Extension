@@ -11,8 +11,8 @@ import {
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password } = req.body;
-  const user = await createUser({ username, email, password });
+  const { username, email, password,timezone } = req.body;
+  const user = await createUser({ username, email, password,timezone });
   const userRes = {
     id: user._id,
     username: user.username,
@@ -26,10 +26,11 @@ export const registerUser = asyncHandler(async (req, res) => {
 });
 
 export const login = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password,timezone } = req.body;
   const { user, accessToken, refreshToken } = await loginUser({
     email,
     password,
+    timezone
   });
   const userRes = {
     id: user._id,

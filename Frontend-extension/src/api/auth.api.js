@@ -3,14 +3,22 @@ import apiClient from "./apiClient";
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 export const authApi = {
   async register(userData) {
-    const response = await apiClient.post("/auth/register", userData);
+    const response = await apiClient.post("/auth/register", {
+      ...userData,
+      timezone: getTimezone(),
+    });
+
     return response.data;
   },
 
   async login(credentials) {
-    const response = await apiClient.post("/auth/login", credentials);
-    return response.data;
-  },
+  const response = await apiClient.post("/auth/login", {
+    ...credentials,
+    timezone: getTimezone(),
+  });
+
+  return response.data;
+},
 
   async me() {
     const response = await apiClient.get("/auth/me");
@@ -39,18 +47,16 @@ export const authApi = {
 
   async refresh(refreshToken) {
     const response = await axios.post(`${baseURL}/auth/refresh`, {
-      refreshToken:refreshToken,
+      refreshToken: refreshToken,
     });
     return response.data;
   },
   async verifyResetOtp(email, otp) {
-  const response = await apiClient.post(
-    "/auth/verify-reset-otp",
-    {
+    const response = await apiClient.post("/auth/verify-reset-otp", {
       email,
       otp,
-    }
-  );
-  return response.data;
-},
+    });
+    return response.data;
+  },
 };
+const getTimezone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;

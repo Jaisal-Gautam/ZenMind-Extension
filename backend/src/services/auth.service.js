@@ -11,12 +11,19 @@ import {
 } from "../utils/jwt.js";
 import { sendPasswordResetEmail } from "../utils/email.js";
 
-export const createUser = async ({ username, email, password }) => {
+export const createUser = async ({
+  username,
+  email,
+  password,
+  timezone,
+}) => {
   const normalizedEmail = email.toLowerCase().trim();
   const normalizedUsername = username.trim().toLowerCase();
+
   const userExist = await User.findOne({
     $or: [{ normalizedUsername }, { email: normalizedEmail }],
   });
+
   if (userExist) {
     if (userExist.email === normalizedEmail) {
       throw new ApiError(409, "Email already exists.");
@@ -24,39 +31,56 @@ export const createUser = async ({ username, email, password }) => {
 
     throw new ApiError(409, "Username already exists.");
   }
+
   const hashedPassword = await bcrypt.hash(password, 10);
+
   const user = await User.create({
     username,
     email: normalizedEmail,
     password: hashedPassword,
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    timezone: timezone || "UTC",
   });
+
   await createDefaultPreferences(user._id);
   await createDefaultBlocking(user._id);
+
   return user;
 };
-
-export const loginUser = async ({ email, password }) => {
+export const loginUser = async ({
+  email,
+  password,
+  timezone,
+}) => {
   const normalizedEmail = email.toLowerCase().trim();
 
   const user = await User.findOne({
     email: normalizedEmail,
-  }).select("+password  +refreshToken");
+  }).select("+password +refreshToken");
+
   if (!user) {
     throw new ApiError(401, "Invalid email or password.");
   }
+
   const correctPass = await bcrypt.compare(password, user.password);
 
   if (!correctPass) {
     throw new ApiError(401, "Invalid email or password.");
   }
+
+  // Update timezone if it changed
+  if (timezone && user.timezone !== timezone) {
+    user.timezone = timezone;
+  }
+
   const accessToken = generateAccessToken(user._id);
   const refreshToken = generateRefreshToken(user._id);
+
   user.refreshToken = refreshToken;
+
   await user.save({ validateBeforeSave: false });
+
   return { user, accessToken, refreshToken };
 };
-
 export const refreshAccessToken = async ({ refreshToken }) => {
   const { id } = verifyRefreshToken(refreshToken);
 
