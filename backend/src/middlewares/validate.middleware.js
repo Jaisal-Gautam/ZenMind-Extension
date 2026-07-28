@@ -1,8 +1,6 @@
 export const validate = (schema) => {
   return (req, res, next) => {
-    console.log(req.originalUrl);
-    console.log(req.body);
-    console.dir(schema.shape, { depth: null });
+
     const result = schema.safeParse(req.body);
 
     if (!result.success) {

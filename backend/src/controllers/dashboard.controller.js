@@ -10,7 +10,6 @@ import {
 } from "../services/analytics.service.js";
 
 export const getDashboard = asyncHandler(async (req, res) => {
-    console.time("dashboard");
 
   const [
     preferences,
@@ -27,7 +26,6 @@ export const getDashboard = asyncHandler(async (req, res) => {
     getFocusAnalytics(req.user),
     getHistory(req.user, req.query.range ?? "daily"),
   ]);
-  console.time("dashboard");
 
 
   res.status(200).json({

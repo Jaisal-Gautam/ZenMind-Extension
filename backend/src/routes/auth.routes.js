@@ -19,9 +19,7 @@ import {
   resetPasswordSchema,
   verifyResetOtpSchema
 } from "../validators/auth.validator.js";
-console.log(changePasswordSchema.shape);
-console.log(changePasswordSchema === loginSchema);
-console.log(changePasswordSchema.shape);
+
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 import {
   authLimiter,
