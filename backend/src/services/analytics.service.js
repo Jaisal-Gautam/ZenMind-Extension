@@ -16,8 +16,16 @@ export const getOverview = async (user) => {
 
   const { todayStart, tomorrowStart } = getDayBounds(timezone);
 
-  const [focusStats, blockedStats, completedSessions, mostUsed, mostBlocked] =
-    await Promise.all([
+  const timed = async (name, fn) => {
+  const start = performance.now();
+  const result = await fn();
+  console.log(`${name}: ${(performance.now() - start).toFixed(1)}ms`);
+  return result;
+};
+
+const [focusStats, blockedStats, completedSessions, mostUsed, mostBlocked] =
+  await Promise.all([
+    timed("overview-focus", () =>
       Focus.aggregate([
         {
           $match: {
@@ -36,8 +44,10 @@ export const getOverview = async (user) => {
             focusedTime: { $sum: "$actualDuration" },
           },
         },
-      ]),
+      ])
+    ),
 
+    timed("overview-blocked", () =>
       BlockedAttempt.aggregate([
         {
           $match: {
@@ -54,16 +64,24 @@ export const getOverview = async (user) => {
             blockedAttempts: { $sum: 1 },
           },
         },
-      ]),
+      ])
+    ),
 
+    timed("overview-completedSessions", () =>
       Focus.find({
         user: objectUserId,
         status: "completed",
-      }).select("startTime"),
+      }).select("startTime")
+    ),
 
-      getMostUsedWebsite(user),
-      getMostBlockedWebsite(user),
-    ]);
+    timed("overview-mostUsed", () =>
+      getMostUsedWebsite(user)
+    ),
+
+    timed("overview-mostBlocked", () =>
+      getMostBlockedWebsite(user)
+    ),
+  ]);
 
   const focus = focusStats[0] || {
     focusSessions: 0,
@@ -386,6 +404,7 @@ export const getHistory = async (user, range) => {
 };
 
 export const getMostUsedWebsite = async (user) => {
+  const start = performance.now();
   
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
@@ -414,7 +433,9 @@ export const getMostUsedWebsite = async (user) => {
       },
     },
   ]);
-
+console.log(
+    `getMostUsedWebsite: ${(performance.now() - start).toFixed(1)}ms`
+  );
   return websites.map((site) => ({
     domain: site._id,
     duration: site.totalDuration,
@@ -422,6 +443,7 @@ export const getMostUsedWebsite = async (user) => {
 };
 
 export const getMostBlockedWebsite = async (user) => {
+  const start = performance.now();
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
   const { todayStart, tomorrowStart } = getDayBounds(timezone);
@@ -450,6 +472,9 @@ export const getMostBlockedWebsite = async (user) => {
       },
     },
   ]);
+  console.log(
+    `getMostBlockedWebsite: ${(performance.now() - start).toFixed(1)}ms`
+  );
 
   return websites.map((site) => ({
     domain: site._id,
