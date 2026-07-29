@@ -350,7 +350,7 @@ export function PopupAudioPlayer() {
 
           {/* Text Container */}
           <div className="flex flex-col justify-center">
-            <h2 className="text-sm font-bold text-brand dark:text-brand-muted leading-tight tracking-tight ">
+            <h2 className="text-sm font-bold text-brand dark:text-text leading-tight tracking-tight ">
               {currentTrack?.title || "Select Track"}
             </h2>
           </div>

@@ -160,7 +160,7 @@ export const getFocusHistory = async (
 };
 
 export const getCurrentFocusSession = async (userId) => {
-  console.time("findCurrent");
+  console.time("mongo");
   return await Focus.findOne({
   user: userId,
   status: "active",
@@ -169,5 +169,5 @@ export const getCurrentFocusSession = async (userId) => {
   "plannedDuration actualDuration isPaused lastResumedAt startTime status"
 )
 .lean();
-console.timeEnd("findCurrent");
+console.timeEnd("mongo");
 };

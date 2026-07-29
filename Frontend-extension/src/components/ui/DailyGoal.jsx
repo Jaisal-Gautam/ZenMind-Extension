@@ -191,7 +191,7 @@ const progressPercentage =
     : 0;
   return (
     <div className="mt-4 w-full rounded-lg border border-border-default bg-surface p-5 shadow-sm">
-      <h3 className="mb-4 flex justify-between text-xs font-semibold uppercase tracking-[0.15em] text-text-disabled">
+      <h3 className="mb-4 flex dark:text-text justify-between text-xs font-semibold uppercase tracking-[0.15em] text-text-disabled">
         <span>Daily Goal</span>
         <Sparkles className="text-brand " />
       </h3>

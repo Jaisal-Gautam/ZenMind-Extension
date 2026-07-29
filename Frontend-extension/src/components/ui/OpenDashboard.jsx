@@ -15,7 +15,7 @@ function OpenDashboard() {
   return (
     <div className="w-full flex items-center justify-center mt-3 z-0">
       <button
-        className="w-full max-w-lg px-4 py-3 text-lg bg-brand hover:scale-105 transition-all duration-300 text-text rounded-md shadow-sm"
+        className="w-full max-w-lg px-4 py-3 text-lg bg-brand hover:scale-105 transition-all duration-300 text-text-inverse dark:text-text rounded-md shadow-sm"
         onClick={openFocus}
       >
         Open Dashboard
