@@ -198,10 +198,11 @@ export default function Soundscapes() {
               <button
                 onClick={() => setIsLooping((l) => !l)}
                 title={isLooping ? 'Looping enabled' : 'Looping disabled'}
+                aria-label={isLooping ? 'Disable looping' : 'Enable looping'}
                 className="transition-opacity"
               >
                 <Repeat
-                  className={`w-3.5 h-3.5 ${isLooping ? 'text-zen-accent' : 'text-zen-sage/40'}`}
+                  className={`w-3.5 h-3.5 ${isLooping ? 'text-zen-accent' : 'text-zen-sage/65'}`}
                   strokeWidth={1.6}
                 />
               </button>
@@ -218,13 +219,18 @@ export default function Soundscapes() {
               />
             </div>
             <div className="flex items-center justify-center gap-5">
-              <button onClick={handlePrev} title="Previous soundscape">
-                <SkipBack className="w-4 h-4 text-zen-sage/70 hover:text-zen-mist transition-colors" strokeWidth={1.6} />
+              <button
+                onClick={handlePrev}
+                title="Previous soundscape"
+                aria-label="Previous soundscape"
+              >
+                <SkipBack className="w-4 h-4 text-zen-sage hover:text-zen-mist transition-colors" strokeWidth={1.6} />
               </button>
               <motion.button
                 onClick={handlePlayPause}
                 whileHover={{ scale: 1.08 }}
                 whileTap={{ scale: 0.92 }}
+                aria-label={playing ? 'Pause soundscape' : 'Play soundscape'}
                 className="w-10 h-10 rounded-full bg-zen-accent flex items-center justify-center cursor-pointer"
               >
                 {playing ? (
@@ -233,8 +239,12 @@ export default function Soundscapes() {
                   <Play className="w-4 h-4 text-zen-deep ml-0.5" strokeWidth={2} />
                 )}
               </motion.button>
-              <button onClick={handleNext} title="Next soundscape">
-                <SkipForward className="w-4 h-4 text-zen-sage/70 hover:text-zen-mist transition-colors" strokeWidth={1.6} />
+              <button
+                onClick={handleNext}
+                title="Next soundscape"
+                aria-label="Next soundscape"
+              >
+                <SkipForward className="w-4 h-4 text-zen-sage hover:text-zen-mist transition-colors" strokeWidth={1.6} />
               </button>
             </div>
           </div>

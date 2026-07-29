@@ -13,14 +13,16 @@ function App() {
   return (
     <div className="min-h-screen bg-zen-cream">
       <Navbar />
-      <Hero />
-      <HowItWorks />
-      <FocusModes />
-      <WebsiteBlocking />
-      <Soundscapes />
-      <Insights />
-      <Pricing />
-      <FinalCta />
+      <main>
+        <Hero />
+        <HowItWorks />
+        <FocusModes />
+        <WebsiteBlocking />
+        <Soundscapes />
+        <Insights />
+        <Pricing />
+        <FinalCta />
+      </main>
       <Footer />
       <Analytics/>
     </div>
