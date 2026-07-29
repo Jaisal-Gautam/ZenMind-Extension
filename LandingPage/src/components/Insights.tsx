@@ -72,8 +72,8 @@ export default function Insights() {
               </div>
             </div>
 
-            <div className="relative bg-zen-mist/40 rounded-2xl border border-zen-sage/30 p-4 pt-6 pb-3">
-              <div className="flex gap-3 items-stretch">
+            <div className="relative bg-zen-mist/40 rounded-2xl border border-zen-sage/30 p-4 pt-6 pb-3 overflow-x-auto">
+              <div className="flex gap-3 items-stretch min-w-[600px]">
                 {/* Y-Axis Labels */}
                 <div className="flex flex-col justify-between text-[10px] text-zen-muted/70 font-mono text-right shrink-0 h-32 py-1 pr-1 border-r border-zen-sage/30">
                   <span>60m</span>
@@ -135,8 +135,8 @@ export default function Insights() {
                   </svg>
 
                   {/* Time X-Axis */}
-                  <div className="flex justify-between text-[9px] text-zen-muted/80 font-mono tracking-tighter pt-2 border-t border-zen-sage/30 overflow-x-auto mt-1">
-                    {['12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'].map(
+                  <div className="flex justify-between text-[9px] text-zen-muted/80 font-mono tracking-tighter pt-2 border-t border-zen-sage/30 mt-1">
+                    {['12AM', '3AM', '6AM', '9AM', '12PM', '3PM', '6PM', '9PM', '11PM'].map(
                       (time) => (
                         <span key={time}>{time}</span>
                       )

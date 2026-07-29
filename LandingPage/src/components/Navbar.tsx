@@ -92,12 +92,7 @@ export default function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <button
-                onClick={() => setOpen(false)}
-                className="min-h-[44px] flex items-center text-[15px] text-zen-ink/85"
-              >
-                Sign in
-              </button>
+
             </div>
           </motion.div>
         )}
