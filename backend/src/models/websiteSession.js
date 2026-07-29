@@ -30,6 +30,11 @@ websiteSessionSchema.index({
   user: 1,
   startTime: -1,
 });
+websiteSessionSchema.index({
+  user: 1,
+  domain: 1,
+});
+
 const WebsiteSession = mongoose.model("WebsiteSession", websiteSessionSchema);
 
 export default WebsiteSession;

@@ -61,6 +61,9 @@ const blockingSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+blockingSchema.index({
+    user:1
+});
 
 const Blocking = mongoose.model("Blocking", blockingSchema);
 

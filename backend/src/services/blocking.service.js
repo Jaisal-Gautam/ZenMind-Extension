@@ -8,7 +8,7 @@ export const createDefaultBlocking = async (userId) => {
 };
 
 export const getBlocking = async (userId) => {
-  const blocking = await Blocking.findOne({ user: userId });
+  const blocking = await Blocking.findOne({ user: userId }).lean();
   if (!blocking) throw new ApiError(404, "Blocking not found.");
   return blocking;
 };

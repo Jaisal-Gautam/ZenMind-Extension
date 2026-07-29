@@ -41,8 +41,10 @@ export const createUser = async ({
     timezone: timezone || "UTC",
   });
 
-  await createDefaultPreferences(user._id);
-  await createDefaultBlocking(user._id);
+  await Promise.all([
+  createDefaultPreferences(user._id),
+  createDefaultBlocking(user._id),
+]);
 
   return user;
 };

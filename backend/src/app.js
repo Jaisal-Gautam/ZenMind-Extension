@@ -25,7 +25,17 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
+app.use((req, res, next) => {
+  const start = performance.now();
 
+  res.on("finish", () => {
+    console.log(
+      `${req.method} ${req.originalUrl} ${(performance.now() - start).toFixed(1)}ms`
+    );
+  });
+
+  next();
+});
 //Routes
 app.use("/", router);
 app.use("/auth",authRouter)

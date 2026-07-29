@@ -7,7 +7,7 @@ export const createDefaultPreferences = async (userId) => {
 };
 
 export const getPreferences = async (userId) => {
-  const userPref = await UserPreference.findOne({ user: userId });
+  const userPref = await UserPreference.findOne({ user: userId }).lean();
   if (!userPref) throw new ApiError(404, "User preferences not found.");
   return userPref;
 };

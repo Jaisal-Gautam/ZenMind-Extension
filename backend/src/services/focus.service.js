@@ -3,9 +3,13 @@ import { ApiError } from "../utils/apiError.js";
 
 const closeActiveSession = async (userId, status) => {
   const session = await Focus.findOne({
-    user: userId,
-    status: "active",
-  });
+  user: userId,
+  status: "active",
+})
+.select(
+  "plannedDuration actualDuration isPaused lastResumedAt startTime status"
+)
+
 
   if (!session) return null;
 
@@ -45,9 +49,13 @@ export const startFocusSession = async (userId, plannedDuration) => {
 
 export const pauseFocusSession = async (userId) => {
   const session = await Focus.findOne({
-    user: userId,
-    status: "active",
-  });
+  user: userId,
+  status: "active",
+})
+.select(
+  "plannedDuration actualDuration isPaused lastResumedAt startTime status"
+)
+
 
   if (!session) {
     throw new ApiError(404, "No active focus session.");
@@ -73,9 +81,13 @@ export const pauseFocusSession = async (userId) => {
 
 export const resumeFocusSession = async (userId) => {
   const session = await Focus.findOne({
-    user: userId,
-    status: "active",
-  });
+  user: userId,
+  status: "active",
+})
+.select(
+  "plannedDuration actualDuration isPaused lastResumedAt startTime status"
+)
+
 
   if (!session) {
     throw new ApiError(404, "No active focus session.");
@@ -95,9 +107,12 @@ export const resumeFocusSession = async (userId) => {
 
 export const endFocusSession = async (userId, status) => {
   const session = await Focus.findOne({
-    user: userId,
-    status: "active",
-  });
+  user: userId,
+  status: "active",
+})
+.select(
+  "plannedDuration actualDuration isPaused lastResumedAt startTime status"
+)
 
   if (!session) {
     throw new ApiError(404, "No active focus session.");
@@ -129,7 +144,8 @@ export const getFocusHistory = async (
   const focusSessions = await Focus.find({ user: userId })
     .sort({ startTime: -1 })
     .skip((page - 1) * limit)
-    .limit(limit);
+    .limit(limit)
+    .lean();
 
   const totalSessions = await Focus.countDocuments({
     user: userId,
@@ -145,7 +161,11 @@ export const getFocusHistory = async (
 
 export const getCurrentFocusSession = async (userId) => {
   return await Focus.findOne({
-    user: userId,
-    status: "active",
-  });
+  user: userId,
+  status: "active",
+})
+.select(
+  "plannedDuration actualDuration isPaused lastResumedAt startTime status"
+)
+.lean();
 };

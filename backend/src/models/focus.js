@@ -60,9 +60,11 @@ const focusSchema = new mongoose.Schema(
   }
 );
 
-
-focusSchema.index({ user: 1, status: 1 });
-
+focusSchema.index({
+  user: 1,
+  status: 1,
+  startTime: -1,
+});
 
 focusSchema.index({ user: 1, startTime: -1 });
 
