@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { installZenMind } from '@/lib/chromeStore';
@@ -13,6 +13,15 @@ const links = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+
+  const scrollTo = useCallback((href: string) => {
+    setOpen(false);
+    const id = href.replace('#', '');
+    // Small delay so the menu closes before scrolling
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  }, []);
 
   return (
     <header className="absolute top-0 left-0 right-0 z-50">
@@ -83,16 +92,14 @@ export default function Navbar() {
           >
             <div className="flex flex-col px-6 py-4 gap-1">
               {links.map((link) => (
-                <a
+                <button
                   key={link.label}
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="min-h-[44px] flex items-center text-[15px] text-zen-ink/85"
+                  onClick={() => scrollTo(link.href)}
+                  className="min-h-[44px] flex items-center text-[15px] text-zen-ink/85 text-left"
                 >
                   {link.label}
-                </a>
+                </button>
               ))}
-
             </div>
           </motion.div>
         )}
@@ -100,3 +107,4 @@ export default function Navbar() {
     </header>
   );
 }
+
