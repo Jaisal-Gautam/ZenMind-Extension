@@ -160,14 +160,20 @@ export const getFocusHistory = async (
 };
 
 export const getCurrentFocusSession = async (userId) => {
-  console.time("mongo");
-  return await Focus.findOne({
-  user: userId,
-  status: "active",
-})
-.select(
-  "plannedDuration actualDuration isPaused lastResumedAt startTime status"
-)
-.lean();
-console.timeEnd("mongo");
+  const start = performance.now();
+
+  const session = await Focus.findOne({
+    user: userId,
+    status: "active",
+  })
+    .select(
+      "plannedDuration actualDuration isPaused lastResumedAt startTime status"
+    )
+    .lean();
+
+  console.log(
+    `Mongo query: ${(performance.now() - start).toFixed(1)}ms`
+  );
+
+  return session;
 };

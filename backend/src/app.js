@@ -18,7 +18,7 @@ import analyticRouter from "./routes/analytics.routes.js";
 import dashboardRouter from "./routes/dashboard.routes.js";
 //App
 const app = express();
-
+app.set("trust proxy", 1);
 //Middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -26,11 +26,13 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
 app.use((req, res, next) => {
-  const start = performance.now();
+  const start = Date.now();
+
+  console.log(`➡️ ${req.method} ${req.originalUrl} started`);
 
   res.on("finish", () => {
     console.log(
-      `${req.method} ${req.originalUrl} ${(performance.now() - start).toFixed(1)}ms`
+      `✅ ${req.method} ${req.originalUrl} ${res.statusCode} finished in ${Date.now() - start}ms`
     );
   });
 
