@@ -20,17 +20,18 @@ export const analyticsTime = (time) => {
     </>
   );
 };
+export const goalTime = (time) => {
+  if (!time || time <= 0) return '0m';
 
-export const goalTime = (time)=>{
   const hours = Math.floor(time / 60);
-  return (
-    <>
-      {hours > 0 && `${hours}h `}
-      {time > 0 && `${time}m `}
-    </>
-  );
+  const minutes = time % 60;
 
-}
+  const parts = [];
+  if (hours > 0) parts.push(`${hours}h`);
+  if (minutes > 0) parts.push(`${minutes}m`);
+
+  return parts.join(' ');
+};
 export const usageTime = (time) => {
   const hour = Math.floor(time / 3600);
   const min = Math.floor((time / 60) % 60);
@@ -59,7 +60,7 @@ export const musicTime = (time) => {
   const sec = Math.floor(time % 60);
   return (
     <>
-      {min<10? `0${min}` : min}:{sec<10? `0${sec}` : sec}
+      {min < 10 ? `0${min}` : min}:{sec < 10 ? `0${sec}` : sec}
     </>
   );
 };
