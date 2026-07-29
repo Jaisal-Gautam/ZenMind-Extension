@@ -10,6 +10,7 @@ import { getDayBounds } from "../utils/timezone.js";
 const toObjectId = (userId) => new mongoose.Types.ObjectId(userId);
 
 export const getOverview = async (user) => {
+  const start = performance.now();
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
 
@@ -72,6 +73,9 @@ export const getOverview = async (user) => {
   const blocked = blockedStats[0] || {
     blockedAttempts: 0,
   };
+  console.log(
+    `getOverview: ${(performance.now() - start).toFixed(1)}ms`
+  );
 
   return {
     focusedTime: focus.focusedTime,
@@ -87,6 +91,7 @@ export const getOverview = async (user) => {
 };
 
 export const getWebsiteAnalytics = async (user) => {
+   const start = performance.now();
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
   const { todayStart, tomorrowStart } = getDayBounds(timezone);
@@ -164,11 +169,14 @@ export const getWebsiteAnalytics = async (user) => {
     domain: stat._id,
     attempts: stat.attempts,
   }));
-
+console.log(
+    `getWebsiteAnalytics: ${(performance.now() - start).toFixed(1)}ms`
+  );
   return { websiteAnalytics, blockedWebsiteAnalytics };
 };
 
 export const getFocusAnalytics = async (user) => {
+  const start = performance.now();
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
   const { todayStart, tomorrowStart } = getDayBounds(timezone);
@@ -271,6 +279,9 @@ export const getFocusAnalytics = async (user) => {
       minutes: hourlyMap.get(hour) ?? 0,
     });
   }
+  console.log(
+    `getFocusAnalytics: ${(performance.now() - start).toFixed(1)}ms`
+  );
 
   return {
     longestSession: focus.longestSession,
@@ -291,6 +302,7 @@ export const getFocusAnalytics = async (user) => {
 };
 
 export const getHistory = async (user, range) => {
+  const start = performance.now();
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
 
@@ -366,11 +378,15 @@ export const getHistory = async (user, range) => {
       sessions: dayData?.sessions ?? 0,
     });
   }
+   console.log(
+    `getHistory: ${(performance.now() - start).toFixed(1)}ms`
+  );
 
   return result;
 };
 
 export const getMostUsedWebsite = async (user) => {
+  
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
 
@@ -442,6 +458,7 @@ export const getMostBlockedWebsite = async (user) => {
 };
 
 export const getLifetimeAnalytics = async (user) => {
+  const start = performance.now();
   const { _id, timezone = "UTC" } = user;
   const objectUserId = toObjectId(_id);
 
@@ -490,6 +507,9 @@ export const getLifetimeAnalytics = async (user) => {
   const blocked = blockedStats[0] ?? {
     blockedAttempts: 0,
   };
+  console.log(
+    `getLifetimeAnalytics: ${(performance.now() - start).toFixed(1)}ms`
+  );
 
   return {
     totalFocusTime: focus.totalFocusTime,
