@@ -59,10 +59,10 @@ function Navbar() {
 
   return (
     <header className="relative z-50 w-full">
-      <nav className="relative z-20 flex h-16 w-full items-center justify-between border-b border-border-default bg-surface px-4 md:px-8 shadow-sm">
+      <nav className="relative z-20 flex h-14 sm:h-16 w-full items-center justify-between border-b border-border-default bg-surface px-3 sm:px-6 md:px-8 shadow-sm">
         {/* Logo */}
         <div className="shrink-0 flex items-center">
-          <NavLink to="/" className="text-2xl font-bold text-brand">
+          <NavLink to="/" className="text-xl sm:text-2xl font-bold text-brand">
             ZenMind
           </NavLink>
         </div>
@@ -74,10 +74,9 @@ function Navbar() {
               key={link.id}
               to={link.href}
               className={({ isActive }) =>
-                `flex h-full items-center border-b-2 px-1 text-[17px] font-medium transition-colors ${
-                  isActive
-                    ? "border-border-brand text-brand"
-                    : "border-transparent text-text-disabled hover:text-brand"
+                `flex h-full items-center border-b-2 px-1 text-[17px] font-medium transition-colors ${isActive
+                  ? "border-border-brand text-brand"
+                  : "border-transparent text-text-disabled hover:text-brand"
                 }`
               }
             >
@@ -87,12 +86,12 @@ function Navbar() {
         </div>
 
         {/* Right Action Section */}
-        <div className="flex shrink-0 items-center space-x-3 md:space-x-4">
+        <div className="flex shrink-0 items-center space-x-2 sm:space-x-3 md:space-x-4">
           {/* Theme Toggle Button */}
           <button
             type="button"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-default bg-surface-muted text-text-soft transition hover:bg-surface-hover hover:text-brand focus:outline-none"
+            className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border border-border-default bg-surface-muted text-text-soft transition hover:bg-surface-hover hover:text-brand focus:outline-none"
             aria-label="Toggle Theme"
           >
             <motion.div
@@ -102,9 +101,9 @@ function Navbar() {
               className="flex items-center justify-center"
             >
               {theme === "dark" ? (
-                <Sun size={18} className="text-amber-500" />
+                <Sun className="size-4 sm:size-4.5 text-amber-500" />
               ) : (
-                <Moon size={18} className="text-text-soft" />
+                <Moon className="size-4 sm:size-4.5 text-text-soft" />
               )}
             </motion.div>
           </button>
@@ -114,21 +113,19 @@ function Navbar() {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setIsUserMenuOpen((prev) => !prev)}
-                className="flex items-center space-x-2 rounded-lg border border-border-default bg-surface-muted/60 px-3 py-1.5 text-sm font-medium text-text-muted transition hover:bg-surface-hover hover:text-brand focus:outline-none"
+                className="flex items-center space-x-1.5 sm:space-x-2 rounded-lg border border-border-default bg-surface-muted/60 px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-text-muted transition hover:bg-surface-hover hover:text-brand focus:outline-none"
                 aria-expanded={isUserMenuOpen}
                 aria-haspopup="true"
               >
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-success/15 text-brand">
-                  <User size={14} className="text-brand" />
+                <div className="flex h-5 w-5 sm:h-6 sm:w-6 items-center justify-center rounded-full bg-success/15 text-brand">
+                  <User className="size-3 sm:size-3.5 text-brand" />
                 </div>
-                <span className="max-w-25 truncate text-sm font-semibold sm:max-w-35 text-text">
+                <span className="max-w-20 truncate text-xs sm:text-sm font-semibold sm:max-w-35 text-text">
                   {username || "User"}
                 </span>
                 <ChevronDown
-                  size={16}
-                  className={`text-text-disabled transition-transform duration-200 ${
-                    isUserMenuOpen ? "rotate-180" : ""
-                  }`}
+                  className={`size-3.5 sm:size-4 text-text-disabled transition-transform duration-200 ${isUserMenuOpen ? "rotate-180" : ""
+                    }`}
                 />
               </button>
 
@@ -140,12 +137,12 @@ function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 8, scale: 0.95 }}
                     transition={{ duration: 0.15, ease: "easeOut" }}
-                    className="absolute right-0 mt-2 w-52 rounded-xl border border-border-light bg-surface py-1.5 shadow-lg ring-1 ring-ring-subtle"
+                    className="absolute right-0 mt-2 w-48 sm:w-52 rounded-xl border border-border-light bg-surface py-1.5 shadow-lg ring-1 ring-ring-subtle"
                   >
                     <NavLink
                       to="/auth/change-password"
                       onClick={closeUserMenu}
-                      className="flex items-center space-x-2.5 px-4 py-2.5 text-sm text-text-muted transition hover:bg-surface-muted hover:text-brand"
+                      className="flex items-center space-x-2.5 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm text-text-muted transition hover:bg-surface-muted hover:text-brand"
                     >
                       <KeyRound size={16} className="text-gray-400" />
                       <span>Change password</span>
@@ -155,7 +152,7 @@ function Navbar() {
 
                     <button
                       onClick={handleLogout}
-                      className="flex w-full items-center space-x-2.5 px-4 py-2.5 text-left text-sm text-danger transition hover:bg-danger-soft"
+                      className="flex w-full items-center space-x-2.5 px-3.5 sm:px-4 py-2 sm:py-2.5 text-left text-xs sm:text-sm text-danger transition hover:bg-danger-soft"
                     >
                       <LogOut size={16} className="text-danger" />
                       <span>Logout</span>
@@ -168,9 +165,9 @@ function Navbar() {
             <NavLink
               to="/auth/login"
               aria-label="Login"
-              className="flex items-center space-x-1.5 rounded-lg border border-transparent px-3 py-1.5 text-sm font-medium text-text-muted hover:text-brand"
+              className="flex items-center space-x-1 sm:space-x-1.5 rounded-lg border border-transparent px-2 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm font-medium text-text-muted hover:text-brand"
             >
-              <User size={18} />
+              <User className="size-4 sm:size-4.5" />
               <span className="hidden sm:inline">Login</span>
             </NavLink>
           )}
@@ -183,9 +180,9 @@ function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? (
-              <X size={26} strokeWidth={2} />
+              <X className="size-6" strokeWidth={2} />
             ) : (
-              <Menu size={26} strokeWidth={2} />
+              <Menu className="size-6" strokeWidth={2} />
             )}
           </button>
         </div>
@@ -199,7 +196,7 @@ function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="absolute left-0 top-16 z-10 flex w-full flex-col border-b border-border-default bg-surface shadow-md md:hidden"
+            className="absolute left-0 top-14 sm:top-16 z-10 flex w-full flex-col border-b border-border-default bg-surface shadow-md md:hidden"
           >
             {links.map((link) => (
               <NavLink
@@ -207,10 +204,9 @@ function Navbar() {
                 to={link.href}
                 onClick={closeMobileMenu}
                 className={({ isActive }) =>
-                  `border-l-4 px-6 py-4 text-[17px] font-medium transition-colors ${
-                    isActive
-                      ? "border-border-brand bg-success/10 text-brand"
-                      : "border-transparent text-text-soft hover:bg-surface-muted hover:text-brand"
+                  `border-l-4 px-5 sm:px-6 py-3.5 sm:py-4 text-base sm:text-[17px] font-medium transition-colors ${isActive
+                    ? "border-border-brand bg-success/10 text-brand"
+                    : "border-transparent text-text-soft hover:bg-surface-muted hover:text-brand"
                   }`
                 }
               >

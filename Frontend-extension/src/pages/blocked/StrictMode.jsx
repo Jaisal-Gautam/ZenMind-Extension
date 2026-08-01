@@ -1,6 +1,9 @@
 import StrictBlocked from "@/assets/StrictBlocked.webp";
 import { CircleAlert } from "lucide-react";
+import { useSelector } from "react-redux";
+
 function Strict() {
+  const guardToggle = useSelector((state) => state.blocking.guardEnabled)
   const OpenDashboard = () => {
     try {
       const url = chrome.runtime.getURL("index.html");
@@ -38,7 +41,7 @@ function Strict() {
             className="px-4 py-2 bg-[#EA580C] cursor-pointer text-white rounded-md shadow-2xl"
             onClick={OpenDashboard}
           >
-            Go To DashBoard
+            {guardToggle ? " Unlock for 5 min" : "Go Back to Site"}
           </button>
         </div>
       </div>

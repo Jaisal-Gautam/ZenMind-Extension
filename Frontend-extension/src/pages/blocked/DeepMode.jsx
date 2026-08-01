@@ -1,10 +1,13 @@
 import DeepBlocked from "@/assets/DeepBlocked.webp";
 import { CircleAlert } from "lucide-react";
 import parseDomain from "@/utils/siteParser";
+import { useSelector } from "react-redux";
+
 function DeepMode() {
   const params = new URLSearchParams(window.location.search);
   const originalUrl = params.get("url");
   const domain = originalUrl ? parseDomain(originalUrl) : null;
+  const guardToggle = useSelector((state) => state.blocking.guardEnabled)
 
   const OpenDashboard = () => {
     try {
@@ -48,16 +51,16 @@ function DeepMode() {
             Now it's time for meaningful work.
           </p>
           <button
-            className="px-4 py-2 bg-green-primary cursor-pointer text-white rounded-md shadow-2xl"
+            className="px-4 py-2 bg-brand cursor-pointer text-white rounded-md shadow-2xl"
             onClick={OpenDashboard}
           >
             Go To DashBoard
           </button>
           <button
-            className="rounded-md bg-green-primary px-4 py-2 text-white shadow-2xl cursor-pointer"
+            className="rounded-md bg-brand px-4 py-2 text-white shadow-2xl cursor-pointer"
             onClick={handleTemporaryUnlock}
           >
-            Unlock for 5 min
+            {guardToggle ? " Unlock for 5 min" : "Go Back to Site"}
           </button>
         </div>
       </div>

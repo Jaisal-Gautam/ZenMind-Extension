@@ -11,6 +11,7 @@ import { loadBlockingConfig } from "@/app/slices/blocking/blockingThunk";
 
 import { loadDashboard } from "@/api/dashboard.api";
 import Loader from "@/components/Loader";
+
 export default function Login() {
   const [bootstrapping, setBootstrapping] = useState(false);
   const dispatch = useDispatch();
@@ -45,13 +46,13 @@ export default function Login() {
       navigate("/");
     } catch (e) {
       setBootstrapping(false);
-
-      
     }
   };
+
   if (bootstrapping) {
     return <Loader />;
   }
+
   return (
     <AuthLayout
       title="Welcome back"
@@ -60,7 +61,7 @@ export default function Login() {
       footerLinkText="Create an account"
       footerLinkTo="/auth/register"
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 w-full max-w-md mx-auto px-1 sm:px-0">
         <AuthInput
           label="Email"
           id="login-email"
@@ -84,13 +85,13 @@ export default function Login() {
         />
 
         {(validationError || error) && (
-          <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
+          <p className="rounded-xl sm:rounded-2xl border border-danger bg-danger-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-danger">
             {validationError || error}
           </p>
         )}
 
         {location.state?.successMessage ? (
-          <p className="rounded-2xl border border-brand bg-success-soft px-4 py-3 text-sm text-brand">
+          <p className="rounded-xl sm:rounded-2xl border border-brand bg-success-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-brand">
             {location.state.successMessage}
           </p>
         ) : null}
@@ -106,7 +107,7 @@ export default function Login() {
         <div className="text-right">
           <Link
             to="/auth/forgot-password"
-            className="text-sm font-semibold text-brand transition-colors hover:text-brand-muted"
+            className="text-xs sm:text-sm font-semibold text-brand transition-colors hover:text-brand-muted"
           >
             Forgot your password?
           </Link>

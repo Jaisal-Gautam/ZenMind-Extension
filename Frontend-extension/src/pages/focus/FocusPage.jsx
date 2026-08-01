@@ -11,23 +11,23 @@ function FocusPage() {
     return <Loader />;
   }
   return (
-    <main className="min-h-screen w-full mt-12  p-8 lg:p-4 xl:p-0">
+    <main className="w-full mt-6 md:mt-12 px-3 sm:px-6 lg:px-4 xl:px-0 pb-8">
       <section>
         <Timer />
       </section>
-      <section className="mt-16 flex flex-col md:flex-row  gap-8 justify-between">
-        <div className="w-full md:flex-2 border not-last-of-type:border-border-light bg-page dark:bg-app shadow-sm rounded-md p-4">
+      <section className="mt-6 md:mt-12 flex flex-col md:flex-row gap-4 md:gap-8 justify-between">
+        <div className="w-full md:flex-2 border border-border-light bg-page dark:bg-app shadow-sm rounded-md p-3 sm:p-4">
           <DurationSelector />
         </div>
-        <div className="w-full md:flex-1 border not-last-of-type:border-border-light bg-page dark:bg-app shadow-sm rounded-md p-4">
+        <div className="w-full md:flex-1 border border-border-light bg-page dark:bg-app shadow-sm rounded-md p-3 sm:p-4">
           <FocusStats focus={focus} overview={overview} />
         </div>
       </section>
-      <section className="flex mt-8 flex-col md:flex-row  gap-8 justify-between ">
-        <div className="w-full md:flex-2 border not-last-of-type:border-border-light bg-page dark:bg-app shadow-sm rounded-md p-4">
+      <section className="flex mt-4 md:mt-8 flex-col md:flex-row gap-4 md:gap-8 justify-between">
+        <div className="w-full md:flex-2 border border-border-light bg-page dark:bg-app shadow-sm rounded-md p-3 sm:p-4">
           <DailyGoal />
         </div>
-        <div className="w-full md:flex-4 border not-last-of-type:border-border-light bg-page dark:bg-app shadow-sm rounded-md p-4">
+        <div className="w-full md:flex-4 border border-border-light bg-page dark:bg-app shadow-sm rounded-md p-3 sm:p-4">
           <AudioPlayer />
         </div>
       </section>

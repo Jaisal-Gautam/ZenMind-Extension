@@ -140,11 +140,11 @@ if (focus.isActive) {
 
 const Controls = ({ onStart, onPause, onResume, focus, onReset, loading }) => {
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex items-center space-x-3 sm:space-x-4">
       <button
         onClick={onReset}
         disabled={loading || (!focus.isActive && !focus.isPaused)}
-        className="px-6 py-2.5 border border-border-strong rounded-full text-sm font-semibold text-text hover:bg-surface-muted transition-colors w-28"
+        className="px-4 sm:px-6 py-2.5 border border-border-strong rounded-full text-sm font-semibold text-text hover:bg-surface-muted transition-colors min-w-[88px] sm:w-28"
       >
         Reset
       </button>
@@ -152,7 +152,7 @@ const Controls = ({ onStart, onPause, onResume, focus, onReset, loading }) => {
       <button
         onClick={focus.isActive ? onPause : focus.isPaused ? onResume : onStart}
         disabled={loading}
-        className="px-6 py-2.5 bg-brand-muted/80  text-text-muted  dark:text-text rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-brand-muted  transition-all duration-300 w-32 disabled:cursor-not-allowed"
+        className="px-4 sm:px-6 py-2.5 bg-brand-muted/80 text-text-muted dark:text-text rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-brand-muted transition-all duration-300 min-w-[100px] sm:w-32 disabled:cursor-not-allowed"
       >
         <Play size={16} fill="currentColor" className="mr-2" />
         {focus.isActive ? "Pause" : focus.isPaused ? "Resume" : "Start"}
@@ -173,7 +173,7 @@ export function Timer() {
   } = useFocusTimer();
 
   return (
-    <div className="bg-app shadow-sm border border-border-light rounded-sm relative overflow-hidden flex flex-col items-center justify-center p-12 w-full h-100 mx-auto">
+    <div className="bg-app shadow-sm border border-border-light rounded-sm relative overflow-hidden flex flex-col items-center justify-center p-6 sm:p-10 md:p-12 w-full h-64 sm:h-80 md:h-100 mx-auto">
       <div className="absolute top-0 left-0 w-full h-1 bg-border-light">
         <motion.div
           className="h-full bg-brand-muted"
@@ -183,11 +183,11 @@ export function Timer() {
         />
       </div>
 
-      <h3 className="text-xs font-bold tracking-[0.15em] text-text-soft uppercase mb-4">
+      <h3 className="text-xs font-bold tracking-[0.15em] text-text-soft uppercase mb-3 sm:mb-4">
         Current Session
       </h3>
 
-      <div className="text-[80px] font-bold text-brand leading-none mb-10 tracking-tight">
+      <div className="text-[52px] sm:text-[68px] md:text-[80px] font-bold text-brand leading-none mb-6 sm:mb-8 md:mb-10 tracking-tight">
         {time}
       </div>
 

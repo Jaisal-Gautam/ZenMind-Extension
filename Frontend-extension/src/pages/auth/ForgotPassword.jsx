@@ -24,6 +24,7 @@ export default function ForgotPassword() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+
   const handleResetPassword = async () => {
     setError("");
     setSuccess("");
@@ -81,9 +82,8 @@ export default function ForgotPassword() {
       setLoading(false);
     }
   };
-  const handleOtpSubmit = async () => {
-    
 
+  const handleOtpSubmit = async () => {
     setError("");
     setSuccess("");
     setFieldErrors({});
@@ -96,15 +96,12 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
 
-      
       const response = await authApi.verifyResetOtp(email.trim(), otp.trim());
-      
 
       setSuccess(response.message);
       setStep("password");
     } catch (requestError) {
       console.error(requestError);
-      
 
       const { message, fieldErrors } = parseApiError(
         requestError,
@@ -164,7 +161,7 @@ export default function ForgotPassword() {
       footerLinkText="Sign in"
       footerLinkTo="/auth/login"
     >
-      <form onSubmit={handleEmailSubmit} className="space-y-5">
+      <form onSubmit={handleEmailSubmit} className="space-y-4 sm:space-y-5 w-full max-w-md mx-auto px-1 sm:px-0">
         {step === "email" && (
           <>
             <AuthInput
@@ -179,13 +176,13 @@ export default function ForgotPassword() {
             />
 
             {error && (
-              <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
+              <p className="rounded-xl sm:rounded-2xl border border-danger bg-danger-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-danger">
                 {error}
               </p>
             )}
 
             {success && (
-              <p className="rounded-2xl border border-brand bg-success-soft px-4 py-3 text-sm text-brand">
+              <p className="rounded-xl sm:rounded-2xl border border-brand bg-success-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-brand">
                 {success}
               </p>
             )}
@@ -198,12 +195,14 @@ export default function ForgotPassword() {
 
         {step === "otp" && (
           <>
-            <div className="rounded-2xl border border-border-default bg-surface dark:bg-page text-text p-4">
-              <p className="text-sm text-text-soft">
+            <div className="rounded-xl sm:rounded-2xl border border-border-default bg-surface dark:bg-page text-text p-3.5 sm:p-4">
+              <p className="text-xs sm:text-sm text-text-soft">
                 We've sent a verification code to
               </p>
 
-              <p className="mt-1 font-semibold text-text">{maskEmail(email)}</p>
+              <p className="mt-1 text-sm sm:text-base font-semibold text-text truncate">
+                {maskEmail(email)}
+              </p>
 
               <button
                 type="button"
@@ -213,7 +212,7 @@ export default function ForgotPassword() {
                   setFieldErrors({});
                   setStep("email");
                 }}
-                className="mt-3 text-sm font-medium text-brand transition-colors hover:text-brand-muted"
+                className="mt-2.5 sm:mt-3 text-xs sm:text-sm font-medium text-brand transition-colors hover:text-brand-muted"
               >
                 Incorrect email? Change email
               </button>
@@ -232,7 +231,7 @@ export default function ForgotPassword() {
             />
 
             {error && (
-              <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
+              <p className="rounded-xl sm:rounded-2xl border border-danger bg-danger-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-danger">
                 {error}
               </p>
             )}
@@ -261,7 +260,7 @@ export default function ForgotPassword() {
               disabled={loading}
             />
 
-            <p className="-mt-3 text-xs leading-5 text-text-disabled">
+            <p className="-mt-2 sm:-mt-3 text-[11px] sm:text-xs leading-4 sm:leading-5 text-text-disabled">
               {passwordRequirements}
             </p>
 
@@ -276,7 +275,7 @@ export default function ForgotPassword() {
             />
 
             {error && (
-              <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
+              <p className="rounded-xl sm:rounded-2xl border border-danger bg-danger-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-danger">
                 {error}
               </p>
             )}

@@ -22,6 +22,7 @@ export default function ChangePassword() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState({});
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
@@ -49,13 +50,12 @@ export default function ChangePassword() {
 
     try {
       setLoading(true);
-      
+
       await authApi.changePassword({ currentPassword, newPassword });
-      
+
       await removeData();
-      
+
       await removeAuth();
-      
 
       dispatch(logoutLocal());
       navigate("/auth/login", {
@@ -67,7 +67,6 @@ export default function ChangePassword() {
       });
     } catch (requestError) {
       console.error(requestError);
-      
 
       const { message, fieldErrors } = parseApiError(
         requestError,
@@ -86,7 +85,7 @@ export default function ChangePassword() {
       title="Change your password"
       subtitle="For your security, you’ll be signed out after changing it."
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 w-full max-w-md mx-auto px-1 sm:px-0">
         <AuthInput
           label="Current password"
           id="current-password"
@@ -107,7 +106,7 @@ export default function ChangePassword() {
           disabled={loading}
           error={fieldErrors.newPassword}
         />
-        <p className="-mt-3 text-xs leading-5 text-text-disabled">
+        <p className="-mt-2 sm:-mt-3 text-[11px] sm:text-xs leading-4 sm:leading-5 text-text-disabled">
           {passwordRequirements}
         </p>
         <AuthInput
@@ -122,7 +121,7 @@ export default function ChangePassword() {
         />
 
         {error ? (
-          <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger-max">
+          <p className="rounded-xl sm:rounded-2xl border border-danger bg-danger-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-danger-max">
             {error}
           </p>
         ) : null}

@@ -16,10 +16,15 @@ import Loader from "./components/Loader";
 const AnalyticPage = lazy(() => import("./pages/analytics/AnalyticPage"));
 const BlockingPage = lazy(() => import("./pages/blocking/BlockingPage"));
 const ChangePassword = lazy(() => import("./pages/auth/ChangePassword"));
+
 function App() {
   return (
     <div className="bg-neutral-tertiary flex flex-col min-h-screen">
-      <Navbar />
+      {/* Sticky Header Wrapper */}
+      <div className="sticky top-0 z-50 w-full">
+        <Navbar />
+      </div>
+
       <Toaster />
 
       <div className="flex-1 max-h-full max-w-7xl mx-auto w-full">
@@ -49,7 +54,6 @@ function App() {
           </Routes>
         </Suspense>
       </div>
-
       <Footer />
     </div>
   );

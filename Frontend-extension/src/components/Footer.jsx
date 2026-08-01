@@ -1,7 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
-import icon16 from "@/assets/icon16.png"
+import icon16 from "@/assets/icon16.png";
+
 function XIcon(props) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -32,27 +33,48 @@ const fireflies = [
 
 function Footer() {
   return (
-    <footer className="relative mt-8  overflow-hidden ">
-
-
+    <footer className="relative mt-6 md:mt-8 overflow-hidden w-full">
       {/* Main footer body */}
-      <div className="bg-[#FFFFFF] border-t  border-[#2E2E2E] dark:bg-[#151515] px-6 md:px-12 pb-10 pt-2 relative z-10">
+      <div className="bg-[#FFFFFF] border-t  dark:border-[#2E2E2E] dark:bg-[#151515] px-4 sm:px-6 md:px-12 pb-6 md:pb-10 pt-4 md:pt-2 relative z-10">
         <div className="max-w-7xl mx-auto">
-
-
           {/* Bottom bar */}
-          <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <p className="text-[#9DA3AF] font-semibold dark:text-[#ffffff] text-[13px]">© 2026 ZenMind. All rights reserved.</p>
-              <div className="flex items-center gap-3 text-[#9DA3AF] dark:text-[#ffffff] text-[13px]">
-                <a href="https://zen-mind.dev/privacy" target="_blank" rel="noopener noreferrer" className="hover:text-[#2D4B41] hover:dark:text-[#6A8E24] transition-colors">Privacy</a>
+          <div className="pt-2 md:pt-4 flex flex-col md:flex-row items-center justify-between gap-3 md:gap-4 text-center md:text-left">
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+              <p className="text-[#9DA3AF] font-semibold dark:text-[#ffffff] text-xs sm:text-[13px]">
+                © 2026 ZenMind. All rights reserved.
+              </p>
+              <div className="flex items-center gap-2 sm:gap-3 text-[#9DA3AF] dark:text-[#ffffff] text-xs sm:text-[13px]">
+                <a
+                  href="https://zen-mind.dev/privacy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#2D4B41] hover:dark:text-[#6A8E24] transition-colors"
+                >
+                  Privacy
+                </a>
                 <span>•</span>
-                <a href="https://zen-mind.dev/terms" target="_blank" rel="noopener noreferrer" className="hover:text-[#2D4B41] hover:dark:text-[#6A8E24] transition-colors">Terms</a>
+                <a
+                  href="https://zen-mind.dev/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#2D4B41] hover:dark:text-[#6A8E24] transition-colors"
+                >
+                  Terms
+                </a>
                 <span>•</span>
-                <a href="https://zen-mind.dev/contact" target="_blank" rel="noopener noreferrer" className="hover:text-[#2D4B41] hover:dark:text-[#6A8E24] transition-colors">Contact</a>
+                <a
+                  href="https://zen-mind.dev/contact"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#2D4B41] hover:dark:text-[#6A8E24] transition-colors"
+                >
+                  Contact
+                </a>
               </div>
             </div>
-            <p className="text-[#9DA3AF] dark:text-[#ffffff] text-[13px]">Made with care for calmer workdays. 🌿</p>
+            <p className="text-[#9DA3AF] dark:text-[#ffffff] text-xs sm:text-[13px]">
+              Made with care for calmer workdays. 🌿
+            </p>
           </div>
         </div>
       </div>

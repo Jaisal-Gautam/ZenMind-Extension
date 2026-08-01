@@ -1,12 +1,13 @@
 import NormalBlocked from "@/assets/NormalBlocked.webp";
 import { CircleAlert } from "lucide-react";
 import parseDomain from "@/utils/siteParser";
+import { useSelector } from "react-redux";
 
 function NormalMode() {
   const params = new URLSearchParams(window.location.search);
   const originalUrl = params.get("url");
   const domain = originalUrl ? parseDomain(originalUrl) : null;
-
+  const guardToggle = useSelector((state) => state.blocking.guardEnabled)
   const OpenDashboard = () => {
     try {
       const url = chrome.runtime.getURL("index.html");
@@ -69,7 +70,7 @@ function NormalMode() {
             className="rounded-md bg-sky-700 px-4 py-2 text-white shadow-2xl cursor-pointer"
             onClick={handleTemporaryUnlock}
           >
-            Unlock for 5 min
+            {guardToggle ? " Unlock for 5 min" : "Go Back to Site"}
           </button>
         </div>
       </div>

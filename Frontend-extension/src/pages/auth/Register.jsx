@@ -10,9 +10,10 @@ import { clearErrors } from "@/app/slices/auth/authSlice";
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-const { loading, error, fieldErrors } = useSelector(
-  (state) => state.auth
-);  const [email, setEmail] = useState("");
+  const { loading, error, fieldErrors } = useSelector(
+    (state) => state.auth
+  );
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,7 +51,7 @@ const { loading, error, fieldErrors } = useSelector(
       footerLinkText="Sign in"
       footerLinkTo="/auth/login"
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 w-full max-w-md mx-auto px-1 sm:px-0">
         <AuthInput
           label="Email"
           id="register-email"
@@ -59,8 +60,7 @@ const { loading, error, fieldErrors } = useSelector(
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           disabled={loading}
-            error={fieldErrors.email}
-
+          error={fieldErrors.email}
         />
 
         <AuthInput
@@ -71,8 +71,7 @@ const { loading, error, fieldErrors } = useSelector(
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           disabled={loading}
-            error={fieldErrors.username}
-
+          error={fieldErrors.username}
         />
 
         <AuthInput
@@ -83,8 +82,7 @@ const { loading, error, fieldErrors } = useSelector(
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           disabled={loading}
-            error={fieldErrors.password}
-
+          error={fieldErrors.password}
         />
 
         <AuthInput
@@ -98,17 +96,15 @@ const { loading, error, fieldErrors } = useSelector(
         />
 
         {(validationError || error) && (
-  <p className="rounded-2xl border border-danger bg-danger-soft px-4 py-3 text-sm text-danger">
-    {validationError || error}
-  </p>
-)}
+          <p className="rounded-xl sm:rounded-2xl border border-danger bg-danger-soft px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-danger">
+            {validationError || error}
+          </p>
+        )}
 
         <AuthButton loading={loading} disabled={loading} type="submit">
           Create account
         </AuthButton>
       </form>
-
-     
     </AuthLayout>
   );
 }

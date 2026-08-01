@@ -134,7 +134,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="md:col-span-4"
             >
-              <h3 className="text-zen-mist text-[15px] font-medium tracking-wide uppercase text-[12px] text-zen-accent/80 mb-5">
+              <h3 className="text-zen-mist text-sm font-medium tracking-wide uppercase text-[12px] text-zen-accent/80 mb-5">
                 Explore Features
               </h3>
               <ul className="flex flex-col gap-3">
@@ -160,7 +160,7 @@ export default function Footer() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="md:col-span-3"
             >
-              <h3 className="text-zen-mist text-[15px] font-medium tracking-wide uppercase text-[12px] text-zen-accent/80 mb-5">
+              <h3 className="text-zen-mist text-sm font-medium tracking-wide uppercase text-[12px] text-zen-accent/80 mb-5">
                 Connect & Support
               </h3>
               <p className="text-zen-sage/75 text-[13.5px] leading-relaxed mb-4">

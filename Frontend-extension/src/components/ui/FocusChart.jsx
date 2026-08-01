@@ -21,38 +21,38 @@ const FocusChart = ({ focus, overview }) => {
   };
 
   return (
-    <div className="rounded-xl w-full border border-border-default bg-surface dark:bg-app p-6 shadow-sm">
-      <div className="mb-6">
-        <h2 className="text-2xl font-mono text-text-text ">
+    <div className="rounded-xl w-full border border-border-default bg-surface dark:bg-app p-4 sm:p-6 shadow-sm">
+      <div className="mb-4 sm:mb-6">
+        <h2 className="text-xl sm:text-2xl font-mono text-text-text">
           Focus Throughout the Day
         </h2>
       </div>
 
-      <div className="mb-8 flex items-center justify-between rounded-lg bg-surface-muted dark:bg-surface border border-border-light p-4">
+      <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 rounded-lg bg-surface-muted dark:bg-surface border border-border-light p-3 sm:p-4">
         <div>
-          <p className="text-sm text-text-disabled">Peak Focus Hour</p>
+          <p className="text-xs sm:text-sm text-text-disabled">Peak Focus Hour</p>
 
-          <p className="text-xl font-semibold text-brand dark:text-brand">
+          <p className="text-lg sm:text-xl font-semibold text-brand dark:text-brand">
             {peak.label}
           </p>
         </div>
 
-        <div className="text-right">
-          <p className="text-sm text-text-disabled">Focused</p>
+        <div className="text-left sm:text-right">
+          <p className="text-xs sm:text-sm text-text-disabled">Focused</p>
 
-          <p className="text-xl font-semibold text-brand dark:text-brand">
+          <p className="text-lg sm:text-xl font-semibold text-brand dark:text-brand">
             {overview?.focusedTime ? analyticsTime(overview.focusedTime) : "0m"}
           </p>
         </div>
       </div>
 
-      <ChartContainer config={chartConfig} className="h-85 w-full">
+      <ChartContainer config={chartConfig} className="h-64 sm:h-85 w-full">
         <AreaChart
           accessibilityLayer
           data={chartData}
           margin={{
-            left: 20,
-            right: 20,
+            left: 0,
+            right: 0,
             top: 10,
             bottom: 10,
           }}
@@ -82,7 +82,7 @@ const FocusChart = ({ focus, overview }) => {
             tickLine={false}
             axisLine={false}
             tickMargin={10}
-            interval={0}
+            interval="preserveStartEnd"
             tickFormatter={(hour) => {
               if (hour === 0) return "12AM";
               if (hour < 12) return `${hour}AM`;
