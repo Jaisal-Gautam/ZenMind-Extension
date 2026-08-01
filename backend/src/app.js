@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 //Middlewares
 import { errorHandler } from "./middlewares/error.middleware.js";
+import { corsOptions } from "./utils/cors.js";
+
 //Routes
 import router from "./routes/index.routes.js";
 import authRouter from "./routes/auth.routes.js";
@@ -23,29 +25,29 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(cors());
+app.use(corsOptions());
 app.use(morgan("dev"));
 app.use((req, res, next) => {
   const start = Date.now();
 
-  
+
 
   res.on("finish", () => {
-    
+
   });
 
   next();
 });
 //Routes
 app.use("/", router);
-app.use("/auth",authRouter)
-app.use("/preferences",prefRouter)
-app.use("/blocking",blockingRouter)
-app.use("/focus",focusRouter)
-app.use("/website",websiteRouter)
-app.use("/blocked",blockedAttemptRouter)
-app.use("/analytics",analyticRouter)
-app.use("/dashboard",dashboardRouter)
+app.use("/auth", authRouter)
+app.use("/preferences", prefRouter)
+app.use("/blocking", blockingRouter)
+app.use("/focus", focusRouter)
+app.use("/website", websiteRouter)
+app.use("/blocked", blockedAttemptRouter)
+app.use("/analytics", analyticRouter)
+app.use("/dashboard", dashboardRouter)
 
 app.use(errorHandler);
 export default app;
