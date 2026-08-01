@@ -27,9 +27,7 @@ export const getDashboard = asyncHandler(async (req, res) => {
     getHistory(req.user, req.query.range ?? "daily"),
   ]);
 
-  console.log(
-    `Dashboard total: ${(performance.now() - start).toFixed(1)}ms`
-  );
+  
 
   res.status(200).json({
     success: true,

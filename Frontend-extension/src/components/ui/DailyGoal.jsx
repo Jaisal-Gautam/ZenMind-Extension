@@ -44,7 +44,7 @@ const progressPercentage =
 
       setIsModalOpen(false);
     } catch (err) {
-      console.log(err);
+      
     }
   };
 

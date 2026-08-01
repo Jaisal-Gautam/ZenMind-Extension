@@ -61,6 +61,6 @@ export const authApi = {
 };
 const getTimezone = () => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  console.log("Browser timezone:", timezone);
+  
   return timezone;
 };

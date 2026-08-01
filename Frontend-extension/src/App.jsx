@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 
 import FocusPage from "./pages/focus/FocusPage";
 import Navbar from "./components/Nav";
+import Footer from "./components/Footer";
 import { Toaster } from "@/components/ui/sonner";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -17,11 +18,11 @@ const BlockingPage = lazy(() => import("./pages/blocking/BlockingPage"));
 const ChangePassword = lazy(() => import("./pages/auth/ChangePassword"));
 function App() {
   return (
-    <div className="bg-neutral-tertiary">
+    <div className="bg-neutral-tertiary flex flex-col min-h-screen">
       <Navbar />
       <Toaster />
 
-      <div className="min-h-screen max-h-full max-w-7xl mx-auto">
+      <div className="flex-1 max-h-full max-w-7xl mx-auto w-full">
         <Suspense fallback={<Loader />}>
           <Routes>
             <Route element={<ProtectedRoute />}>
@@ -48,6 +49,8 @@ function App() {
           </Routes>
         </Suspense>
       </div>
+
+      <Footer />
     </div>
   );
 }

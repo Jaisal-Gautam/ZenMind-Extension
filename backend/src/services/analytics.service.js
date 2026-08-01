@@ -19,7 +19,7 @@ export const getOverview = async (user) => {
   const timed = async (name, fn) => {
   const start = performance.now();
   const result = await fn();
-  console.log(`${name}: ${(performance.now() - start).toFixed(1)}ms`);
+  
   return result;
 };
 
@@ -91,9 +91,7 @@ const [focusStats, blockedStats, completedSessions, mostUsed, mostBlocked] =
   const blocked = blockedStats[0] || {
     blockedAttempts: 0,
   };
-  console.log(
-    `getOverview: ${(performance.now() - start).toFixed(1)}ms`
-  );
+  
 
   return {
     focusedTime: focus.focusedTime,
@@ -187,9 +185,7 @@ export const getWebsiteAnalytics = async (user) => {
     domain: stat._id,
     attempts: stat.attempts,
   }));
-console.log(
-    `getWebsiteAnalytics: ${(performance.now() - start).toFixed(1)}ms`
-  );
+
   return { websiteAnalytics, blockedWebsiteAnalytics };
 };
 
@@ -297,9 +293,7 @@ export const getFocusAnalytics = async (user) => {
       minutes: hourlyMap.get(hour) ?? 0,
     });
   }
-  console.log(
-    `getFocusAnalytics: ${(performance.now() - start).toFixed(1)}ms`
-  );
+  
 
   return {
     longestSession: focus.longestSession,
@@ -396,9 +390,7 @@ export const getHistory = async (user, range) => {
       sessions: dayData?.sessions ?? 0,
     });
   }
-   console.log(
-    `getHistory: ${(performance.now() - start).toFixed(1)}ms`
-  );
+   
 
   return result;
 };
@@ -433,9 +425,7 @@ export const getMostUsedWebsite = async (user) => {
       },
     },
   ]);
-console.log(
-    `getMostUsedWebsite: ${(performance.now() - start).toFixed(1)}ms`
-  );
+
   return websites.map((site) => ({
     domain: site._id,
     duration: site.totalDuration,
@@ -472,9 +462,7 @@ export const getMostBlockedWebsite = async (user) => {
       },
     },
   ]);
-  console.log(
-    `getMostBlockedWebsite: ${(performance.now() - start).toFixed(1)}ms`
-  );
+  
 
   return websites.map((site) => ({
     domain: site._id,
@@ -532,9 +520,7 @@ export const getLifetimeAnalytics = async (user) => {
   const blocked = blockedStats[0] ?? {
     blockedAttempts: 0,
   };
-  console.log(
-    `getLifetimeAnalytics: ${(performance.now() - start).toFixed(1)}ms`
-  );
+  
 
   return {
     totalFocusTime: focus.totalFocusTime,

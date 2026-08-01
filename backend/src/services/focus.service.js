@@ -171,9 +171,7 @@ export const getCurrentFocusSession = async (userId) => {
     )
     .lean();
 
-  console.log(
-    `Mongo query: ${(performance.now() - start).toFixed(1)}ms`
-  );
+  
 
   return session;
 };

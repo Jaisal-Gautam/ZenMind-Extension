@@ -7,7 +7,7 @@ import {
 
 const WebsiteTimeline = ({ period }) => {
   const analytics = useSelector((state) => state.analytics);
-  console.log("Check",analytics.websiteSessions);
+  
   const sessions = getWebsiteTimeline(analytics, period);
   const chartData = getWebsiteTimelineChartData(sessions);
 
@@ -29,9 +29,9 @@ const WebsiteTimeline = ({ period }) => {
     return groups;
   }, [chartData]);
 
-  console.log("Sessions:", sessions);
-  console.log("Chart Data:", chartData);
-  console.log("Grouped:", grouped);
+  
+  
+  
   return (
     <div className="w-full rounded-xl max-h-150 bg-white shadow-sm p-6">
       <h2 className="text-2xl font-semibold mb-8">Website Activity</h2>

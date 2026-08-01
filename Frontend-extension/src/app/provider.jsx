@@ -40,7 +40,7 @@ function StoreProvider({ children }) {
           );
         }
       } catch (err) {
-        console.log("Session restore skipped:", err);
+        
         console.error("Session restore failed:", err);
       } finally {
         setStore(appStore);

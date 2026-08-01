@@ -82,7 +82,7 @@ export default function ForgotPassword() {
     }
   };
   const handleOtpSubmit = async () => {
-    console.log("Verify button clicked");
+    
 
     setError("");
     setSuccess("");
@@ -96,15 +96,15 @@ export default function ForgotPassword() {
     try {
       setLoading(true);
 
-      console.log("Calling API...");
+      
       const response = await authApi.verifyResetOtp(email.trim(), otp.trim());
-      console.log(response);
+      
 
       setSuccess(response.message);
       setStep("password");
     } catch (requestError) {
       console.error(requestError);
-      console.log(requestError.response);
+      
 
       const { message, fieldErrors } = parseApiError(
         requestError,

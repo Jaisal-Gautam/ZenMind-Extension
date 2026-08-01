@@ -46,7 +46,7 @@ export default function Login() {
     } catch (e) {
       setBootstrapping(false);
 
-      console.log(e);
+      
     }
   };
   if (bootstrapping) {

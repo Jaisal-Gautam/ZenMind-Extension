@@ -49,13 +49,13 @@ export default function ChangePassword() {
 
     try {
       setLoading(true);
-      console.log("1");
+      
       await authApi.changePassword({ currentPassword, newPassword });
-      console.log("2");
+      
       await removeData();
-      console.log("3");
+      
       await removeAuth();
-      console.log("4");
+      
 
       dispatch(logoutLocal());
       navigate("/auth/login", {
@@ -67,7 +67,7 @@ export default function ChangePassword() {
       });
     } catch (requestError) {
       console.error(requestError);
-      console.log(requestError.response);
+      
 
       const { message, fieldErrors } = parseApiError(
         requestError,

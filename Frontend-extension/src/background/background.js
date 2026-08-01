@@ -239,7 +239,7 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
 
     case "FOCUS_COMPLETED":
-      console.log("Showing notification");
+      
       showFocusCompleteNotification(message.duration);
       return;
 

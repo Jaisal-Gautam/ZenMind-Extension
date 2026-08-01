@@ -28,12 +28,10 @@ app.use(morgan("dev"));
 app.use((req, res, next) => {
   const start = Date.now();
 
-  console.log(`➡️ ${req.method} ${req.originalUrl} started`);
+  
 
   res.on("finish", () => {
-    console.log(
-      `✅ ${req.method} ${req.originalUrl} ${res.statusCode} finished in ${Date.now() - start}ms`
-    );
+    
   });
 
   next();

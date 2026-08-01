@@ -40,7 +40,7 @@ authRouter.post("/logout", authMiddleware, logout);
 authRouter.patch(
   "/change-password",
   (req, res, next) => {
-    console.log("CHANGE PASSWORD ROUTE");
+    
     next();
   },
   writeLimiter,
