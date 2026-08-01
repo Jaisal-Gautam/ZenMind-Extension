@@ -25,19 +25,9 @@ app.set("trust proxy", 1);
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
-app.use(corsOptions());
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
-app.use((req, res, next) => {
-  const start = Date.now();
 
-
-
-  res.on("finish", () => {
-
-  });
-
-  next();
-});
 //Routes
 app.use("/", router);
 app.use("/auth", authRouter)
