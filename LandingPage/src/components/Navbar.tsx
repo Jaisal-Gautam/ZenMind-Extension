@@ -4,11 +4,11 @@ import { Menu, X } from 'lucide-react';
 import { installZenMind } from '@/lib/chromeStore';
 
 const links = [
-  { label: 'Features', href: '#features' },
-  { label: 'How it works', href: '#how-it-works' },
-  { label: 'Focus modes', href: '#focus-modes' },
-  { label: 'Insights', href: '#insights' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Features', href: '/#features' },
+  { label: 'How it works', href: '/#how-it-works' },
+  { label: 'Focus modes', href: '/#focus-modes' },
+  { label: 'Insights', href: '/#insights' },
+  { label: 'Pricing', href: '/#pricing' },
 ];
 
 export default function Navbar() {
@@ -16,17 +16,31 @@ export default function Navbar() {
 
   const scrollTo = useCallback((href: string) => {
     setOpen(false);
-    const id = href.replace('#', '');
-    // Small delay so the menu closes before scrolling
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }, 100);
+    const id = href.replace('/#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      window.location.href = href;
+    }
   }, []);
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    const id = href.replace('/#', '');
+    const el = document.getElementById(id);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <header className="absolute top-0 left-0 right-0 z-50">
       <nav className="max-w-[1360px] mx-auto flex items-center justify-between px-6 md:px-10 py-6">
-        <motion.div
+        <motion.a
+          href="/"
           className="flex items-center gap-2.5"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -38,13 +52,14 @@ export default function Navbar() {
           <span className="font-display text-xl tracking-wide text-zen-deep">
             ZenMind
           </span>
-        </motion.div>
+        </motion.a>
 
         <div className="hidden md:flex items-center gap-9">
           {links.map((link, i) => (
             <motion.a
               key={link.label}
               href={link.href}
+              onClick={(e) => handleLinkClick(e, link.href)}
               className="relative text-[15px] text-zen-ink/80 hover:text-zen-ink transition-colors duration-300 group"
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}

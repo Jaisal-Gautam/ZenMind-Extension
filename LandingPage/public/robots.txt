@@ -1,8 +1,8 @@
 # ZenMind Robots.txt
-# https://zen-mind-flame.vercel.app/
+# https://zen-mind.dev/
 
 User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://zen-mind-flame.vercel.app/sitemap.xml
+Sitemap: https://zen-mind.dev/sitemap.xml

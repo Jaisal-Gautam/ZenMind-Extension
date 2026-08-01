@@ -1,12 +1,13 @@
 import { type SVGProps } from "react";
 import { motion } from "motion/react";
+import { Mail } from "lucide-react";
 
 const featureLinks = [
-  { label: "Focus Modes", href: "#focus-modes" },
-  { label: "Website Blocking", href: "#features" },
-  { label: "Soundscapes", href: "#features" },
-  { label: "Analytics & Insights", href: "#insights" },
-  { label: "Pricing & Support", href: "#pricing" },
+  { label: "Focus Modes", href: "/#focus-modes" },
+  { label: "Website Blocking", href: "/#features" },
+  { label: "Soundscapes", href: "/#features" },
+  { label: "Analytics & Insights", href: "/#insights" },
+  { label: "Pricing & Support", href: "/#pricing" },
 ];
 
 const fireflies = [
@@ -30,7 +31,10 @@ function XIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-const socials = [{ icon: XIcon, label: "X (Twitter)", href: "https://x.com/jaisal_tech" }];
+const socials = [
+  { icon: XIcon, label: "X (Twitter)", href: "https://x.com/jaisal_tech", text: "@jaisal_tech" },
+  { icon: Mail, label: "Email", href: "mailto:jaisal@zen-mind.dev", text: "jaisal@zen-mind.dev" }
+];
 
 export default function Footer() {
   return (
@@ -162,7 +166,7 @@ export default function Footer() {
               <p className="text-zen-sage/75 text-[13.5px] leading-relaxed mb-4">
                 Follow updates & connect with the builder on X.
               </p>
-              <div className="flex items-center gap-3">
+              <div className="flex justify-start flex-col  gap-3">
                 {socials.map((s) => {
                   const Icon = s.icon;
                   return (
@@ -174,10 +178,10 @@ export default function Footer() {
                       aria-label={s.label}
                       whileHover={{ y: -3, scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2.5 text-zen-sage/90 hover:text-zen-mist hover:bg-white/10 hover:border-zen-accent/40 transition-all duration-300 group"
+                      className="w-fit min-w-[220px] px-4 py-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center gap-2.5 text-zen-sage/90 hover:text-zen-mist hover:bg-white/10 hover:border-zen-accent/40 transition-all duration-300 group"
                     >
                       <Icon className="w-4 h-4 text-zen-accent group-hover:scale-110 transition-transform" />
-                      <span className="text-[13.5px] font-medium">@jaisal_tech</span>
+                      <span className="text-[13.5px] font-medium">{s.text}</span>
                     </motion.a>
                   );
                 })}
@@ -189,9 +193,18 @@ export default function Footer() {
 
           {/* Sub-footer bottom bar */}
           <div className="pt-4 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-zen-sage/50 text-[13px]">
-              © 2026 ZenMind. All rights reserved.
-            </p>
+            <div className="flex flex-col md:flex-row items-center gap-4">
+              <p className="text-zen-sage/50 text-[13px]">
+                © 2026 ZenMind. All rights reserved.
+              </p>
+              <div className="flex items-center gap-3 text-zen-sage/50 text-[13px]">
+                <a href="/privacy" className="hover:text-zen-mist transition-colors">Privacy</a>
+                <span>•</span>
+                <a href="/terms" className="hover:text-zen-mist transition-colors">Terms</a>
+                <span>•</span>
+                <a href="/contact" className="hover:text-zen-mist transition-colors">Contact</a>
+              </div>
+            </div>
             <p className="text-zen-sage/50 text-[13px] flex items-center gap-1.5">
               Made with care for calmer workdays. 🌿
             </p>

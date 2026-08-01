@@ -9,10 +9,22 @@ import Pricing from '@/components/Pricing';
 import FinalCta from '@/components/FinalCta';
 import Footer from '@/components/Footer';
 import { Analytics } from '@vercel/analytics/react';
+import Privacy from '@/components/Privacy';
+import Terms from '@/components/Terms';
+import Contact from '@/components/Contact';
+
 function App() {
-  return (
-    <div className="min-h-screen bg-zen-cream">
-      <Navbar />
+  const path = window.location.pathname;
+
+  let content;
+  if (path === '/privacy') {
+    content = <Privacy />;
+  } else if (path === '/terms') {
+    content = <Terms />;
+  } else if (path === '/contact') {
+    content = <Contact />;
+  } else {
+    content = (
       <main>
         <Hero />
         <HowItWorks />
@@ -23,6 +35,13 @@ function App() {
         <Pricing />
         <FinalCta />
       </main>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-zen-cream">
+      <Navbar />
+      {content}
       <Footer />
       <Analytics/>
     </div>

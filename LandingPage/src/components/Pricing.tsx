@@ -1,49 +1,67 @@
-import { motion } from 'motion/react';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Check, Coffee, Heart, Sparkles, ShieldCheck } from 'lucide-react';
 import { installZenMind } from '@/lib/chromeStore';
 
-const plans = [
-  {
-    name: 'Free Edition',
-    price: '$0',
-    period: 'free forever',
-    badge: '100% FREE',
-    badgeIcon: ShieldCheck,
-    description: 'Everything is included out of the box. No paywalls, no trial limits, no hidden fees.',
-    features: [
-      'Smart website & category blocking',
-      'All ambient soundscapes & music',
-      'Complete focus analytics & tracking',
-      'Focus Forest level & XP rewards',
-      'Unlimited focus modes & rituals',
-    ],
-    cta: 'Install Extension Free',
-    action: installZenMind,
-    featured: false,
-    isCoffee: false,
-  },
-  {
-    name: 'Support ZenMind',
-    price: '$5',
-    period: 'optional coffee',
-    badge: 'INDIE DEVELOPER',
-    badgeIcon: Heart,
-    description: 'Love using ZenMind? Support the independent creator and help fund future features.',
-    features: [
-      'Keep ZenMind 100% free & ad-free for everyone',
-      'Fund new high-quality soundscapes & ambient tracks',
-      'Support continuous updates & browser compatibility',
-    ],
-    cta: 'Buy Me a Coffee',
-    action: () => window.open('https://buymeacoffee.com', '_blank'),
-    featured: true,
-    isCoffee: true,
-  },
-];
-
 export default function Pricing() {
+  const [showToast, setShowToast] = useState(false);
+
+  const plans = [
+    {
+      name: 'Free Edition',
+      price: '$0',
+      period: 'free forever',
+      badge: '100% FREE',
+      badgeIcon: ShieldCheck,
+      description: 'Everything is included out of the box. No paywalls, no trial limits, no hidden fees.',
+      features: [
+        'Smart website & category blocking',
+        'All ambient soundscapes & music',
+        'Complete focus analytics & tracking',
+        'Focus Forest level & XP rewards',
+        'Unlimited focus modes & rituals',
+      ],
+      cta: 'Install Extension Free',
+      action: installZenMind,
+      featured: false,
+      isCoffee: false,
+    },
+    {
+      name: 'Support ZenMind',
+      price: '$5',
+      period: 'optional coffee',
+      badge: 'INDIE DEVELOPER',
+      badgeIcon: Heart,
+      description: 'Love using ZenMind? Support the independent creator and help fund future features.',
+      features: [
+        'Keep ZenMind 100% free & ad-free for everyone',
+        'Fund new high-quality soundscapes & ambient tracks',
+        'Support continuous updates & browser compatibility',
+      ],
+      cta: 'Ko-fi Page',
+      action: () => {
+        setShowToast(true);
+        setTimeout(() => setShowToast(false), 3000);
+      },
+      featured: true,
+      isCoffee: true,
+    },
+  ];
   return (
     <section id="pricing" className="bg-zen-cream py-24 md:py-36 relative overflow-hidden">
+      <AnimatePresence>
+        {showToast && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
+            className="fixed bottom-6 right-6 z-50 bg-zen-deep text-zen-mist px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-zen-moss/30"
+          >
+            <Coffee className="w-5 h-5 text-amber-400" />
+            <span className="font-medium">Coming soon!</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <div className="max-w-[960px] mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -59,7 +77,7 @@ export default function Pricing() {
             Everything is Free.
           </h2>
           <p className="text-zen-muted text-[16px] md:text-lg leading-relaxed max-w-[460px] mx-auto">
-            No subscriptions. No locked features. If ZenMind brings peace to your work, you can buy a coffee to support development.
+            No subscriptions. No locked features. If ZenMind brings peace to your work, you can support development on our Ko-fi page.
           </p>
         </motion.div>
 
@@ -74,11 +92,10 @@ export default function Pricing() {
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6, delay: i * 0.12 }}
                 whileHover={{ y: -6 }}
-                className={`rounded-[32px] p-8 md:p-9 flex flex-col transition-all duration-300 ${
-                  plan.featured
+                className={`rounded-[32px] p-8 md:p-9 flex flex-col transition-all duration-300 ${plan.featured
                     ? 'bg-gradient-to-b from-[#133531] via-zen-deep to-[#0A1F1E] text-zen-mist shadow-2xl shadow-zen-deep/30 border border-zen-moss/30 relative overflow-hidden'
                     : 'bg-white/80 border border-zen-sage/70 text-zen-ink backdrop-blur-xl shadow-xl shadow-zen-forest/5'
-                }`}
+                  }`}
               >
                 {plan.featured && (
                   <>
@@ -99,11 +116,10 @@ export default function Pricing() {
                       {plan.name}
                     </h3>
                     <span
-                      className={`text-[11px] px-3 py-1 rounded-full font-medium tracking-wider uppercase flex items-center gap-1.5 ${
-                        plan.isCoffee
+                      className={`text-[11px] px-3 py-1 rounded-full font-medium tracking-wider uppercase flex items-center gap-1.5 ${plan.isCoffee
                           ? 'bg-amber-400/20 text-amber-300 border border-amber-400/30'
                           : 'bg-zen-forest/10 text-zen-forest border border-zen-forest/20'
-                      }`}
+                        }`}
                     >
                       <BadgeIcon className="w-3 h-3" /> {plan.badge}
                     </span>
@@ -126,9 +142,8 @@ export default function Pricing() {
                     {plan.features.map((feature) => (
                       <li key={feature} className="flex items-start gap-3 text-[14px] leading-snug">
                         <span
-                          className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${
-                            plan.featured ? 'bg-zen-accent/20 text-zen-accent' : 'bg-zen-forest/10 text-zen-forest'
-                          }`}
+                          className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 ${plan.featured ? 'bg-zen-accent/20 text-zen-accent' : 'bg-zen-forest/10 text-zen-forest'
+                            }`}
                         >
                           <Check className="w-3 h-3" strokeWidth={2.5} />
                         </span>
@@ -141,11 +156,10 @@ export default function Pricing() {
                     onClick={plan.action}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`mt-auto min-h-[48px] w-full rounded-full font-medium text-[15px] flex items-center justify-center gap-2.5 shadow-md transition-all duration-300 ${
-                      plan.featured
+                    className={`mt-auto min-h-[48px] w-full rounded-full font-medium text-[15px] flex items-center justify-center gap-2.5 shadow-md transition-all duration-300 ${plan.featured
                         ? 'bg-amber-400 text-amber-950 hover:bg-amber-300 font-semibold shadow-amber-400/20'
                         : 'bg-zen-deep text-zen-mist hover:bg-zen-ink shadow-zen-deep/15'
-                    }`}
+                      }`}
                   >
                     {plan.isCoffee && <Coffee className="w-4 h-4 fill-current" />}
                     {plan.cta}
