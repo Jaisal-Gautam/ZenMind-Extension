@@ -40,18 +40,18 @@ export function useFocusTimer() {
 
   let remainingTime;
 
-if (focus.isActive) {
-  const elapsed = now - focus.lastResumedAt;
+  if (focus.isActive) {
+    const elapsed = now - focus.lastResumedAt;
 
-  remainingTime = Math.max(
-    0,
-    focus.remainingTime - elapsed
-  );
-} else if (focus.isPaused) {
-  remainingTime = focus.remainingTime;
-} else {
-  remainingTime = fullDurationMs;
-}
+    remainingTime = Math.max(
+      0,
+      focus.remainingTime - elapsed
+    );
+  } else if (focus.isPaused) {
+    remainingTime = focus.remainingTime;
+  } else {
+    remainingTime = fullDurationMs;
+  }
 
   const handleStart = async () => {
     if (focus.loading || focus.isActive) {
@@ -68,14 +68,14 @@ if (focus.isActive) {
       const startTime = new Date(focusSession.startTime).getTime();
       const sessionDuration = focusSession.plannedDuration;
       dispatch(
-  startFocus({
-    startTime,
-    sessionId: focusSession._id,
-    sessionDuration,
-  })
-);
+        startFocus({
+          startTime,
+          sessionId: focusSession._id,
+          sessionDuration,
+        })
+      );
 
-      
+
     } catch (err) {
       console.error("Failed to start focus session:", err);
     }
@@ -144,7 +144,7 @@ const Controls = ({ onStart, onPause, onResume, focus, onReset, loading }) => {
       <button
         onClick={onReset}
         disabled={loading || (!focus.isActive && !focus.isPaused)}
-        className="px-4 sm:px-6 py-2.5 border border-border-strong rounded-full text-sm font-semibold text-text hover:bg-surface-muted transition-colors min-w-[88px] sm:w-28"
+        className="px-4 sm:px-6 py-2.5 border border-border-strong rounded-full text-sm font-semibold text-text hover:bg-surface-muted transition-colors min-w-22 sm:w-28"
       >
         Reset
       </button>
@@ -152,7 +152,7 @@ const Controls = ({ onStart, onPause, onResume, focus, onReset, loading }) => {
       <button
         onClick={focus.isActive ? onPause : focus.isPaused ? onResume : onStart}
         disabled={loading}
-        className="px-4 sm:px-6 py-2.5 bg-brand-muted/80 text-text-muted dark:text-text rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-brand-muted transition-all duration-300 min-w-[100px] sm:w-32 disabled:cursor-not-allowed"
+        className="px-4 sm:px-6 py-2.5 bg-brand-muted/80 text-text-muted dark:text-text rounded-full text-sm font-semibold flex items-center justify-center shadow-sm hover:bg-brand-muted transition-all duration-300 min-w-25 sm:w-32 disabled:cursor-not-allowed"
       >
         <Play size={16} fill="currentColor" className="mr-2" />
         {focus.isActive ? "Pause" : focus.isPaused ? "Resume" : "Start"}

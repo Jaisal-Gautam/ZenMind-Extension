@@ -67,23 +67,25 @@ function Navbar() {
           </NavLink>
         </div>
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden h-full items-center space-x-8 md:flex">
-          {links.map((link) => (
-            <NavLink
-              key={link.id}
-              to={link.href}
-              className={({ isActive }) =>
-                `flex h-full items-center border-b-2 px-1 text-[17px] font-medium transition-colors ${isActive
-                  ? "border-border-brand text-brand"
-                  : "border-transparent text-text-disabled hover:text-brand"
-                }`
-              }
-            >
-              {link.name}
-            </NavLink>
-          ))}
-        </div>
+        {/* Desktop Navigation Links (Only shown if authenticated) */}
+        {isAuthenticated && (
+          <div className="hidden h-full items-center space-x-8 md:flex">
+            {links.map((link) => (
+              <NavLink
+                key={link.id}
+                to={link.href}
+                className={({ isActive }) =>
+                  `flex h-full items-center border-b-2 px-1 text-[17px] font-medium transition-colors ${isActive
+                    ? "border-border-brand text-brand"
+                    : "border-transparent text-text-disabled hover:text-brand"
+                  }`
+                }
+              >
+                {link.name}
+              </NavLink>
+            ))}
+          </div>
+        )}
 
         {/* Right Action Section */}
         <div className="flex shrink-0 items-center space-x-2 sm:space-x-3 md:space-x-4">
@@ -172,25 +174,27 @@ function Navbar() {
             </NavLink>
           )}
 
-          {/* Mobile Hamburger Menu Trigger */}
-          <button
-            type="button"
-            aria-label="Toggle Menu"
-            className="p-1 text-text-muted transition-opacity hover:opacity-70 md:hidden"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? (
-              <X className="size-6" strokeWidth={2} />
-            ) : (
-              <Menu className="size-6" strokeWidth={2} />
-            )}
-          </button>
+          {/* Mobile Hamburger Menu Trigger (Only if logged in) */}
+          {isAuthenticated && (
+            <button
+              type="button"
+              aria-label="Toggle Menu"
+              className="p-1 text-text-muted transition-opacity hover:opacity-70 md:hidden"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? (
+                <X className="size-6" strokeWidth={2} />
+              ) : (
+                <Menu className="size-6" strokeWidth={2} />
+              )}
+            </button>
+          )}
         </div>
       </nav>
 
       {/* Mobile Navigation Drawer */}
       <AnimatePresence>
-        {isOpen && (
+        {isOpen && isAuthenticated && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
