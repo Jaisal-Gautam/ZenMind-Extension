@@ -46,7 +46,7 @@ export const loadCurrentUser = createAsyncThunk(
   "auth/me",
   async (_, { rejectWithValue }) => {
     const auth = await getAuth();
-    console.log(auth)
+
     if (!auth) {
       return null;
     }
@@ -54,8 +54,7 @@ export const loadCurrentUser = createAsyncThunk(
     try {
       const response = await authApi.me();
 
-      console.log("Response:", response);
-      console.log("Returning:", response.user);
+
       return response.user;
     } catch (err) {
       if (err.response?.status === 401) {

@@ -79,7 +79,7 @@ const authSlice = createSlice({
         state.fieldErrors = {};
       })
       .addCase(loadCurrentUser.fulfilled, (state, action) => {
-        console.log("Payload:", action.payload);
+
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = !!action.payload;
