@@ -20,8 +20,9 @@ import analyticRouter from "./routes/analytics.routes.js";
 import dashboardRouter from "./routes/dashboard.routes.js";
 //App
 const app = express();
-app.set("trust proxy", 1);
 //Middlewares
+app.set("trust proxy", 1);
+app.disable("etag");
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
