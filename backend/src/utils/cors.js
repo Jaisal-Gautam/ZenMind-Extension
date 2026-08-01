@@ -1,6 +1,7 @@
 const allowedOrigins = [
     "https://zen-mind.dev",
     "https://www.zen-mind.dev",
+    "chrome-extension://ifhnkecmofmfhnhhgpbccfmejnklhmim",
 
     "http://localhost:5173",
 

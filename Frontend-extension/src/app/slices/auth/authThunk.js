@@ -20,11 +20,11 @@ export const loginUser = createAsyncThunk(
       });
 
       return response.user;
-    } catch(error){
-    return rejectWithValue(
-        parseApiError(error,"Login failed.")
-    );
-}
+    } catch (error) {
+      return rejectWithValue(
+        parseApiError(error, "Login failed.")
+      );
+    }
   },
 );
 export const registerUser = createAsyncThunk(
@@ -34,11 +34,11 @@ export const registerUser = createAsyncThunk(
       const response = await authApi.register(userData);
 
       return response.user;
-    } catch(error){
-    return rejectWithValue(
-        parseApiError(error,"Registeration failed.")
-    );
-}
+    } catch (error) {
+      return rejectWithValue(
+        parseApiError(error, "Registeration failed.")
+      );
+    }
   },
 );
 
@@ -46,7 +46,7 @@ export const loadCurrentUser = createAsyncThunk(
   "auth/me",
   async (_, { rejectWithValue }) => {
     const auth = await getAuth();
-
+    console.log(auth)
     if (!auth) {
       return null;
     }
@@ -59,9 +59,9 @@ export const loadCurrentUser = createAsyncThunk(
         await removeAuth();
         return null;
       }
-       return rejectWithValue(
-        parseApiError(err,"Load Current User failed.")
-    );
+      return rejectWithValue(
+        parseApiError(err, "Load Current User failed.")
+      );
     }
   },
 );
@@ -74,9 +74,9 @@ export const logoutUser = createAsyncThunk(
       await removeData();
       await removeAuth();
     } catch (err) {
-       return rejectWithValue(
-        parseApiError(err,"Login failed.")
-    );
+      return rejectWithValue(
+        parseApiError(err, "Login failed.")
+      );
     }
   },
 );
