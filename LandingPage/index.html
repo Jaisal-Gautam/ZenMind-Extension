@@ -1,50 +1,55 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary Meta Tags -->
-    <title>ZenMind — Less switching. More deep work.</title>
-    <meta name="title" content="ZenMind — Less switching. More deep work." />
-    <meta name="description" content="ZenMind is a free Chrome extension that blocks distractions, plays focus soundscapes, and tracks deep work. Try Deep Focus, Gentle Focus, or Study Mode." />
-    <meta name="keywords" content="focus extension, website blocker, deep work, productivity, Chrome extension, distraction blocker, focus mode, pomodoro, study mode, soundscapes, flow state, attention management" />
-    <meta name="author" content="Jaisal Gautam" />
-    <meta name="robots" content="index, follow" />
-    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Canonical URL — UPDATE THIS to your actual deployed domain -->
-    <link rel="canonical" href="https://zen-mind.dev/" />
+  <!-- Primary Meta Tags -->
+  <title>ZenMind — Less switching. More deep work.</title>
+  <meta name="title" content="ZenMind — Less switching. More deep work." />
+  <meta name="description"
+    content="ZenMind is a free Chrome extension that blocks distractions, plays focus soundscapes, and tracks deep work. Try Deep Focus, Gentle Focus, or Study Mode." />
+  <meta name="keywords"
+    content="focus extension, website blocker, deep work, productivity, Chrome extension, distraction blocker, focus mode, pomodoro, study mode, soundscapes, flow state, attention management" />
+  <meta name="author" content="Jaisal Gautam" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
-    <!-- Theme & Icons -->
-    <meta name="theme-color" content="#0F2928" />
-    <link rel="icon" type="image/png" href="/icon16.png" />
-    <link rel="apple-touch-icon" href="/icon16.png" />
+  <!-- Canonical URL — UPDATE THIS to your actual deployed domain -->
+  <link rel="canonical" href="https://zen-mind.dev/" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://zen-mind.dev/" />
-    <meta property="og:title" content="ZenMind — Less switching. More deep work." />
-    <meta property="og:description" content="A free Chrome extension that blocks distracting websites, plays focus soundscapes, and tracks your deep work. Choose from Deep Focus, Gentle Focus, or Study Mode." />
-    <meta property="og:image" content="https://zen-mind.dev/og-image.jpeg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="ZenMind — Less switching. More deep work." />
-    <meta property="og:site_name" content="ZenMind" />
-    <meta property="og:locale" content="en_US" />
+  <!-- Theme & Icons -->
+  <meta name="theme-color" content="#0F2928" />
+  <link rel="icon" type="image/png" href="/icon48.png" />
+  <link rel="apple-touch-icon" href="/icon48.png" />
 
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@jaisal_tech" />
-    <meta name="twitter:creator" content="@jaisal_tech" />
-    <meta name="twitter:url" content="https://zen-mind.dev/" />
-    <meta name="twitter:title" content="ZenMind — Less switching. More deep work." />
-    <meta name="twitter:description" content="A free Chrome extension that blocks distracting websites, plays focus soundscapes, and tracks your deep work. Choose from Deep Focus, Gentle Focus, or Study Mode." />
-    <meta name="twitter:image" content="https://zen-mind.dev/og-image.jpeg" />
-    <meta name="twitter:image:alt" content="ZenMind — Less switching. More deep work." />
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://zen-mind.dev/" />
+  <meta property="og:title" content="ZenMind — Less switching. More deep work." />
+  <meta property="og:description"
+    content="A free Chrome extension that blocks distracting websites, plays focus soundscapes, and tracks your deep work. Choose from Deep Focus, Gentle Focus, or Study Mode." />
+  <meta property="og:image" content="https://zen-mind.dev/og-image.jpeg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="ZenMind — Less switching. More deep work." />
+  <meta property="og:site_name" content="ZenMind" />
+  <meta property="og:locale" content="en_US" />
 
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@jaisal_tech" />
+  <meta name="twitter:creator" content="@jaisal_tech" />
+  <meta name="twitter:url" content="https://zen-mind.dev/" />
+  <meta name="twitter:title" content="ZenMind — Less switching. More deep work." />
+  <meta name="twitter:description"
+    content="A free Chrome extension that blocks distracting websites, plays focus soundscapes, and tracks your deep work. Choose from Deep Focus, Gentle Focus, or Study Mode." />
+  <meta name="twitter:image" content="https://zen-mind.dev/og-image.jpeg" />
+  <meta name="twitter:image:alt" content="ZenMind — Less switching. More deep work." />
+
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
@@ -68,53 +73,60 @@
       }
     </script>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <noscript>
-      <h1>ZenMind — Less switching. More deep work.</h1>
-      <p>ZenMind is a free Chrome extension that helps you block distracting websites, settle into focus with ambient soundscapes, and understand how you spend your time online.</p>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap"
+    rel="stylesheet" />
+</head>
 
-      <h2>Three steps to a quieter session</h2>
-      <h3>Choose a focus mode</h3>
-      <p>Pick from Deep Focus, Gentle Focus, or Study Mode — each designed for a different kind of deep work.</p>
-      <h3>ZenMind clears the noise</h3>
-      <p>Distracting websites are blocked, ambient sounds play, and your session timer starts automatically.</p>
-      <h3>Review your progress</h3>
-      <p>See your focused time, peak hours, and distractions avoided in a calm insights dashboard.</p>
+<body>
+  <div id="root"></div>
+  <noscript>
+    <h1>ZenMind — Less switching. More deep work.</h1>
+    <p>ZenMind is a free Chrome extension that helps you block distracting websites, settle into focus with ambient
+      soundscapes, and understand how you spend your time online.</p>
 
-      <h2>A focus mode for every kind of deep work</h2>
-      <p>Deep Focus blocks all distractions for maximum concentration. Gentle Focus allows occasional breaks. Study Mode uses timed intervals with rest periods.</p>
+    <h2>Three steps to a quieter session</h2>
+    <h3>Choose a focus mode</h3>
+    <p>Pick from Deep Focus, Gentle Focus, or Study Mode — each designed for a different kind of deep work.</p>
+    <h3>ZenMind clears the noise</h3>
+    <p>Distracting websites are blocked, ambient sounds play, and your session timer starts automatically.</p>
+    <h3>Review your progress</h3>
+    <p>See your focused time, peak hours, and distractions avoided in a calm insights dashboard.</p>
 
-      <h2>Set the boundary once. ZenMind holds it.</h2>
-      <p>Block social media, news, shopping, and entertainment sites. Customize categories or add specific URLs to your block list.</p>
+    <h2>A focus mode for every kind of deep work</h2>
+    <p>Deep Focus blocks all distractions for maximum concentration. Gentle Focus allows occasional breaks. Study Mode
+      uses timed intervals with rest periods.</p>
 
-      <h2>Make focus feel like a place</h2>
-      <p>Choose from calming soundscapes — forest rain, ocean waves, café ambience, and more — to create your ideal focus environment.</p>
+    <h2>Set the boundary once. ZenMind holds it.</h2>
+    <p>Block social media, news, shopping, and entertainment sites. Customize categories or add specific URLs to your
+      block list.</p>
 
-      <h2>See what your focus is becoming</h2>
-      <p>Track your daily focus time, discover your peak productivity hours, and watch your Focus Forest grow as you build consistent deep work habits.</p>
+    <h2>Make focus feel like a place</h2>
+    <p>Choose from calming soundscapes — forest rain, ocean waves, café ambience, and more — to create your ideal focus
+      environment.</p>
 
-      <h2>Everything is Free</h2>
-      <p>ZenMind is completely free to use. No ads, no tracking, no hidden costs. Your attention and privacy come first.</p>
+    <h2>See what your focus is becoming</h2>
+    <p>Track your daily focus time, discover your peak productivity hours, and watch your Focus Forest grow as you build
+      consistent deep work habits.</p>
 
-      <nav>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#focus-modes">Focus modes</a>
-        <a href="#insights">Insights</a>
-        <a href="#pricing">Pricing</a>
-      </nav>
-      <p><a href="https://chrome.google.com/webstore" rel="noopener">Get ZenMind on the Chrome Web Store</a></p>
-      <p>Follow the builder on <a href="https://x.com/jaisal_tech" rel="noopener">X (Twitter)</a>.</p>
-    </noscript>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    <h2>Everything is Free</h2>
+    <p>ZenMind is completely free to use. No ads, no tracking, no hidden costs. Your attention and privacy come first.
+    </p>
+
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#focus-modes">Focus modes</a>
+      <a href="#insights">Insights</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <p><a href="https://chrome.google.com/webstore" rel="noopener">Get ZenMind on the Chrome Web Store</a></p>
+    <p>Follow the builder on <a href="https://x.com/jaisal_tech" rel="noopener">X (Twitter)</a>.</p>
+  </noscript>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
