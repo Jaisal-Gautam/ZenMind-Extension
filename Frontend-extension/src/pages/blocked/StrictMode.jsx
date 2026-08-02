@@ -1,8 +1,11 @@
 import StrictBlocked from "@/assets/StrictBlocked.webp";
 import { CircleAlert } from "lucide-react";
 import { useSelector } from "react-redux";
-
+import parseDomain from "@/utils/siteParser";
 function Strict() {
+  const params = new URLSearchParams(window.location.search);
+  const originalUrl = params.get("url");
+  const domain = originalUrl ? parseDomain(originalUrl) : null;
   const guardToggle = useSelector((state) => state.blocking.guardEnabled)
   const OpenDashboard = () => {
     try {
@@ -15,6 +18,17 @@ function Strict() {
       console.error("Failed to open dashboard:", error);
       window.open("/", "_blank");
     }
+  };
+
+  const handleTemporaryUnlock = () => {
+    if (!domain) return;
+
+    chrome.runtime.sendMessage({
+      type: "TEMP_UNLOCK",
+      domain,
+      minutes: 5,
+      originalUrl,
+    });
   };
   return (
     <div
@@ -41,8 +55,15 @@ function Strict() {
             className="px-4 py-2 bg-[#EA580C] cursor-pointer text-white rounded-md shadow-2xl"
             onClick={OpenDashboard}
           >
-            {guardToggle ? " Unlock for 5 min" : "Go Back to Site"}
+            Go To Dashboard
           </button>
+          {!guardToggle && <button
+            className="px-4 py-2 bg-[#EA580C] cursor-pointer text-white rounded-md shadow-2xl"
+            onClick={handleTemporaryUnlock}
+          >
+            Go Back to Site
+          </button>
+          }
         </div>
       </div>
     </div>
