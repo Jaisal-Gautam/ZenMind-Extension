@@ -238,6 +238,13 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       });
       break;
 
+    case "AUDIO_ENDED":
+      chrome.runtime.sendMessage({
+        type: "AUDIO_ENDED",
+        src: message.src,
+      });
+      break;
+
     case "FOCUS_COMPLETED":
       
       showFocusCompleteNotification(message.duration);

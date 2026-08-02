@@ -11,7 +11,7 @@ function DeepFocusCard() {
   const handleAddWebsite = async (websiteName) => {
     await dispatch(
       createBlockedSite({
-        mode: "focus",
+        mode: "deep",
         domain: websiteName,
       }),
     ).unwrap();
@@ -20,7 +20,7 @@ function DeepFocusCard() {
   const handleremoveWebsite = async (websiteName) => {
     await dispatch(
       removeBlockedSite({
-        mode: "focus",
+        mode: "deep",
         domain: websiteName,
       }),
     ).unwrap();

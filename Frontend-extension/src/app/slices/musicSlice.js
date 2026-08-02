@@ -45,7 +45,13 @@ const musicSlice = createSlice({
       state.volume = Math.round(volume * 100);
       state.isLooping = loop;
 
-      const matchedTrack = musicData.find((track) => src?.includes(track.src));
+      const matchedTrack = musicData.find((track) => {
+        if (!src || !track.src) return false;
+        // Strip out query params/hashes or exact asset path matching
+        const cleanSrc = src.split("?")[0].split("#")[0];
+        const cleanTrackSrc = track.src.split("?")[0].split("#")[0];
+        return cleanSrc.endsWith(cleanTrackSrc) || cleanTrackSrc.endsWith(cleanSrc) || cleanSrc.includes(cleanTrackSrc);
+      });
 
       if (matchedTrack) {
         state.currentTrack = matchedTrack;

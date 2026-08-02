@@ -21,7 +21,7 @@ export const createUser = async ({
   const normalizedUsername = username.trim().toLowerCase();
 
   const userExist = await User.findOne({
-    $or: [{ normalizedUsername }, { email: normalizedEmail }],
+    $or: [{ username: normalizedUsername }, { email: normalizedEmail }],
   });
 
   if (userExist) {

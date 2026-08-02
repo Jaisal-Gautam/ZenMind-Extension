@@ -159,9 +159,21 @@ function useAudioPlayer() {
     const listener = (message) => {
       if (message.type === "AUDIO_STATE") {
         dispatch(syncAudioState(message));
+      } else if (message.type === "AUDIO_ENDED") {
+        let activeIndex = currentIndex;
+        if (message.src) {
+          const found = musicData.findIndex((track) => {
+            const cleanSrc = message.src.split("?")[0].split("#")[0];
+            const cleanTrackSrc = track.src.split("?")[0].split("#")[0];
+            return cleanSrc.endsWith(cleanTrackSrc) || cleanTrackSrc.endsWith(cleanSrc) || cleanSrc.includes(cleanTrackSrc);
+          });
+          if (found !== -1) {
+            activeIndex = found;
+          }
+        }
+        const nextIndex = activeIndex === musicData.length - 1 ? 0 : activeIndex + 1;
+        handleTrackChange(musicData[nextIndex]);
       }
-
-     
     };
 
     chrome.runtime.onMessage.addListener(listener);
@@ -169,7 +181,7 @@ function useAudioPlayer() {
     return () => {
       chrome.runtime.onMessage.removeListener(listener);
     };
-  }, [dispatch]);
+  }, [dispatch, currentIndex]);
 
   // -------------------------
   // Cleanup

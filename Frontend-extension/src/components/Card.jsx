@@ -1,11 +1,23 @@
 import { useState } from "react";
 import { Plus, X, Ghost } from "lucide-react";
 
+import parseDomain from "@/utils/siteParser";
+
 function Card({ icon, heading, content, dispatcher, selector, deleter }) {
   const [input, setInput] = useState("");
 
   const handleInputChange = (e) => {
     setInput(e.target.value);
+  };
+
+  const handleAdd = () => {
+    if (input.trim() !== "") {
+      const cleanedDomain = parseDomain(input.trim());
+      if (cleanedDomain) {
+        dispatcher(cleanedDomain);
+        setInput("");
+      }
+    }
   };
 
   return (
@@ -56,16 +68,17 @@ function Card({ icon, heading, content, dispatcher, selector, deleter }) {
           placeholder="Enter Website Name"
           value={input}
           onChange={handleInputChange}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleAdd();
+            }
+          }}
         />
 
         <button
           className="flex items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border-default bg-surface px-3 py-2.5 sm:px-2 sm:py-4 text-sm sm:text-md font-medium text-text-soft transition-colors hover:bg-surface-soft hover:border-border-brand"
-          onClick={() => {
-            if (input.trim() !== "") {
-              dispatcher(input);
-              setInput("");
-            }
-          }}
+          onClick={handleAdd}
         >
           <Plus className="w-4 h-4 sm:w-5 sm:h-5" /> Add Website
         </button>

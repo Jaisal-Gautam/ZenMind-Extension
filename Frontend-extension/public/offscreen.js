@@ -51,3 +51,11 @@ const sendAudioState = () => {
 };
 
 audio.addEventListener("timeupdate", sendAudioState);
+audio.addEventListener("ended", () => {
+  if (!audio.loop) {
+    chrome.runtime.sendMessage({
+      type: "AUDIO_ENDED",
+      src: audio.src,
+    });
+  }
+});
