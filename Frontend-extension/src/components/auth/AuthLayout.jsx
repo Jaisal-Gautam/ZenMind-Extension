@@ -10,29 +10,29 @@ export default function AuthLayout({
   footerLinkTo,
 }) {
   return (
-    <div className="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-h-200 max-w-6xl overflow-hidden rounded-[2rem] border border-border-default bg-surface shadow-lg sm:grid-cols-1 lg:grid-cols-[1fr_1fr]">
-        <div className="px-6 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-16">
+    <div className="w-full py-6 sm:py-10 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="mx-auto grid w-full max-w-6xl overflow-hidden rounded-[2rem] border border-border-default bg-surface shadow-lg sm:grid-cols-1 lg:grid-cols-[1fr_1fr]">
+        <div className="px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-12 flex flex-col justify-center">
           <div className="max-w-xl">
             <p className="text-text-disabled text-sm font-semibold uppercase tracking-[0.2em]">
               Welcome to ZenMind
             </p>
 
-            <h1 className="mt-6 text-3xl font-semibold tracking-tight text-brand sm:text-4xl">
+            <h1 className="mt-4 sm:mt-6 text-2xl font-semibold tracking-tight text-brand sm:text-4xl">
               {title}
             </h1>
 
-            <p className="mt-4 text-sm leading-6 text-text-soft sm:text-base">
+            <p className="mt-2 sm:mt-4 text-sm leading-6 text-text-soft sm:text-base">
               {subtitle}
             </p>
           </div>
 
-          <div className="mt-10 space-y-6">
+          <div className="mt-6 sm:mt-8 space-y-4">
             {children}
           </div>
 
           {footerText && footerLinkText && footerLinkTo && (
-            <p className="mt-10 text-sm text-text-soft">
+            <p className="mt-6 sm:mt-8 text-sm text-text-soft">
               {footerText}{" "}
               <Link
                 to={footerLinkTo}

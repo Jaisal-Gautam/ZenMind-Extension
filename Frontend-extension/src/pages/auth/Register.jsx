@@ -51,7 +51,7 @@ export default function Register() {
       footerLinkText="Sign in"
       footerLinkTo="/auth/login"
     >
-      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 w-full max-w-md mx-auto px-1 sm:px-0">
+      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 w-full max-w-md px-1 sm:px-0">
         <AuthInput
           label="Email"
           id="register-email"
