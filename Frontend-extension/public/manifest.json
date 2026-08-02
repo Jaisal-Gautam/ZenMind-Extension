@@ -12,7 +12,7 @@
     "offscreen"
   ],
   "host_permissions": [
-    "https://zenmind-extension.onrender.com/*"
+    "https://api.zen-mind.dev/*"
   ],
   "icons": {
     "16": "icons/icon16.png",
