@@ -223,7 +223,7 @@ export function PopupTimer({ taskName = "Current Session" }) {
     circumference - (progressPercentage / 100) * circumference;
 
   return (
-    <div className="flex flex-col bg-page dark:bg-app items-center justify-center p-6 w-full max-w-sm mx-auto">
+    <div className="flex flex-col bg-page dark:bg-app items-center justify-center p-6 w-full">
       <div className="relative flex items-center justify-center size-60">
         <svg
           height={radius * 2}

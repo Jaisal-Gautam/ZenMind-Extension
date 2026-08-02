@@ -1,6 +1,6 @@
 import { Lightbulb, Brain } from "lucide-react";
 import { useSelector } from "react-redux";
-import { buildAnalyticsData } from "@/utils/analyticService";
+
 
 function Insight() {
   const { focus } = useSelector((state) => state.analytics);
@@ -9,7 +9,7 @@ function Insight() {
     label: "12 AM - 1 AM",
   };
   return (
-    <div className="w-full relative  bg-brand dark:bg-brand-muted p-4 overflow-hidden rounded-4xl backdrop-blur-sm shadow-sm font-sans mt-4 z-0">
+    <div className="relative  bg-brand dark:bg-brand-muted p-4 overflow-hidden rounded-4xl backdrop-blur-sm shadow-sm font-sans mt-4 z-0">
       {" "}
       {/* Subtle Background Graphic */}
       <div className="absolute -right-4 -bottom-2 opacity-10 pointer-events-none text-text-inverse dark:text-brand overflow-hidden">

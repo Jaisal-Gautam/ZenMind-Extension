@@ -251,8 +251,8 @@ const TrackChange = ({ currentTrack, handleTrackChange }) => {
             key={item.id}
             onClick={() => handleTrackChange(item)}
             className={`flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium transition-colors shadow-sm ${currentTrack?.id === item.id
-                ? "bg-brand-muted dark:bg-brand text-surface"
-                : "bg-surface text-text-muted hover:border-border-brand border border-border-default"
+              ? "bg-brand-muted dark:bg-brand text-surface"
+              : "bg-surface text-text-muted hover:border-border-brand border border-border-default"
               }`}
           >
             {item.title}
@@ -337,7 +337,7 @@ export function PopupAudioPlayer() {
           </div>
 
           <div className="flex flex-col justify-center min-w-0">
-            <h2 className="text-xs sm:text-sm font-bold text-brand dark:text-text leading-tight tracking-tight truncate">
+            <h2 className="text-[14px] sm:text-sm font-semibold  text-brand dark:text-text leading-tight tracking-tight truncate">
               {currentTrack?.title || "Select Track"}
             </h2>
           </div>

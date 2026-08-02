@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Seren Popup</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/popup/main.jsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZenMind Popup</title>
+  <style>
+    html,
+    body,
+    #root {
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    #root::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/popup/main.jsx"></script>
+</body>
+
 </html>

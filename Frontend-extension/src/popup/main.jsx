@@ -8,11 +8,11 @@ import { ThemeProvider } from "next-themes";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-    <div className="mx-auto h-200 w-80 max-w-md rounded-2xl border border-border-default bg-page text-text shadow-sm scroll-smooth">
-      <Storeprovider>
-        <Popup />
-      </Storeprovider>
-    </div>
+      <div className="w-80 bg-page text-text">
+        <Storeprovider>
+          <Popup />
+        </Storeprovider>
+      </div>
 
     </ThemeProvider>
   </StrictMode>

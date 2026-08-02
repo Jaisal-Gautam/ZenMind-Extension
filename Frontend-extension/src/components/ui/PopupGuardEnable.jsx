@@ -115,11 +115,10 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
         ref={triggerRef}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className={`flex w-full items-center justify-between rounded-lg border border-border-default bg-surface p-2.5 pl-10 pr-3 text-sm font-medium text-text shadow-sm transition-colors ${
-          disabled
+        className={`flex w-full items-center justify-between rounded-lg border border-border-default bg-surface p-2.5 pl-10 pr-3 text-sm font-medium text-text shadow-sm transition-colors ${disabled
             ? "cursor-not-allowed opacity-60"
             : "hover:border-border-brand hover:bg-surface-soft"
-        }`}
+          }`}
       >
         <span>{selectedOption?.label ?? selected}</span>
 
@@ -160,11 +159,10 @@ const DropdownMenu = ({ options, selected, onChange, disabled = false }) => {
                 <button
                   key={option.value}
                   onClick={() => !disabled && handleSelect(option.value)}
-                  className={`w-full text-left py-2 px-3 text-sm rounded-md transition-colors flex items-center justify-between ${
-                    selected === option.value
+                  className={`w-full text-left py-2 px-3 text-sm rounded-md transition-colors flex items-center justify-between ${selected === option.value
                       ? "bg-surface-soft text-text"
                       : "text-text-soft hover:text-text hover:bg-surface-soft"
-                  }`}
+                    }`}
                 >
                   <span>{option.label}</span>
 
