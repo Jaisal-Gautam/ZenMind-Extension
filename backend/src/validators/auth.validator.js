@@ -6,7 +6,7 @@ const passwordSchema = z
   .regex(/[A-Z]/, "Must contain an uppercase letter")
   .regex(/[a-z]/, "Must contain a lowercase letter")
   .regex(/[0-9]/, "Must contain a number")
-  .regex(/[!@#$%^&*]/, "Must contain a special character");
+  .regex(/[!@#$%^&*]/, "Must consist of a special character -  !@#$%^&*");
 
 export const loginSchema = z.object({
   email: z.string().email(),
