@@ -1,10 +1,9 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+
+import { motion } from 'motion/react';
 import { Check, Coffee, Heart, Sparkles, ShieldCheck } from 'lucide-react';
-import { installZenMind } from '@/lib/chromeStore';
+import { installZenMind,tip } from '@/lib/chromeStore';
 
 export default function Pricing() {
-  const [showToast, setShowToast] = useState(false);
 
   const plans = [
     {
@@ -28,7 +27,7 @@ export default function Pricing() {
     },
     {
       name: 'Support ZenMind',
-      price: '$5',
+      price: '$1',
       period: 'optional coffee',
       badge: 'INDIE DEVELOPER',
       badgeIcon: Heart,
@@ -39,29 +38,13 @@ export default function Pricing() {
         'Support continuous updates & browser compatibility',
       ],
       cta: 'Ko-fi Page',
-      action: () => {
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 3000);
-      },
+      action: tip,
       featured: true,
       isCoffee: true,
     },
   ];
   return (
     <section id="pricing" className="bg-zen-cream py-24 md:py-36 relative overflow-hidden">
-      <AnimatePresence>
-        {showToast && (
-          <motion.div
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-            className="fixed bottom-6 right-6 z-50 bg-zen-deep text-zen-mist px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-zen-moss/30"
-          >
-            <Coffee className="w-5 h-5 text-amber-400" />
-            <span className="font-medium">Coming soon!</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
       <div className="max-w-[960px] mx-auto px-6 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
