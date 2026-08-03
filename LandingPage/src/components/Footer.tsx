@@ -108,11 +108,7 @@ export default function Footer() {
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="flex items-center justify-center w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 p-1 shadow-inner">
-                  <img
-                    src="/icon16.png"
-                    alt="ZenMind Logo"
-                    className="w-full h-full object-contain"
-                  />
+                  <img src="/icon16.png" alt="ZenMind Logo" className="w-10 h-10 object-cover" />
                 </span>
                 <span className="font-display text-2xl text-zen-mist tracking-tight">
                   ZenMind

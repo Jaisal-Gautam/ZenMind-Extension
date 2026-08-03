@@ -46,7 +46,7 @@ export default function Navbar() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <span className="flex items-center justify-center w-9 h-9 rounded-full bg-[#b6cdb9] backdrop-blur-sm border border-white/20 overflow-hidden">
+          <span className="flex items-center justify-center w-9 h-9 rounded-full  overflow-hidden">
             <img src="/icon16.png" alt="ZenMind Logo" className="w-10 h-10 object-cover" />
           </span>
           <span className="font-display text-xl tracking-wide text-zen-deep">
