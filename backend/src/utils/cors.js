@@ -1,12 +1,8 @@
 const allowedOrigins = [
     "https://zen-mind.dev",
     "https://www.zen-mind.dev",
-    "chrome-extension://ifhnkecmofmfhnhhgpbccfmejnklhmim",
-    "https://api.zen-mind.dev/",
-    "http://localhost:5173",
-
+    "chrome-extension://eaoccliembamohhchmmigmpaocanihdg",
 ];
-
 export const corsOptions = {
     origin(origin, callback) {
 
