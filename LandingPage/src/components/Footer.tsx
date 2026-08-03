@@ -3,11 +3,12 @@ import { motion } from "motion/react";
 import { Mail } from "lucide-react";
 
 const featureLinks = [
-  { label: "Focus Modes", href: "/#focus-modes" },
-  { label: "Website Blocking", href: "/#features" },
-  { label: "Soundscapes", href: "/#features" },
-  { label: "Analytics & Insights", href: "/#insights" },
-  { label: "Pricing & Support", href: "/#pricing" },
+  { label: "Focus Sessions", href: "/#focus-sessions" },
+  { label: "Website Blocking", href: "/#blocker" },
+  { label: "Focus Analytics", href: "/#insights" },
+  { label: "Ambient Soundscapes", href: "/#features" },
+  { label: "Focus Forest", href: "/#insights" },
+  { label: "Support ZenMind", href: "/#pricing" },
 ];
 
 const fireflies = [

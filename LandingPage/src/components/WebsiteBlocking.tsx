@@ -119,7 +119,7 @@ export default function WebsiteBlocking() {
   const ActiveIcon = activeMode.icon;
 
   return (
-    <section className="bg-zen-cream py-24 md:py-32">
+    <section id='blocker' className="bg-zen-cream py-24 md:py-32">
       <div className="max-w-[1100px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

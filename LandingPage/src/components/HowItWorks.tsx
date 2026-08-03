@@ -1,16 +1,21 @@
 import { motion } from 'motion/react';
-import { Compass, Wind, LineChart } from 'lucide-react';
+import { ShieldCheck, Wind, Play, LineChart } from 'lucide-react';
 
 const steps = [
   {
-    icon: Compass,
-    title: 'Choose a focus mode',
-    description: 'Select Deep Focus, Strict Mode or Study Mode, ',
+    icon: ShieldCheck,
+    title: 'Enable your blocking mode',
+    description: 'Choose which sites and apps to keep out of reach during your session.',
   },
   {
     icon: Wind,
-    title: 'ZenMind clears the noise',
-    description: 'Distracting sites are blocked while your ambient soundscape begins.',
+    title: 'Choose Ambient sound',
+    description: 'Pick a soundscape to settle into before you begin.',
+  },
+  {
+    icon: Play,
+    title: 'Start focus Session',
+    description: 'Select a preset and begin your focus session.',
   },
   {
     icon: LineChart,
@@ -31,14 +36,14 @@ export default function HowItWorks() {
           className="text-center mb-16"
         >
           <span className="text-[12px] tracking-[0.2em] text-zen-forest/70 font-medium mb-5 block">
-            HOW IT WORKS
+            HOW TO FOCUS BETTER
           </span>
           <h2 className="font-display text-3xl md:text-[2.4rem] leading-[1.15] text-zen-deep">
-            Three steps to a quieter session.
+            Four steps to a quieter session.
           </h2>
         </motion.div>
 
-        <div className="relative grid md:grid-cols-3 gap-10 md:gap-8">
+        <div className="relative grid md:grid-cols-4 gap-10 md:gap-6">
           {/* connecting path, desktop only */}
           <svg
             className="hidden md:block absolute top-9 left-0 w-full h-[2px] pointer-events-none"
@@ -46,9 +51,9 @@ export default function HowItWorks() {
             preserveAspectRatio="none"
           >
             <motion.line
-              x1="16"
+              x1="12"
               y1="1"
-              x2="84"
+              x2="88"
               y2="1"
               stroke="#C9D8C7"
               strokeWidth="1.5"
@@ -82,7 +87,7 @@ export default function HowItWorks() {
                   <Icon className="w-6 h-6 text-zen-forest" strokeWidth={1.6} />
                 </motion.span>
                 <h3 className="text-[17px] font-medium text-zen-ink mb-2">{step.title}</h3>
-                <p className="text-zen-muted text-[15px] leading-relaxed max-w-[260px]">
+                <p className="text-zen-muted text-[15px] leading-relaxed max-w-[220px]">
                   {step.description}
                 </p>
               </motion.div>

@@ -4,9 +4,10 @@ import { Menu, X } from 'lucide-react';
 import { installZenMind } from '@/lib/chromeStore';
 
 const links = [
-  { label: 'Features', href: '/#features' },
-  { label: 'How it works', href: '/#how-it-works' },
-  { label: 'Focus modes', href: '/#focus-modes' },
+  { label: 'How it Works', href: '/#how-it-works' },
+  { label: 'Focus', href: '/#focus-sessions' },
+  { label: 'Blocking', href: '/#blocker' },
+  { label: 'Soundscapes', href: '/#features' },
   { label: 'Insights', href: '/#insights' },
   { label: 'Pricing', href: '/#pricing' },
 ];

@@ -57,7 +57,7 @@ export default function Pricing() {
             <Sparkles className="w-3.5 h-3.5" /> SIMPLE & FAIR
           </span>
           <h2 className="font-display text-3xl md:text-[2.6rem] leading-[1.15] text-zen-deep mb-5">
-            Everything is Free.
+          Free Forever.
           </h2>
           <p className="text-zen-muted text-[16px] md:text-lg leading-relaxed max-w-[460px] mx-auto">
             No subscriptions. No locked features. If ZenMind brings peace to your work, you can support development on our Ko-fi page.

@@ -97,7 +97,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.2 }}
           className="text-zen-muted text-[17px] md:text-lg leading-relaxed max-w-[520px] mb-10"
         >
-          ZenMind helps you block distractions, settle into focus, and understand how you spend your time online.
+          ZenMind is a free Chrome extension that blocks distracting websites, guides focused work sessions, and helps you build lasting focus habits.
         </motion.p>
 
         <motion.div
