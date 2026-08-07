@@ -1,6 +1,5 @@
-import axios from "axios";
 import apiClient from "./apiClient";
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+
 export const authApi = {
   async register(userData) {
     const response = await apiClient.post("/auth/register", {
@@ -46,8 +45,8 @@ export const authApi = {
   },
 
   async refresh(refreshToken) {
-    const response = await axios.post(`${baseURL}/auth/refresh`, {
-      refreshToken: refreshToken,
+    const response = await apiClient.post("/auth/refresh", {
+      refreshToken,
     });
     return response.data;
   },

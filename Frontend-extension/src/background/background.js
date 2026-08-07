@@ -21,17 +21,17 @@ async function initializeBackground() {
   const recovery = await recoverFocusSession();
 
   switch (recovery.status) {
-   case "expired": {
-    try {
+    case "expired": {
+      try {
         await focusApi.endFocus("expired");
-    } catch {}
+      } catch {}
 
-    const updatedState = recoverCompletedSession(recovery.state);
+      const updatedState = recoverCompletedSession(recovery.state);
 
-    await setData(updatedState);
+      await setData(updatedState);
 
-    break;
-}
+      break;
+    }
   }
 }
 
@@ -246,7 +246,6 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       break;
 
     case "FOCUS_COMPLETED":
-      
       showFocusCompleteNotification(message.duration);
       return;
 
@@ -341,9 +340,7 @@ async function ensureOffscreenDocument() {
       justification: "Play ambient audio.",
     })
     .catch((err) => {
-      if (
-        !err.message.includes("Only a single offscreen document")
-      ) {
+      if (!err.message.includes("Only a single offscreen document")) {
         throw err;
       }
     })
@@ -354,21 +351,19 @@ async function ensureOffscreenDocument() {
   return creatingOffscreen;
 }
 
-
 async function timerFunction() {
   const state = await getData();
 
   if (!state?.focus?.isActive) return;
 
   const remaining =
-    state.focus.remainingTime -
-    (Date.now() - state.focus.lastResumedAt);
+    state.focus.remainingTime - (Date.now() - state.focus.lastResumedAt);
 
   if (remaining > 0) return;
 
   try {
     await focusApi.endFocus("completed");
-
+        const duration = state.focus.sessionDuration;
     const updatedState = recoverCompletedSession(state);
 
     await setData(updatedState);
@@ -378,13 +373,12 @@ async function timerFunction() {
       session: {
         id: state.focus.currentSessionId,
         startTime: state.focus.startTime,
-        duration: state.focus.sessionDuration,
+        duration:duration,
       },
     });
 
-    showFocusCompleteNotification(
-      state.focus.sessionDuration
-    );
+
+    showFocusCompleteNotification(duration);
   } catch (err) {
     console.error("Failed to complete focus session:", err);
   }
